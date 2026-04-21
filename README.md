@@ -74,7 +74,7 @@ GitHub Actions runs the same checks on push and pull requests (see [`.github/wor
 
 ### Live app URL
 
-**Placeholder â€” replace after deploy:** `https://YOUR-APP-NAME.herokuapp.com/`
+**Placeholder â€” replace after deploy:** `https://shielded-woodland-42404-a6be1ad4a07b.herokuapp.com`
 
 ### Deploy checklist
 
