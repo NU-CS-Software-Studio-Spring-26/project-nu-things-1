@@ -1,0 +1,67 @@
+<% content_for :title, "#{@found_item.title} — Found Item" %>
+
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 mb-3">
+  <div>
+    <h1 class="h2 mb-2 text-purple"><%= @found_item.title %></h1>
+    <span class="badge rounded-pill <%= found_status_badge_class(@found_item.status) %>"><%= @found_item.status.titleize %></span>
+    <span class="badge text-bg-light border ms-1"><%= @found_item.category %></span>
+  </div>
+  <div class="d-flex flex-wrap gap-2">
+    <%= link_to "Back to found items", found_items_path, class: "btn btn-outline-secondary btn-sm" %>
+    <%= link_to "Edit", edit_found_item_path(@found_item), class: "btn btn-primary btn-sm" %>
+    <%= button_to "Delete", @found_item, method: :delete, class: "btn btn-danger btn-sm", form: { data: { turbo_confirm: "Delete this found item post?" } } %>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-7">
+    <div class="card nu-card">
+      <div class="card-body">
+        <h2 class="h6 text-muted text-uppercase">Description</h2>
+        <p class="mb-4"><%= simple_format(@found_item.description) %></p>
+
+        <dl class="row mb-0">
+          <dt class="col-sm-4">Location found</dt>
+          <dd class="col-sm-8"><%= @found_item.location_found %></dd>
+
+          <dt class="col-sm-4">Date found</dt>
+          <dd class="col-sm-8"><%= @found_item.date_found&.strftime("%B %d, %Y") %></dd>
+
+          <% if @found_item.storage_location.present? %>
+            <dt class="col-sm-4">Storage / turn-in</dt>
+            <dd class="col-sm-8"><%= @found_item.storage_location %></dd>
+          <% end %>
+
+          <% if @found_item.color.present? %>
+            <dt class="col-sm-4">Color</dt>
+            <dd class="col-sm-8"><%= @found_item.color %></dd>
+          <% end %>
+
+          <% if @found_item.brand.present? %>
+            <dt class="col-sm-4">Brand</dt>
+            <dd class="col-sm-8"><%= @found_item.brand %></dd>
+          <% end %>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-5">
+    <div class="card nu-card mb-3">
+      <div class="card-body">
+        <h2 class="h6 text-muted text-uppercase">Contact</h2>
+        <p class="mb-1"><strong><%= @found_item.contact_name %></strong></p>
+        <p class="mb-0"><%= mail_to @found_item.contact_email, @found_item.contact_email, class: "link-primary" %></p>
+      </div>
+    </div>
+
+    <% if @found_item.image_url.present? %>
+      <div class="card nu-card">
+        <div class="card-body">
+          <h2 class="h6 text-muted text-uppercase mb-3">Photo</h2>
+          <%= image_tag @found_item.image_url, alt: @found_item.title, class: "nu-item-img d-block mx-auto" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

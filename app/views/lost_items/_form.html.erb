@@ -1,0 +1,64 @@
+<%= form_with model: lost_item, class: "needs-validation" do |f| %>
+  <%= render "shared/errors", object: lost_item %>
+
+  <div class="row g-3">
+    <div class="col-md-8">
+      <%= f.label :title, "Title *", class: "form-label" %>
+      <%= f.text_field :title, class: "form-control", required: true, placeholder: "e.g., Black North Face backpack" %>
+    </div>
+    <div class="col-md-4">
+      <%= f.label :category, "Category *", class: "form-label" %>
+      <%= f.text_field :category, class: "form-control", required: true, placeholder: "Accessories, electronics…" %>
+    </div>
+
+    <div class="col-12">
+      <%= f.label :description, "Description *", class: "form-label" %>
+      <%= f.text_area :description, class: "form-control", rows: 4, required: true, placeholder: "Distinctive marks, contents, lock combination hints you are comfortable sharing…" %>
+    </div>
+
+    <div class="col-md-6">
+      <%= f.label :location_lost, "Location lost *", class: "form-label" %>
+      <%= f.text_field :location_lost, class: "form-control", required: true, placeholder: "Building, room, shuttle stop…" %>
+    </div>
+    <div class="col-md-6">
+      <%= f.label :date_lost, "Date lost *", class: "form-label" %>
+      <%= f.date_field :date_lost, class: "form-control", required: true %>
+    </div>
+
+    <div class="col-md-6">
+      <%= f.label :contact_name, "Your name *", class: "form-label" %>
+      <%= f.text_field :contact_name, class: "form-control", required: true %>
+    </div>
+    <div class="col-md-6">
+      <%= f.label :contact_email, "Contact email *", class: "form-label" %>
+      <%= f.email_field :contact_email, class: "form-control", required: true %>
+    </div>
+
+    <div class="col-md-4">
+      <%= f.label :status, "Status *", class: "form-label" %>
+      <%= f.select :status, LostItem::STATUSES.map { |s| [s.titleize, s] }, {}, class: "form-select" %>
+    </div>
+    <div class="col-md-8">
+      <%= f.label :image_url, "Image URL (optional)", class: "form-label" %>
+      <%= f.text_field :image_url, class: "form-control", placeholder: "https://…" %>
+    </div>
+
+    <div class="col-md-4">
+      <%= f.label :color, "Color (optional)", class: "form-label" %>
+      <%= f.text_field :color, class: "form-control" %>
+    </div>
+    <div class="col-md-4">
+      <%= f.label :brand, "Brand (optional)", class: "form-label" %>
+      <%= f.text_field :brand, class: "form-control" %>
+    </div>
+    <div class="col-md-4">
+      <%= f.label :reward, "Reward (optional)", class: "form-label" %>
+      <%= f.text_field :reward, class: "form-control", placeholder: "Coffee, thanks, etc." %>
+    </div>
+  </div>
+
+  <div class="mt-4 d-flex flex-wrap gap-2">
+    <%= f.submit lost_item.persisted? ? "Update listing" : "Post lost item", class: "btn btn-primary" %>
+    <%= link_to "Cancel", lost_item.persisted? ? lost_item_path(lost_item) : lost_items_path, class: "btn btn-outline-secondary" %>
+  </div>
+<% end %>

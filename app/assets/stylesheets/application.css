@@ -1,0 +1,47 @@
+/*
+ * Northwestern Lost and Found Board — global styles (Propshaft serves this file as-is).
+ */
+
+:root {
+  --nu-purple: #4b2e83;
+  --nu-purple-dark: #3a2466;
+  --nu-accent: #836fff;
+}
+
+.nu-body {
+  background: linear-gradient(180deg, #f6f4fb 0%, #ffffff 28%);
+  color: #1f2937;
+}
+
+.nu-navbar {
+  background: linear-gradient(90deg, var(--nu-purple-dark), var(--nu-purple));
+}
+
+.text-purple {
+  color: var(--nu-purple) !important;
+}
+
+.nu-card {
+  border: none;
+  border-radius: 0.75rem;
+  box-shadow: 0 0.35rem 1.25rem rgba(75, 46, 131, 0.08);
+}
+
+.nu-hero {
+  border-radius: 0.75rem;
+  background: linear-gradient(135deg, rgba(75, 46, 131, 0.08), rgba(131, 111, 255, 0.12));
+  border: 1px solid rgba(75, 46, 131, 0.12);
+}
+
+.table.nu-table thead {
+  background-color: rgba(75, 46, 131, 0.06);
+}
+
+.nu-item-img {
+  max-width: 100%;
+  max-height: 280px;
+  object-fit: contain;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+}

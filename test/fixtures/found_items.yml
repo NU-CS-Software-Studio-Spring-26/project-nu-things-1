@@ -1,0 +1,27 @@
+one:
+  title: "Fixture found item one"
+  description: "Used by automated tests."
+  category: "Test"
+  location_found: "Technological Institute"
+  date_found: <%= Date.new(2026, 4, 3) %>
+  contact_name: "Finder One"
+  contact_email: "found_one@example.com"
+  status: unclaimed
+  image_url:
+  storage_location: "Tech front desk"
+  color: Blue
+  brand:
+
+two:
+  title: "Fixture found item two"
+  description: "Also used by automated tests."
+  category: "Test"
+  location_found: "University Library"
+  date_found: <%= Date.new(2026, 4, 4) %>
+  contact_name: "Finder Two"
+  contact_email: "found_two@example.com"
+  status: claimed
+  image_url:
+  storage_location: "Main Library desk"
+  color:
+  brand:

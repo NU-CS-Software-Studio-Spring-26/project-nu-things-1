@@ -1,0 +1,28 @@
+# Minimal valid records for controller tests.
+one:
+  title: "Fixture lost item one"
+  description: "Used by automated tests."
+  category: "Test"
+  location_lost: "Norris University Center"
+  date_lost: <%= Date.new(2026, 4, 1) %>
+  contact_name: "Test User One"
+  contact_email: "lost_one@example.com"
+  status: open
+  image_url:
+  reward:
+  color: Black
+  brand:
+
+two:
+  title: "Fixture lost item two"
+  description: "Also used by automated tests."
+  category: "Test"
+  location_lost: "Main Library"
+  date_lost: <%= Date.new(2026, 4, 2) %>
+  contact_name: "Test User Two"
+  contact_email: "lost_two@example.com"
+  status: resolved
+  image_url:
+  reward:
+  color:
+  brand:

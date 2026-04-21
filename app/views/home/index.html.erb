@@ -1,0 +1,37 @@
+<% content_for :title, "Home — Northwestern Lost and Found Board" %>
+
+<div class="nu-hero p-4 p-md-5 mb-4">
+  <h1 class="display-6 fw-bold text-purple mb-3">Northwestern Lost and Found Board</h1>
+  <p class="lead mb-4">
+    Post what you lost or what you found on campus. Browse listings, share details, and reconnect with belongings—no logins required for this early MVP.
+  </p>
+  <div class="d-flex flex-wrap gap-2">
+    <%= link_to "Browse lost items", lost_items_path, class: "btn btn-primary" %>
+    <%= link_to "Browse found items", found_items_path, class: "btn btn-outline-primary" %>
+    <%= link_to "Report lost item", new_lost_item_path, class: "btn btn-warning" %>
+    <%= link_to "Report found item", new_found_item_path, class: "btn btn-info text-dark" %>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-md-6">
+    <div class="card nu-card h-100">
+      <div class="card-body">
+        <h2 class="h5 card-title text-purple">Lost something?</h2>
+        <p class="card-text text-muted">Create a lost-item post with where and when you last had it, plus a way for finders to reach you.</p>
+        <%= link_to "Go to Lost Items", lost_items_path, class: "btn btn-sm btn-outline-primary me-2" %>
+        <%= link_to "New report", new_lost_item_path, class: "btn btn-sm btn-primary" %>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card nu-card h-100">
+      <div class="card-body">
+        <h2 class="h5 card-title text-purple">Found something?</h2>
+        <p class="card-text text-muted">List what you picked up and where you turned it in (or where you are holding it) so the owner can follow up.</p>
+        <%= link_to "Go to Found Items", found_items_path, class: "btn btn-sm btn-outline-primary me-2" %>
+        <%= link_to "New report", new_found_item_path, class: "btn btn-sm btn-primary" %>
+      </div>
+    </div>
+  </div>
+</div>

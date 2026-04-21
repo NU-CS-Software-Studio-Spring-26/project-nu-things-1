@@ -1,0 +1,67 @@
+<% content_for :title, "#{@lost_item.title} — Lost Item" %>
+
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 mb-3">
+  <div>
+    <h1 class="h2 mb-2 text-purple"><%= @lost_item.title %></h1>
+    <span class="badge rounded-pill <%= lost_status_badge_class(@lost_item.status) %>"><%= @lost_item.status.titleize %></span>
+    <span class="badge text-bg-light border ms-1"><%= @lost_item.category %></span>
+  </div>
+  <div class="d-flex flex-wrap gap-2">
+    <%= link_to "Back to lost items", lost_items_path, class: "btn btn-outline-secondary btn-sm" %>
+    <%= link_to "Edit", edit_lost_item_path(@lost_item), class: "btn btn-primary btn-sm" %>
+    <%= button_to "Delete", @lost_item, method: :delete, class: "btn btn-danger btn-sm", form: { data: { turbo_confirm: "Delete this lost item post?" } } %>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-7">
+    <div class="card nu-card">
+      <div class="card-body">
+        <h2 class="h6 text-muted text-uppercase">Description</h2>
+        <p class="mb-4"><%= simple_format(@lost_item.description) %></p>
+
+        <dl class="row mb-0">
+          <dt class="col-sm-4">Location lost</dt>
+          <dd class="col-sm-8"><%= @lost_item.location_lost %></dd>
+
+          <dt class="col-sm-4">Date lost</dt>
+          <dd class="col-sm-8"><%= @lost_item.date_lost&.strftime("%B %d, %Y") %></dd>
+
+          <% if @lost_item.color.present? %>
+            <dt class="col-sm-4">Color</dt>
+            <dd class="col-sm-8"><%= @lost_item.color %></dd>
+          <% end %>
+
+          <% if @lost_item.brand.present? %>
+            <dt class="col-sm-4">Brand</dt>
+            <dd class="col-sm-8"><%= @lost_item.brand %></dd>
+          <% end %>
+
+          <% if @lost_item.reward.present? %>
+            <dt class="col-sm-4">Reward</dt>
+            <dd class="col-sm-8"><%= @lost_item.reward %></dd>
+          <% end %>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-5">
+    <div class="card nu-card mb-3">
+      <div class="card-body">
+        <h2 class="h6 text-muted text-uppercase">Contact</h2>
+        <p class="mb-1"><strong><%= @lost_item.contact_name %></strong></p>
+        <p class="mb-0"><%= mail_to @lost_item.contact_email, @lost_item.contact_email, class: "link-primary" %></p>
+      </div>
+    </div>
+
+    <% if @lost_item.image_url.present? %>
+      <div class="card nu-card">
+        <div class="card-body">
+          <h2 class="h6 text-muted text-uppercase mb-3">Photo</h2>
+          <%= image_tag @lost_item.image_url, alt: @lost_item.title, class: "nu-item-img d-block mx-auto" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
