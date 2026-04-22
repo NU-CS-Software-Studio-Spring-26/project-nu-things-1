@@ -10,6 +10,7 @@ This project is for a class milestone: **no authentication**, messaging, payment
 - Shayan Shabani
 - Abem Girmai
 - Gwendolyn Slaughter
+- Nasser Issa
 
 ## Requirements
 
