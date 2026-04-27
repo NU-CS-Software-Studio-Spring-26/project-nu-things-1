@@ -1,0 +1,22 @@
+<h2>Someone is interested in your found item!</h2>
+
+<p>Hi <%= @found_item.contact_name %>,</p>
+
+<p>Someone has reached out regarding your found item post.</p>
+
+<h3><strong><%= @found_item.title %></strong></h3>
+
+<p><strong>Sender's Name:</strong> <%= @sender_name %></p>
+<p><strong>Sender's Email:</strong> <%= @sender_email %></p>
+
+<h3>Message:</h3>
+<p><%= simple_format(@message) %></p>
+
+<hr>
+
+<p>You can reply directly to <strong><%= @sender_email %></strong> to continue the conversation.</p>
+
+<p>---<br>
+Northwestern Lost and Found Board<br>
+<%= link_to "View this item", found_item_url(@found_item) %>
+</p>
