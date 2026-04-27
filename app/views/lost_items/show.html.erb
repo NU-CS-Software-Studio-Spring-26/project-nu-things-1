@@ -51,7 +51,8 @@
       <div class="card-body">
         <h2 class="h6 text-muted text-uppercase">Contact</h2>
         <p class="mb-1"><strong><%= @lost_item.contact_name %></strong></p>
-        <p class="mb-0"><%= mail_to @lost_item.contact_email, @lost_item.contact_email, class: "link-primary" %></p>
+        <p class="mb-3"><%= mail_to @lost_item.contact_email, @lost_item.contact_email, class: "link-primary" %></p>
+        <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#contactModal">Send a message</button>
       </div>
     </div>
 
@@ -63,5 +64,41 @@
         </div>
       </div>
     <% end %>
+  </div>
+</div>
+
+<!-- Contact Modal -->
+<div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5 text-purple" id="contactModalLabel">Contact about "<%= @lost_item.title %>"</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <%= form_with url: create_lost_item_contact_path, method: :post, local: true, class: "needs-validation" do |f| %>
+        <div class="modal-body">
+          <%= hidden_field_tag :lost_item_id, @lost_item.id %>
+          
+          <div class="mb-3">
+            <%= f.label :sender_name, "Your name", class: "form-label" %>
+            <%= f.text_field :sender_name, class: "form-control", required: true, placeholder: "Enter your name" %>
+          </div>
+
+          <div class="mb-3">
+            <%= f.label :sender_email, "Your email", class: "form-label" %>
+            <%= f.email_field :sender_email, class: "form-control", required: true, placeholder: "Enter your email" %>
+          </div>
+
+          <div class="mb-3">
+            <%= f.label :message, "Message", class: "form-label" %>
+            <%= f.text_area :message, class: "form-control", required: true, placeholder: "Enter your message", rows: 5 %>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <%= f.submit "Send message", class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>
