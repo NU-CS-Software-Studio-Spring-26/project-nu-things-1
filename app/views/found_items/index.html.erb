@@ -8,6 +8,18 @@
   <%= link_to "Report found item", new_found_item_path, class: "btn btn-info text-dark" %>
 </div>
 
+<div class="card nu-card mb-4">
+  <div class="card-body">
+    <h6 class="card-title text-purple mb-3">Filter by category</h6>
+    <div class="d-flex flex-wrap gap-2">
+      <%= link_to "All categories", found_items_path, class: "btn btn-sm #{params[:category].blank? ? 'btn-info text-dark' : 'btn-outline-info text-dark'}" %>
+      <% @categories.each do |category| %>
+        <%= link_to category, found_items_path(category: category), class: "btn btn-sm #{params[:category] == category ? 'btn-info text-dark' : 'btn-outline-info text-dark'}" %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
 <% if @found_items.any? %>
   <div class="table-responsive card nu-card">
     <table class="table table-hover align-middle mb-0 nu-table">
