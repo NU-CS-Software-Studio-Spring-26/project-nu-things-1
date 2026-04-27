@@ -4,7 +4,7 @@ class FoundItemsController < ApplicationController
   def index
     @found_items = FoundItem.order(date_found: :desc, created_at: :desc)
     @found_items = @found_items.where(category: params[:category]) if params[:category].present?
-    @categories = FoundItem.distinct.pluck(:category).sort + ["Other"]
+    @categories = FoundItem.distinct.pluck(:category).sort + [ "Other" ]
   end
 
   def show

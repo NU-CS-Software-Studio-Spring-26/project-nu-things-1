@@ -4,7 +4,7 @@ class LostItemsController < ApplicationController
   def index
     @lost_items = LostItem.order(date_lost: :desc, created_at: :desc)
     @lost_items = @lost_items.where(category: params[:category]) if params[:category].present?
-    @categories = LostItem.distinct.pluck(:category).sort + ["Other"]
+    @categories = LostItem.distinct.pluck(:category).sort + [ "Other" ]
   end
 
   def show
