@@ -1,4 +1,4 @@
-<%= form_with model: lost_item, class: "needs-validation" do |f| %>
+<%= form_with model: lost_item, url: (local_assigns[:form_url] || nil), class: "needs-validation" do |f| %>
   <%= render "shared/errors", object: lost_item %>
 
   <div class="row g-3">
@@ -59,6 +59,6 @@
 
   <div class="mt-4 d-flex flex-wrap gap-2">
     <%= f.submit lost_item.persisted? ? "Update listing" : "Post lost item", class: "btn btn-primary" %>
-    <%= link_to "Cancel", lost_item.persisted? ? lost_item_path(lost_item) : lost_items_path, class: "btn btn-outline-secondary" %>
+    <%= link_to "Cancel", (local_assigns[:cancel_url] || (lost_item.persisted? ? lost_item_path(lost_item) : lost_items_path)), class: "btn btn-outline-secondary" %>
   </div>
 <% end %>

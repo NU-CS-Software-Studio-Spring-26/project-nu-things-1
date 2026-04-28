@@ -1,6 +1,8 @@
 class FoundItem < ApplicationRecord
   STATUSES = %w[unclaimed claimed].freeze
 
+  has_many :claims, as: :claimable, dependent: :destroy
+
   validates :title, :description, :category, :location_found, :date_found,
             :contact_name, :contact_email, :status, presence: true
   validates :status, inclusion: { in: STATUSES }

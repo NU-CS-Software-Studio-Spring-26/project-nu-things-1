@@ -28,21 +28,20 @@ class FoundItemsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should get edit" do
-    get edit_found_item_url(@found_item)
-    assert_response :success
+  test "edit is not accessible without owner token" do
+    get "/found_items/#{@found_item.id}/edit"
+    assert_response :not_found
   end
 
-  test "should update found_item" do
-    patch found_item_url(@found_item), params: { found_item: { brand: @found_item.brand, category: @found_item.category, color: @found_item.color, contact_email: @found_item.contact_email, contact_name: @found_item.contact_name, date_found: @found_item.date_found, description: @found_item.description, image_url: @found_item.image_url, location_found: @found_item.location_found, status: @found_item.status, storage_location: @found_item.storage_location, title: @found_item.title } }
-    assert_redirected_to found_item_url(@found_item)
+  test "update is not accessible without owner token" do
+    patch "/found_items/#{@found_item.id}", params: { found_item: { title: "X" } }
+    assert_response :not_found
   end
 
-  test "should destroy found_item" do
-    assert_difference("FoundItem.count", -1) do
-      delete found_item_url(@found_item)
+  test "destroy is not accessible without owner token" do
+    assert_no_difference("FoundItem.count") do
+      delete "/found_items/#{@found_item.id}"
+      assert_response :not_found
     end
-
-    assert_redirected_to found_items_url
   end
 end

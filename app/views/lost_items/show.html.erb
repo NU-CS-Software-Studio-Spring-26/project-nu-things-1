@@ -8,8 +8,11 @@
   </div>
   <div class="d-flex flex-wrap gap-2">
     <%= link_to "Back to lost items", lost_items_path, class: "btn btn-outline-secondary btn-sm" %>
-    <%= link_to "Edit", edit_lost_item_path(@lost_item), class: "btn btn-primary btn-sm" %>
-    <%= button_to "Delete", @lost_item, method: :delete, class: "btn btn-danger btn-sm", form: { data: { turbo_confirm: "Delete this lost item post?" } } %>
+    <% if signed_in? %>
+      <%= button_to "Start claim process", claim_lost_item_path(@lost_item), method: :post, class: "btn btn-primary btn-sm" %>
+    <% else %>
+      <%= link_to "Start claim process", new_session_path, class: "btn btn-primary btn-sm" %>
+    <% end %>
   </div>
 </div>
 
