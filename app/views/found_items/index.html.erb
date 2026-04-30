@@ -3,9 +3,9 @@
 <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4">
   <div>
     <h1 class="h2 mb-1 text-purple">Found items</h1>
-    <p class="text-muted mb-0">Items someone turned in or is holding for the owner.</p>
+    <p class="nu-section-lead mb-0">Items someone turned in or is holding for the owner.</p>
   </div>
-  <%= link_to "Report found item", new_found_item_path, class: "btn btn-info text-dark" %>
+  <%= link_to "Report found item", new_found_item_path, class: "btn btn-info text-dark nu-pill-btn" %>
 </div>
 
 <div class="card nu-card mb-4">
@@ -21,30 +21,23 @@
 </div>
 
 <% if @found_items.any? %>
-  <div class="table-responsive card nu-card">
-    <table class="table table-hover align-middle mb-0 nu-table">
-      <thead>
-        <tr>
-          <th scope="col">Title</th>
-          <th scope="col">Category</th>
-          <th scope="col">Location found</th>
-          <th scope="col">Date found</th>
-          <th scope="col">Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @found_items.each do |item| %>
-          <tr>
-            <td><%= link_to item.title, item, class: "fw-semibold text-decoration-none" %></td>
-            <td><%= item.category %></td>
-            <td><%= item.location_found %></td>
-            <td><%= item.date_found&.strftime("%b %d, %Y") %></td>
-            <td><span class="badge rounded-pill <%= found_status_badge_class(item.status) %>"><%= item.status.titleize %></span></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+  <div class="nu-list-grid">
+    <% @found_items.each do |item| %>
+      <article class="card nu-card nu-item-card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+            <%= link_to item.title, item, class: "fw-semibold nu-item-title" %>
+            <span class="badge rounded-pill <%= found_status_badge_class(item.status) %>"><%= item.status.titleize %></span>
+          </div>
+          <p class="nu-metadata mb-0">
+            <strong>Category:</strong> <%= item.category %> ·
+            <strong>Found at:</strong> <%= item.location_found %> ·
+            <strong>Date:</strong> <%= item.date_found&.strftime("%b %d, %Y") %>
+          </p>
+        </div>
+      </article>
+    <% end %>
   </div>
 <% else %>
-  <div class="alert alert-info">No found items yet. <%= link_to "Add the first listing", new_found_item_path, class: "alert-link" %>.</div>
+  <div class="alert nu-soft-alert">No found items yet. <%= link_to "Add the first listing", new_found_item_path, class: "alert-link" %>.</div>
 <% end %>

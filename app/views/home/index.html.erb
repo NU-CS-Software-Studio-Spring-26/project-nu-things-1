@@ -2,14 +2,14 @@
 
 <div class="nu-hero p-4 p-md-5 mb-4">
   <h1 class="display-6 fw-bold text-purple mb-3">Northwestern Lost and Found Board</h1>
-  <p class="lead mb-4">
+  <p class="lead nu-section-lead mb-4">
     Post what you lost or what you found on campus. Browse listings, share details, and reconnect with belongings—no logins required for this early MVP.
   </p>
-  <div class="d-flex flex-wrap gap-2">
-    <%= link_to "Browse lost items", lost_items_path, class: "btn btn-primary" %>
-    <%= link_to "Browse found items", found_items_path, class: "btn btn-outline-primary" %>
-    <%= link_to "Report lost item", new_lost_item_path, class: "btn btn-warning" %>
-    <%= link_to "Report found item", new_found_item_path, class: "btn btn-info text-dark" %>
+  <div class="d-flex flex-column flex-sm-row flex-wrap gap-2 nu-cta-group">
+    <%= link_to "Browse lost items", lost_items_path, class: "btn btn-primary nu-pill-btn" %>
+    <%= link_to "Browse found items", found_items_path, class: "btn btn-outline-primary nu-pill-btn" %>
+    <%= link_to "Report lost item", new_lost_item_path, class: "btn btn-warning nu-pill-btn" %>
+    <%= link_to "Report found item", new_found_item_path, class: "btn btn-info text-dark nu-pill-btn" %>
   </div>
 </div>
 

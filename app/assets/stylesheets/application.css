@@ -6,15 +6,45 @@
   --nu-purple: #4b2e83;
   --nu-purple-dark: #3a2466;
   --nu-accent: #836fff;
+  --nu-lavender: #f3efff;
+  --nu-cream: #fffdf6;
+  --nu-ink: #1f2430;
 }
 
 .nu-body {
-  background: linear-gradient(180deg, #f6f4fb 0%, #ffffff 28%);
-  color: #1f2937;
+  background:
+    radial-gradient(circle at top right, rgba(131, 111, 255, 0.22), transparent 28%),
+    radial-gradient(circle at 15% 12%, rgba(255, 205, 112, 0.2), transparent 20%),
+    linear-gradient(180deg, #f8f5ff 0%, #fffdf7 45%, #ffffff 100%);
+  color: var(--nu-ink);
 }
 
 .nu-navbar {
-  background: linear-gradient(90deg, var(--nu-purple-dark), var(--nu-purple));
+  background: linear-gradient(105deg, #2f1f55, #4b2e83 58%, #6b4bb5);
+}
+
+.nu-shell {
+  max-width: 1080px;
+}
+
+.nu-brand {
+  letter-spacing: 0.02em;
+}
+
+.nu-pill-btn {
+  border-radius: 999px;
+  font-weight: 600;
+  padding-inline: 0.95rem;
+}
+
+.nu-cta-group .btn {
+  width: 100%;
+}
+
+@media (min-width: 576px) {
+  .nu-cta-group .btn {
+    width: auto;
+  }
 }
 
 .text-purple {
@@ -23,18 +53,70 @@
 
 .nu-card {
   border: none;
-  border-radius: 0.75rem;
-  box-shadow: 0 0.35rem 1.25rem rgba(75, 46, 131, 0.08);
+  border-radius: 1rem;
+  box-shadow: 0 0.5rem 1.35rem rgba(75, 46, 131, 0.1);
+  overflow: hidden;
 }
 
 .nu-hero {
-  border-radius: 0.75rem;
-  background: linear-gradient(135deg, rgba(75, 46, 131, 0.08), rgba(131, 111, 255, 0.12));
+  border-radius: 1rem;
+  background: linear-gradient(145deg, #f1eafe, #fff8de);
+  border: 1px solid rgba(75, 46, 131, 0.14);
+  box-shadow: 0 0.4rem 1.25rem rgba(75, 46, 131, 0.08);
+}
+
+.nu-section-lead {
+  color: #5b6472;
+}
+
+.nu-list-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.nu-item-card {
+  background: #fff;
+}
+
+.nu-item-card .card-body {
+  padding: 1rem;
+}
+
+.nu-item-title {
+  text-decoration: none;
+  color: var(--nu-purple-dark);
+}
+
+.nu-item-title:hover {
+  text-decoration: underline;
+}
+
+.nu-metadata {
+  color: #596170;
+  font-size: 0.93rem;
+}
+
+.nu-metadata strong {
+  color: #2d3442;
+}
+
+.nu-form-card {
   border: 1px solid rgba(75, 46, 131, 0.12);
 }
 
-.table.nu-table thead {
-  background-color: rgba(75, 46, 131, 0.06);
+.nu-form-card .card-body {
+  padding: 1rem;
+}
+
+.nu-soft-alert {
+  border: 1px dashed rgba(75, 46, 131, 0.26);
+  background: linear-gradient(180deg, #f5f1ff, #fff);
+  border-radius: 0.9rem;
+}
+
+.nu-footer {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(4px);
 }
 
 .nu-item-img {
@@ -44,4 +126,42 @@
   border-radius: 0.5rem;
   border: 1px solid #e5e7eb;
   background: #fff;
+}
+
+.form-control,
+.form-select {
+  border-radius: 0.75rem;
+  padding: 0.62rem 0.78rem;
+}
+
+.form-label {
+  color: #3b4150;
+  font-weight: 600;
+}
+
+@media (max-width: 575.98px) {
+  .nu-navbar {
+    padding-top: 0.65rem;
+    padding-bottom: 0.65rem;
+  }
+
+  .nu-navbar .navbar-brand {
+    font-size: 1rem;
+  }
+
+  .nu-hero {
+    padding: 1.15rem !important;
+  }
+
+  .nu-hero .lead {
+    font-size: 1rem;
+  }
+
+  .nu-list-grid {
+    gap: 0.8rem;
+  }
+
+  .nu-item-card .card-body {
+    padding: 0.9rem;
+  }
 }
