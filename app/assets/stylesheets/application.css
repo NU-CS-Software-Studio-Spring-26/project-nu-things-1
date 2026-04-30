@@ -65,6 +65,115 @@
   box-shadow: 0 0.4rem 1.25rem rgba(75, 46, 131, 0.08);
 }
 
+.nu-home-actions {
+  border: 1px solid rgba(75, 46, 131, 0.14);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(243, 239, 255, 0.72));
+}
+
+.nu-browse-card {
+  min-height: 9.25rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(75, 46, 131, 0.28);
+  padding: 0.95rem 0.8rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.2rem;
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
+  box-shadow: 0 0.28rem 0.8rem rgba(75, 46, 131, 0.1);
+}
+
+.nu-browse-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0.5rem 1rem rgba(75, 46, 131, 0.12);
+}
+
+.nu-browse-lost {
+  background: linear-gradient(160deg, #ffffff, #fffefd 58%, #fffbf8);
+}
+
+.nu-browse-found {
+  background: linear-gradient(160deg, #faf8ff, #f1ecff 58%, #ebe4ff);
+}
+
+.nu-browse-symbol {
+  font-size: 1.45rem;
+  color: var(--nu-purple);
+  line-height: 1.2;
+}
+
+.nu-browse-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: block;
+}
+
+
+.nu-browse-title {
+  color: #2e1f4a;
+  font-weight: 800;
+  font-size: 1.18rem;
+  line-height: 1.2;
+}
+
+.nu-browse-subtitle {
+  color: #374151;
+  font-size: 0.89rem;
+  font-weight: 500;
+}
+
+.nu-report-lost {
+  background: var(--nu-purple);
+  border-color: var(--nu-purple);
+  color: #fff;
+}
+
+.nu-report-lost:hover,
+.nu-report-lost:focus {
+  background: var(--nu-purple-dark);
+  border-color: var(--nu-purple-dark);
+  color: #fff;
+}
+
+.nu-report-found {
+  background: #fff;
+  border: 1px solid var(--nu-purple);
+  color: var(--nu-purple);
+}
+
+.nu-report-found:hover,
+.nu-report-found:focus {
+  background: #f6f1ff;
+  border-color: var(--nu-purple-dark);
+  color: var(--nu-purple-dark);
+}
+
+.nu-btn-primary {
+  background: var(--nu-purple);
+  border: 1px solid var(--nu-purple);
+  color: #fff;
+}
+
+.nu-btn-primary:hover,
+.nu-btn-primary:focus {
+  background: var(--nu-purple-dark);
+  border-color: var(--nu-purple-dark);
+  color: #fff;
+}
+
+.nu-btn-outline {
+  background: #fff;
+  border: 1px solid var(--nu-purple);
+  color: var(--nu-purple);
+}
+
+.nu-btn-outline:hover,
+.nu-btn-outline:focus {
+  background: #f6f1ff;
+  border-color: var(--nu-purple-dark);
+  color: var(--nu-purple-dark);
+}
+
 .nu-section-lead {
   color: #5b6472;
 }
@@ -164,4 +273,18 @@
   .nu-item-card .card-body {
     padding: 0.9rem;
   }
+
+  .nu-browse-card {
+    min-height: 8.1rem;
+    padding: 0.8rem 0.68rem;
+  }
+
+  .nu-browse-symbol {
+    font-size: 1.25rem;
+  }
+
+  .nu-browse-title {
+    font-size: 1.02rem;
+  }
+
 }
