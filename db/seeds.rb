@@ -4,6 +4,7 @@
 Claim.destroy_all
 LoginToken.destroy_all
 User.destroy_all
+Booking.destroy_all
 LostItem.destroy_all
 FoundItem.destroy_all
 RentalItem.destroy_all

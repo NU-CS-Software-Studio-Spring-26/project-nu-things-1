@@ -1,0 +1,19 @@
+<h2>New Booking Request for <%= @rental_item.title %></h2>
+
+<p>Someone has requested to book your rental item!</p>
+
+<h3>Booking Details:</h3>
+<ul>
+  <li><strong>Item:</strong> <%= @rental_item.title %></li>
+  <li><strong>Start Date:</strong> <%= @booking.start_date.strftime("%B %d, %Y") %></li>
+  <li><strong>End Date:</strong> <%= @booking.end_date.strftime("%B %d, %Y") %></li>
+  <li><strong>Status:</strong> <%= @booking.status.titleize %></li>
+  <% if @booking.notes.present? %>
+    <li><strong>Message:</strong> <%= simple_format(@booking.notes) %></li>
+  <% end %>
+</ul>
+
+<p><%= link_to "View booking details", rental_item_url(@rental_item) %></p>
+
+<p>Best regards,<br>
+Northwestern Lost and Found Board</p>

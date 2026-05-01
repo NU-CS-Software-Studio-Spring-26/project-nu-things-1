@@ -13,7 +13,16 @@ Rails.application.routes.draw do
   delete "found_items/owner/:token" => "found_items#destroy_owner", as: :destroy_found_item_owner
   post "found_items/:id/claim" => "claims#create_for_found_item", as: :claim_found_item
 
-  resources :rental_items
+  resources :rental_items do
+    resources :bookings, only: [ :create ] do
+      member do
+        patch :cancel
+      end
+      collection do
+        get :calendar_data
+      end
+    end
+  end
 
   resource :session, only: %i[new create destroy]
   get "session/:token" => "sessions#consume", as: :consume_session
