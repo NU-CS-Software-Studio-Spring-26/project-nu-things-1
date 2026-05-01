@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_01_172819) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_01_213100) do
   create_table "found_items", force: :cascade do |t|
     t.string "brand"
     t.string "category", null: false
@@ -42,6 +42,24 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_01_172819) do
     t.string "reward"
     t.string "status", default: "open", null: false
     t.string "title", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "marketplace_listings", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "description", null: false
+    t.string "category", null: false
+    t.string "condition"
+    t.string "image_url"
+    t.string "location", null: false
+    t.string "custom_category"
+    t.string "listing_type", null: false
+    t.decimal "price"
+    t.string "contact_name", null: false
+    t.string "contact_email", null: false
+    t.string "contact_phone"
+    t.string "status", default: "active", null: false
+    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
