@@ -28,17 +28,6 @@
       </div>
     </div>
 
-    <div class="card nu-card mb-4">
-      <div class="card-body">
-        <h2 class="h6 text-muted text-uppercase mb-3">Availability Calendar</h2>
-        <div data-controller="calendar" 
-             data-calendar-event-url-value="<%= rental_item_bookings_calendar_data_path(@rental_item) %>"
-             data-calendar-min-date-value="<%= @rental_item.available_from.iso8601 %>"
-             data-calendar-max-date-value="<%= @rental_item.available_to.iso8601 %>"
-             style="height: 500px;"></div>
-      </div>
-    </div>
-
     <div class="card nu-card">
       <div class="card-body">
         <h2 class="h6 text-muted text-uppercase">Description</h2>
