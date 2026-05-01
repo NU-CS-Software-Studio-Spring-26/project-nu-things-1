@@ -8,6 +8,7 @@ Booking.destroy_all
 LostItem.destroy_all
 FoundItem.destroy_all
 RentalItem.destroy_all
+MarketplaceListing.destroy_all
 
 lost_seed = [
   {
