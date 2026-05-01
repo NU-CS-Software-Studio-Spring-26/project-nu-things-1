@@ -61,6 +61,7 @@ class MarketplaceListingsController < ApplicationController
       :contact_name,
       :contact_email,
       :contact_phone,
+      :custom_category,
       :status
     ])
   end

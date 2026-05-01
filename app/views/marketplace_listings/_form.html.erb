@@ -33,6 +33,11 @@
           </div>
 
           <div class="mb-3">
+            <%= form.label :custom_category, "If category is Other, specify", class: "form-label" %>
+            <%= form.text_field :custom_category, class: "form-control", placeholder: "e.g., Musical instrument, Kitchenware" %>
+          </div>
+
+          <div class="mb-3">
             <%= form.label :title, class: "form-label" %>
             <%= form.text_field :title, class: "form-control", required: true, placeholder: "e.g., Desk lamp, iClicker, Winter coat" %>
           </div>
@@ -45,7 +50,7 @@
           <div class="row">
             <div class="col-md-6 mb-3">
               <%= form.label :condition, class: "form-label" %>
-              <%= form.select :condition, MarketplaceListing::CONDITIONS, { prompt: "Select condition (optional)" }, class: "form-select" %>
+              <%= form.text_field :condition, class: "form-control", placeholder: "e.g., Like new, lightly used, missing charger (optional)" %>
             </div>
 
             <div class="col-md-6 mb-3">
