@@ -6,4 +6,3 @@ class LoginMailer < ApplicationMailer
     mail(to: login_token.user.email, subject: "Your sign-in link")
   end
 end
-

@@ -9,4 +9,3 @@ class CreateUsers < ActiveRecord::Migration[8.1]
     add_index :users, "lower(email)", unique: true, name: "index_users_on_lower_email"
   end
 end
-

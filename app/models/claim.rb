@@ -6,4 +6,3 @@ class Claim < ApplicationRecord
 
   validates :status, inclusion: { in: STATUSES }
 end
-

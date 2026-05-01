@@ -11,4 +11,3 @@ class LoginToken < ApplicationRecord
     expires_at <= Time.current
   end
 end
-

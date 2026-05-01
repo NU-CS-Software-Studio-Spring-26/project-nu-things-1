@@ -13,4 +13,3 @@ class CreateClaims < ActiveRecord::Migration[8.1]
     add_index :claims, %i[user_id claimable_type claimable_id], unique: true, name: "index_claims_on_user_and_claimable"
   end
 end
-

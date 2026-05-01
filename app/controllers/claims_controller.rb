@@ -15,4 +15,3 @@ class ClaimsController < ApplicationController
     redirect_to found_item, notice: "Claim started. Check your email for next steps soon."
   end
 end
-

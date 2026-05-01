@@ -11,4 +11,3 @@ class CreateLoginTokens < ActiveRecord::Migration[8.1]
     add_index :login_tokens, :expires_at
   end
 end
-

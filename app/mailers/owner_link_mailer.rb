@@ -15,4 +15,3 @@ class OwnerLinkMailer < ApplicationMailer
     mail(to: @found_item.contact_email, subject: "Your private link to edit your found item post")
   end
 end
-
