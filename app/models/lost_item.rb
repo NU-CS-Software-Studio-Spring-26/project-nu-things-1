@@ -1,6 +1,8 @@
 class LostItem < ApplicationRecord
   STATUSES = %w[open resolved].freeze
 
+  has_many :claims, as: :claimable, dependent: :destroy
+
   validates :title, :description, :category, :location_lost, :date_lost,
             :contact_name, :contact_email, :status, presence: true
   validates :status, inclusion: { in: STATUSES }

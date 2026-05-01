@@ -8,8 +8,11 @@
   </div>
   <div class="d-flex flex-wrap gap-2">
     <%= link_to "Back to found items", found_items_path, class: "btn btn-outline-secondary btn-sm" %>
-    <%= link_to "Edit", edit_found_item_path(@found_item), class: "btn btn-primary btn-sm" %>
-    <%= button_to "Delete", @found_item, method: :delete, class: "btn btn-danger btn-sm", form: { data: { turbo_confirm: "Delete this found item post?" } } %>
+    <% if signed_in? %>
+      <%= button_to "Start claim process", claim_found_item_path(@found_item), method: :post, class: "btn btn-primary btn-sm" %>
+    <% else %>
+      <%= link_to "Start claim process", new_session_path, class: "btn btn-primary btn-sm" %>
+    <% end %>
   </div>
 </div>
 
@@ -50,8 +53,13 @@
     <div class="card nu-card mb-3">
       <div class="card-body">
         <h2 class="h6 text-muted text-uppercase">Contact</h2>
-        <p class="mb-1"><strong><%= @found_item.contact_name %></strong></p>
-        <p class="mb-0"><%= mail_to @found_item.contact_email, @found_item.contact_email, class: "link-primary" %></p>
+        <% if signed_in? %>
+          <p class="mb-1"><strong><%= @found_item.contact_name %></strong></p>
+          <p class="mb-0"><%= mail_to @found_item.contact_email, @found_item.contact_email, class: "link-primary" %></p>
+        <% else %>
+          <p class="text-muted mb-2">Sign in with your Northwestern email to see contact details and reach the finder.</p>
+          <%= link_to "Sign in", new_session_path, class: "btn btn-sm btn-primary" %>
+        <% end %>
       </div>
     </div>
 

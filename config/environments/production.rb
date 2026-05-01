@@ -24,8 +24,8 @@ Rails.application.configure do
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
 
-  # Assume all access to the app is happening through a SSL-terminating reverse proxy.
-  # config.assume_ssl = true
+  # Heroku terminates TLS at the router; treat requests as HTTPS for URLs and callbacks.
+  config.assume_ssl = true
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
@@ -53,21 +53,60 @@ Rails.application.configure do
   config.active_job.queue_adapter = :solid_queue
   config.solid_queue.connects_to = { database: { writing: :queue } }
 
-  # Ignore bad email addresses and do not raise email delivery errors.
-  # Set this to true and configure the email server for immediate delivery to raise delivery errors.
-  # config.action_mailer.raise_delivery_errors = false
+  # Magic links need the public app hostname. Prefer explicit config on Heroku:
+  #   heroku config:set MAILER_DEFAULT_HOST=your-app.herokuapp.com
+  # or add a custom domain the same way. HEROKU_APP_NAME is set by Heroku and
+  # is used as a fallback (*.herokuapp.com).
+  production_host =
+    ENV["MAILER_DEFAULT_HOST"].presence ||
+    (ENV["HEROKU_APP_NAME"].present? ? "#{ENV.fetch('HEROKU_APP_NAME')}.herokuapp.com" : nil)
 
-  # Set host to be used by links generated in mailer templates.
-  config.action_mailer.default_url_options = { host: "example.com" }
+  config.action_mailer.default_url_options =
+    production_host.present? ?
+      { host: production_host, protocol: "https" } :
+      { host: "example.com", protocol: "https" }
 
-  # Specify outgoing SMTP server. Remember to add smtp/* credentials via bin/rails credentials:edit.
-  # config.action_mailer.smtp_settings = {
-  #   user_name: Rails.application.credentials.dig(:smtp, :user_name),
-  #   password: Rails.application.credentials.dig(:smtp, :password),
-  #   address: "smtp.example.com",
-  #   port: 587,
-  #   authentication: :plain
-  # }
+  if production_host.present?
+    config.hosts << production_host
+    ENV.fetch("ALLOWED_HOSTS", "").split(",").each do |extra|
+      extra = extra.strip
+      config.hosts << extra unless extra.empty?
+    end
+  end
+
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors =
+    ENV["MAILER_RAISE_DELIVERY_ERRORS"].present? && ENV["MAILER_RAISE_DELIVERY_ERRORS"] != "false"
+
+  # Resend SMTP: set RESEND_API_KEY (and optionally RESEND_FROM) on Heroku, or add
+  # resend.api_key to encrypted credentials.
+  config.action_mailer.delivery_method = :smtp
+
+  config.after_initialize do
+    next unless Rails.env.production?
+
+    api_key = ENV["RESEND_API_KEY"].presence ||
+              Rails.application.credentials.dig(:resend, :api_key).presence
+
+    if api_key.blank?
+      Rails.logger.warn(
+        "[action_mailer] RESEND_API_KEY is blank and credentials resend.api_key is missing. " \
+        "Magic-link email will not send until set (heroku config:set RESEND_API_KEY=re_...)."
+      )
+    end
+
+    settings = {
+      address:              "smtp.resend.com",
+      port:                   587,
+      user_name:              "resend",
+      password:               api_key,
+      authentication:         :plain,
+      enable_starttls_auto:   true
+    }
+
+    Rails.application.config.action_mailer.smtp_settings = settings
+    ActionMailer::Base.smtp_settings = settings
+  end
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).

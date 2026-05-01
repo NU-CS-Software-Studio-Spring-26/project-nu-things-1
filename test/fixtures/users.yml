@@ -1,0 +1,5 @@
+# Used for integration tests that require a signed-in Northwestern user.
+poster:
+  email: poster@u.northwestern.edu
+  created_at: <%= Time.utc(2026, 4, 1, 12, 0, 0) %>
+  updated_at: <%= Time.utc(2026, 4, 1, 12, 0, 0) %>

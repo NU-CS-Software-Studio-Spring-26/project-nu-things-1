@@ -288,3 +288,7 @@
   }
 
 }
+
+.table.nu-table thead {
+  background-color: rgba(75, 46, 131, 0.06);
+}

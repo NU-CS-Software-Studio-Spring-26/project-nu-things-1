@@ -31,14 +31,52 @@ Rails.application.configure do
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
 
-  # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
+  # Surface SMTP/auth errors in the dev console instead of swallowing them.
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.perform_deliveries  = true
 
   # Make template changes take effect immediately.
   config.action_mailer.perform_caching = false
 
   # Set localhost to be used by links generated in mailer templates.
   config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
+
+  # Deliver magic-link / owner-link emails via Resend SMTP from the dev laptop.
+  # Use `bin/rails credentials:edit --environment development` and set:
+  #   resend:
+  #     api_key: re_...
+  # Or export RESEND_API_KEY=re_... (handy when credentials are finicky in WSL).
+  #
+  # Password must be present at send time; reading credentials inside after_initialize
+  # avoids a nil password when the env file is evaluated before credentials are ready.
+  config.action_mailer.delivery_method = :smtp
+
+  config.after_initialize do
+    next unless Rails.env.development?
+
+    api_key = ENV["RESEND_API_KEY"].presence ||
+              Rails.application.credentials.dig(:resend, :api_key).presence
+
+    if api_key.blank?
+      Rails.logger.warn(
+        "[action_mailer] Resend API key is blank. Set ENV['RESEND_API_KEY'] or add " \
+        "`resend.api_key` via `bin/rails credentials:edit --environment development`. " \
+        "SMTP will fail with \"missing secret phrase\" until this is set."
+      )
+    end
+
+    settings = {
+      address:              "smtp.resend.com",
+      port:                   587,
+      user_name:              "resend",
+      password:               api_key,
+      authentication:         :plain,
+      enable_starttls_auto:   true
+    }
+
+    Rails.application.config.action_mailer.smtp_settings = settings
+    ActionMailer::Base.smtp_settings = settings
+  end
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
