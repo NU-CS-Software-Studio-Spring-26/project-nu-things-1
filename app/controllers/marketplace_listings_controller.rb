@@ -6,7 +6,7 @@ class MarketplaceListingsController < ApplicationController
     @marketplace_listings = @marketplace_listings.where(listing_type: params[:listing_type]) if params[:listing_type].present?
     @marketplace_listings = @marketplace_listings.where(category: params[:category]) if params[:category].present?
 
-    @categories = (MarketplaceListing.distinct.pluck(:category).sort + ["Other"]).uniq
+    @categories = (MarketplaceListing.distinct.pluck(:category).sort + [ "Other" ]).uniq
   end
 
   def show
@@ -66,4 +66,3 @@ class MarketplaceListingsController < ApplicationController
     ])
   end
 end
-
