@@ -26,4 +26,18 @@ class ContactsController < ApplicationController
       redirect_to @found_item, alert: "Please fill in all fields."
     end
   end
+
+  def create_rental_item_contact
+    @rental_item = RentalItem.find(params[:rental_item_id])
+    sender_name = params[:sender_name]
+    sender_email = params[:sender_email]
+    message = params[:message]
+
+    if sender_name.present? && sender_email.present? && message.present?
+      ContactMailer.rental_item_contact(@rental_item, sender_name, sender_email, message).deliver_later
+      redirect_to @rental_item, notice: "Your inquiry has been sent successfully!"
+    else
+      redirect_to @rental_item, alert: "Please fill in all fields."
+    end
+  end
 end

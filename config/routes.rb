@@ -13,11 +13,14 @@ Rails.application.routes.draw do
   delete "found_items/owner/:token" => "found_items#destroy_owner", as: :destroy_found_item_owner
   post "found_items/:id/claim" => "claims#create_for_found_item", as: :claim_found_item
 
+  resources :rental_items
+
   resource :session, only: %i[new create destroy]
   get "session/:token" => "sessions#consume", as: :consume_session
 
   post "contacts/create_lost_item_contact", to: "contacts#create_lost_item_contact", as: :create_lost_item_contact
   post "contacts/create_found_item_contact", to: "contacts#create_found_item_contact", as: :create_found_item_contact
+  post "contacts/create_rental_item_contact", to: "contacts#create_rental_item_contact", as: :create_rental_item_contact
 
   get "up" => "rails/health#show", as: :rails_health_check
 

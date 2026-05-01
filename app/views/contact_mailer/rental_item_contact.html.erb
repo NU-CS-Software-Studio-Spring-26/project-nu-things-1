@@ -1,0 +1,27 @@
+<h2>Rental Inquiry for Your Item</h2>
+
+<p>Hi <%= @rental_item.owner_name %>,</p>
+
+<p>Someone is interested in renting your item!</p>
+
+<h3><strong><%= @rental_item.title %></strong></h3>
+
+<p><strong>Rental Price:</strong> $<%= number_with_precision(@rental_item.rental_price, precision: 2) %>/<%= @rental_item.rental_period.gsub("per_", "") %></p>
+<p><strong>Your Listed Availability:</strong> <%= @rental_item.available_from&.strftime("%B %d, %Y") %> - <%= @rental_item.available_to&.strftime("%B %d, %Y") %></p>
+
+<hr>
+
+<p><strong>Inquirer's Name:</strong> <%= @sender_name %></p>
+<p><strong>Inquirer's Email:</strong> <%= @sender_email %></p>
+
+<h3>Their Message:</h3>
+<p><%= simple_format(@message) %></p>
+
+<hr>
+
+<p>You can reply directly to <strong><%= @sender_email %></strong> to discuss rental terms, arrange a meeting, collect payment, and discuss deposit details.</p>
+
+<p>---<br>
+Northwestern Lost and Found Board<br>
+<%= link_to "View this rental", rental_item_url(@rental_item) %>
+</p>
