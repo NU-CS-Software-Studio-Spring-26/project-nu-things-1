@@ -267,4 +267,141 @@ found_seed = [
 
 found_seed.each { |attrs| FoundItem.create!(attrs) }
 
-puts "Seeded #{LostItem.count} lost items and #{FoundItem.count} found items."
+RentalItem.destroy_all
+
+rental_seed = [
+  {
+    title: "4-Person Camping Tent",
+    description: "REI Co-op dome tent in excellent condition. Used only 3 times. Comes with rainfly, stakes, and storage bag. Fits easily in a car.",
+    category: "Camping Gear",
+    rental_price: 20,
+    rental_period: "per_day",
+    condition: "Like New",
+    location: "Tech building (pickup/dropoff)",
+    available_from: Date.new(2026, 5, 1),
+    available_to: Date.new(2026, 8, 31),
+    image_url: "https://picsum.photos/seed/tent/600/400",
+    owner_name: "Alex Chen",
+    owner_email: "alex.chen@u.northwestern.edu",
+    owner_phone: "(555) 123-4567",
+    deposit_required: 50,
+    status: "available"
+  },
+  {
+    title: "Mountain Bike - Trek Marlin",
+    description: "Trek Marlin 5 hardtail mountain bike. 29-inch wheels. Great for trails around Chicago. Well-maintained, recently serviced.",
+    category: "Sports Equipment",
+    rental_price: 25,
+    rental_period: "per_day",
+    condition: "Good",
+    location: "Campus near Lakefront",
+    available_from: Date.new(2026, 5, 1),
+    available_to: Date.new(2026, 9, 30),
+    image_url: "https://picsum.photos/seed/bike/600/400",
+    owner_name: "Jordan Smith",
+    owner_email: "jordan.smith@u.northwestern.edu",
+    owner_phone: "(555) 234-5678",
+    deposit_required: 75,
+    status: "available"
+  },
+  {
+    title: "Power Drill & Tool Set",
+    description: "DeWalt 20V cordless drill/driver with complete bit set plus hammer, level, and measuring tape. Includes 2 batteries and charger.",
+    category: "Tools",
+    rental_price: 15,
+    rental_period: "per_day",
+    condition: "Good",
+    location: "Evanston near NU",
+    available_from: Date.new(2026, 5, 5),
+    available_to: Date.new(2026, 9, 15),
+    owner_name: "Taylor Brown",
+    owner_email: "taylor.brown@u.northwestern.edu",
+    owner_phone: "(555) 345-6789",
+    deposit_required: 40,
+    status: "available"
+  },
+  {
+    title: "Textbook: Organic Chemistry (8th Edition)",
+    description: "Brown & Iverson Organic Chemistry textbook. Hardcover, minimal highlighting. Also includes practice problem book.",
+    category: "Books",
+    rental_price: 8,
+    rental_period: "per_week",
+    condition: "Good",
+    location: "Library",
+    available_from: Date.new(2026, 5, 1),
+    available_to: Date.new(2026, 12, 31),
+    owner_name: "Sam Patel",
+    owner_email: "sam.patel@u.northwestern.edu",
+    deposit_required: 0,
+    status: "available"
+  },
+  {
+    title: "Ikea Futon Sofa Bed",
+    description: "Comfortable futon from Ikea. Can be used as couch or bed. Dark gray fabric. Minimal stains. Needs pickup/return.",
+    category: "Furniture",
+    rental_price: 40,
+    rental_period: "per_week",
+    condition: "Fair",
+    location: "Evanston (1st floor, easy access)",
+    available_from: Date.new(2026, 5, 10),
+    available_to: Date.new(2026, 8, 20),
+    image_url: "https://picsum.photos/seed/couch/600/400",
+    owner_name: "Casey Lee",
+    owner_email: "casey.lee@u.northwestern.edu",
+    owner_phone: "(555) 456-7890",
+    deposit_required: 100,
+    status: "available"
+  },
+  {
+    title: "Portable Projector - AAXA",
+    description: "Small LED projector, perfect for outdoor movie nights or presentations. Comes with HDMI cable. 100 ANSI lumens.",
+    category: "Electronics",
+    rental_price: 30,
+    rental_period: "per_day",
+    condition: "Like New",
+    location: "Downtown Evanston",
+    available_from: Date.new(2026, 5, 1),
+    available_to: Date.new(2026, 10, 31),
+    owner_name: "Morgan Zhang",
+    owner_email: "morgan.zhang@u.northwestern.edu",
+    owner_phone: "(555) 567-8901",
+    deposit_required: 60,
+    status: "available"
+  },
+  {
+    title: "Skateboard Deck & Grip Tape",
+    description: "Freshly re-gripped skateboard. Recently replaced bearings. Solid fun board for cruising.",
+    category: "Sports Equipment",
+    rental_price: 10,
+    rental_period: "per_day",
+    condition: "Good",
+    location: "Campus center",
+    available_from: Date.new(2026, 5, 1),
+    available_to: Date.new(2026, 10, 31),
+    owner_name: "Riley Davis",
+    owner_email: "riley.davis@u.northwestern.edu",
+    deposit_required: 25,
+    status: "available"
+  },
+  {
+    title: "Professional Luggage (spinner set of 3)",
+    description: "Travelpro luggage set with carry-on, checked, and personal item bags. Smooth wheels, TSA-approved locks.",
+    category: "Other",
+    rental_price: 35,
+    rental_period: "per_week",
+    condition: "Like New",
+    location: "Near Evanston downtown",
+    available_from: Date.new(2026, 5, 1),
+    available_to: Date.new(2026, 12, 31),
+    image_url: "https://picsum.photos/seed/luggage/600/400",
+    owner_name: "Drew Johnson",
+    owner_email: "drew.johnson@u.northwestern.edu",
+    owner_phone: "(555) 678-9012",
+    deposit_required: 80,
+    status: "available"
+  }
+]
+
+rental_seed.each { |attrs| RentalItem.create!(attrs) }
+
+puts "Seeded #{LostItem.count} lost items, #{FoundItem.count} found items, and #{RentalItem.count} rental items."

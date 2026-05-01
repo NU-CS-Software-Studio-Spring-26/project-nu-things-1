@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_21_232412) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_01_172819) do
   create_table "found_items", force: :cascade do |t|
     t.string "brand"
     t.string "category", null: false
@@ -42,6 +42,26 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_21_232412) do
     t.string "reward"
     t.string "status", default: "open", null: false
     t.string "title", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "rental_items", force: :cascade do |t|
+    t.date "available_from"
+    t.date "available_to"
+    t.string "category"
+    t.string "condition"
+    t.datetime "created_at", null: false
+    t.decimal "deposit_required"
+    t.text "description"
+    t.string "image_url"
+    t.string "location"
+    t.string "owner_email"
+    t.string "owner_name"
+    t.string "owner_phone"
+    t.string "rental_period"
+    t.decimal "rental_price"
+    t.string "status"
+    t.string "title"
     t.datetime "updated_at", null: false
   end
 end

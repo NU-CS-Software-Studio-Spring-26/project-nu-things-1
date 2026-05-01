@@ -18,4 +18,13 @@ class ContactMailer < ApplicationMailer
 
     mail(to: @found_item.contact_email, subject: "Someone is interested in your found item: #{@found_item.title}")
   end
+
+  def rental_item_contact(rental_item, sender_name, sender_email, message)
+    @rental_item = rental_item
+    @sender_name = sender_name
+    @sender_email = sender_email
+    @message = message
+
+    mail(to: @rental_item.owner_email, subject: "Rental inquiry for: #{@rental_item.title}")
+  end
 end

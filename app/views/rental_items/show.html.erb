@@ -1,0 +1,118 @@
+<% content_for :title, "#{@rental_item.title} — Rental Item" %>
+
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 mb-3">
+  <div>
+    <h1 class="h2 mb-2 text-success"><%= @rental_item.title %></h1>
+    <span class="badge text-bg-success"><%= @rental_item.category %></span>
+    <span class="badge text-bg-light border ms-1"><%= @rental_item.condition %></span>
+  </div>
+  <div class="d-flex flex-wrap gap-2">
+    <%= link_to "Back to rentals", rental_items_path, class: "btn btn-outline-secondary btn-sm" %>
+    <%= link_to "Edit", edit_rental_item_path(@rental_item), class: "btn btn-success btn-sm" %>
+    <%= button_to "Delete", @rental_item, method: :delete, class: "btn btn-danger btn-sm", form: { data: { turbo_confirm: "Delete this rental item?" } } %>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-7">
+    <div class="card nu-card mb-4">
+      <div class="card-body">
+        <h2 class="h6 text-muted text-uppercase mb-3">Photo</h2>
+        <% if @rental_item.image_url.present? %>
+          <%= image_tag @rental_item.image_url, alt: @rental_item.title, class: "nu-item-img d-block mx-auto", style: "max-height: 400px; object-fit: contain;" %>
+        <% else %>
+          <div class="bg-light d-flex align-items-center justify-content-center" style="height: 300px;">
+            <span class="text-muted">No image provided</span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="card nu-card">
+      <div class="card-body">
+        <h2 class="h6 text-muted text-uppercase">Description</h2>
+        <p class="mb-4"><%= simple_format(@rental_item.description) %></p>
+
+        <dl class="row mb-0">
+          <dt class="col-sm-4">Location</dt>
+          <dd class="col-sm-8"><%= @rental_item.location %></dd>
+
+          <dt class="col-sm-4">Available from</dt>
+          <dd class="col-sm-8"><%= @rental_item.available_from&.strftime("%B %d, %Y") %></dd>
+
+          <dt class="col-sm-4">Available until</dt>
+          <dd class="col-sm-8"><%= @rental_item.available_to&.strftime("%B %d, %Y") %></dd>
+
+          <% if @rental_item.deposit_required.present? && @rental_item.deposit_required > 0 %>
+            <dt class="col-sm-4">Suggested deposit</dt>
+            <dd class="col-sm-8">${{ number_with_precision(@rental_item.deposit_required, precision: 2) }}</dd>
+          <% end %>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-5">
+    <div class="card nu-card mb-3">
+      <div class="card-body">
+        <h2 class="h6 text-muted text-uppercase mb-3">Price</h2>
+        <p class="h3 text-success mb-3">${{ number_with_precision(@rental_item.rental_price, precision: 2) }}<span class="text-muted fs-6">/<%= @rental_item.rental_period.gsub("per_", "") %></span></p>
+      </div>
+    </div>
+
+    <div class="card nu-card mb-3">
+      <div class="card-body">
+        <h2 class="h6 text-muted text-uppercase">Contact Owner</h2>
+        <p class="mb-1"><strong><%= @rental_item.owner_name %></strong></p>
+        <p class="mb-2"><%= mail_to @rental_item.owner_email, @rental_item.owner_email, class: "link-success" %></p>
+        <% if @rental_item.owner_phone.present? %>
+          <p class="mb-3"><%= @rental_item.owner_phone %></p>
+        <% end %>
+        <button class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#contactModal">Send a message</button>
+      </div>
+    </div>
+
+    <div class="card nu-card">
+      <div class="card-body">
+        <h2 class="h6 text-muted text-uppercase mb-2">Payment</h2>
+        <p class="text-muted small mb-0">Contact the owner to arrange payment via Venmo or Zelle. Discuss deposit and rental terms directly.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Contact Modal -->
+<div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5 text-success" id="contactModalLabel">Inquire about "<%= @rental_item.title %>"</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <%= form_with url: create_rental_item_contact_path, method: :post, local: true, class: "needs-validation" do |f| %>
+        <div class="modal-body">
+          <%= hidden_field_tag :rental_item_id, @rental_item.id %>
+
+          <div class="mb-3">
+            <%= f.label :sender_name, "Your name", class: "form-label" %>
+            <%= f.text_field :sender_name, class: "form-control", required: true, placeholder: "Enter your name" %>
+          </div>
+
+          <div class="mb-3">
+            <%= f.label :sender_email, "Your email", class: "form-label" %>
+            <%= f.email_field :sender_email, class: "form-control", required: true, placeholder: "Enter your email" %>
+          </div>
+
+          <div class="mb-3">
+            <%= f.label :message, "Message", class: "form-label" %>
+            <%= f.text_area :message, class: "form-control", required: true, placeholder: "Ask about rental dates, price, deposit, etc.", rows: 5 %>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <%= f.submit "Send message", class: "btn btn-success" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
