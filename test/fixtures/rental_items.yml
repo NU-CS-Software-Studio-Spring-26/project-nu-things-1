@@ -1,0 +1,35 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  description: MyText
+  category: MyString
+  rental_price: 9.99
+  rental_period: MyString
+  condition: MyString
+  location: MyString
+  available_from: 2026-05-01
+  available_to: 2026-05-01
+  image_url: MyString
+  owner_name: MyString
+  owner_email: MyString
+  owner_phone: MyString
+  deposit_required: 9.99
+  status: MyString
+
+two:
+  title: MyString
+  description: MyText
+  category: MyString
+  rental_price: 9.99
+  rental_period: MyString
+  condition: MyString
+  location: MyString
+  available_from: 2026-05-01
+  available_to: 2026-05-01
+  image_url: MyString
+  owner_name: MyString
+  owner_email: MyString
+  owner_phone: MyString
+  deposit_required: 9.99
+  status: MyString

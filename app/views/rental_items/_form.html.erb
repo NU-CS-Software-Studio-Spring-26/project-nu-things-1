@@ -1,0 +1,149 @@
+<%= form_with(model: rental_item, local: true) do |form| %>
+  <% if rental_item.errors.any? %>
+    <div id="error_explanation" class="alert alert-danger mb-3">
+      <h4 class="alert-heading"><%= pluralize(rental_item.errors.count, "error") %> prohibited this rental item from being saved:</h4>
+      <ul class="mb-0">
+        <% rental_item.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="row g-4">
+    <div class="col-lg-8">
+      <div class="card nu-card mb-4">
+        <div class="card-body">
+          <h5 class="card-title text-success mb-4">Item Details</h5>
+
+          <div class="mb-3">
+            <%= form.label :title, class: "form-label" %>
+            <%= form.text_field :title, class: "form-control", required: true, placeholder: "e.g., Camping Tent 4-Person" %>
+          </div>
+
+          <div class="mb-3">
+            <%= form.label :description, class: "form-label" %>
+            <%= form.text_area :description, class: "form-control", required: true, placeholder: "Detailed description of the item, condition, what's included, etc.", rows: 5 %>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <%= form.label :category, class: "form-label" %>
+              <%= form.select :category, RentalItem::CATEGORIES, { prompt: "Select a category" }, class: "form-select", required: true %>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <%= form.label :condition, class: "form-label" %>
+              <%= form.select :condition, RentalItem::CONDITIONS, { prompt: "Select condition" }, class: "form-select", required: true %>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <%= form.label :image_url, "Photo URL", class: "form-label" %>
+            <%= form.text_field :image_url, class: "form-control", placeholder: "https://example.com/image.jpg (optional)" %>
+          </div>
+        </div>
+      </div>
+
+      <div class="card nu-card mb-4">
+        <div class="card-body">
+          <h5 class="card-title text-success mb-4">Availability</h5>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <%= form.label :available_from, "Available from", class: "form-label" %>
+              <%= form.date_field :available_from, class: "form-control", required: true %>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <%= form.label :available_to, "Available until", class: "form-label" %>
+              <%= form.date_field :available_to, class: "form-control", required: true %>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <%= form.label :location, class: "form-label" %>
+            <%= form.text_field :location, class: "form-control", required: true, placeholder: "e.g., Northwestern Campus, Tech Building, My home" %>
+          </div>
+        </div>
+      </div>
+
+      <div class="card nu-card">
+        <div class="card-body">
+          <h5 class="card-title text-success mb-4">Rental Terms</h5>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <%= form.label :rental_price, "Rental price", class: "form-label" %>
+              <div class="input-group">
+                <span class="input-group-text">$</span>
+                <%= form.number_field :rental_price, class: "form-control", step: "0.01", required: true, placeholder: "0.00" %>
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <%= form.label :rental_period, "Per", class: "form-label" %>
+              <%= form.select :rental_period, RentalItem::RENTAL_PERIODS.map { |p| [p.gsub("per_", ""), p] }, { prompt: "Select period" }, class: "form-select", required: true %>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <%= form.label :deposit_required, "Suggested deposit (optional)", class: "form-label" %>
+            <div class="input-group">
+              <span class="input-group-text">$</span>
+              <%= form.number_field :deposit_required, class: "form-control", step: "0.01", placeholder: "0.00" %>
+            </div>
+            <small class="text-muted">Suggested deposit amount for renter to hold while item is rented</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card nu-card mb-4">
+        <div class="card-body">
+          <h5 class="card-title text-success mb-4">Contact Information</h5>
+
+          <div class="mb-3">
+            <%= form.label :owner_name, "Your name", class: "form-label" %>
+            <%= form.text_field :owner_name, class: "form-control", required: true %>
+          </div>
+
+          <div class="mb-3">
+            <%= form.label :owner_email, "Your email", class: "form-label" %>
+            <%= form.email_field :owner_email, class: "form-control", required: true %>
+          </div>
+
+          <div class="mb-3">
+            <%= form.label :owner_phone, "Your phone (optional)", class: "form-label" %>
+            <%= form.telephone_field :owner_phone, class: "form-control", placeholder: "(555) 123-4567" %>
+          </div>
+        </div>
+      </div>
+
+      <div class="card nu-card">
+        <div class="card-body">
+          <h5 class="card-title text-success mb-4">Status</h5>
+
+          <div class="mb-3">
+            <%= form.label :status, class: "form-label" %>
+            <%= form.select :status, RentalItem::STATUSES, {}, class: "form-select" %>
+          </div>
+
+          <small class="text-muted">
+            <strong>available:</strong> Item is available for rent<br>
+            <strong>rented:</strong> Item is currently rented<br>
+            <strong>inactive:</strong> Item is no longer available
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-4 mb-3">
+    <div class="d-flex gap-2">
+      <%= form.submit class: "btn btn-success" %>
+      <%= link_to "Cancel", rental_items_path, class: "btn btn-outline-secondary" %>
+    </div>
+  </div>
+<% end %>
