@@ -41,4 +41,3 @@ class MarketplaceListing < ApplicationRecord
     self.status = "active" if status.blank?
   end
 end
-
