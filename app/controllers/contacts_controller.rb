@@ -40,4 +40,18 @@ class ContactsController < ApplicationController
       redirect_to @rental_item, alert: "Please fill in all fields."
     end
   end
+
+  def create_marketplace_listing_contact
+    @marketplace_listing = MarketplaceListing.find(params[:marketplace_listing_id])
+    sender_name = params[:sender_name]
+    sender_email = params[:sender_email]
+    message = params[:message]
+
+    if sender_name.present? && sender_email.present? && message.present?
+      ContactMailer.marketplace_listing_contact(@marketplace_listing, sender_name, sender_email, message).deliver_later
+      redirect_to @marketplace_listing, notice: "Your message has been sent successfully!"
+    else
+      redirect_to @marketplace_listing, alert: "Please fill in all fields."
+    end
+  end
 end
