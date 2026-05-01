@@ -2,13 +2,13 @@
 
 <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 mb-3">
   <div>
-    <h1 class="h2 mb-2 text-success"><%= @rental_item.title %></h1>
-    <span class="badge text-bg-success"><%= @rental_item.category %></span>
+    <h1 class="h2 mb-2 text-primary"><%= @rental_item.title %></h1>
+    <span class="badge text-bg-primary"><%= @rental_item.category %></span>
     <span class="badge text-bg-light border ms-1"><%= @rental_item.condition %></span>
   </div>
   <div class="d-flex flex-wrap gap-2">
     <%= link_to "Back to rentals", rental_items_path, class: "btn btn-outline-secondary btn-sm" %>
-    <%= link_to "Edit", edit_rental_item_path(@rental_item), class: "btn btn-success btn-sm" %>
+    <%= link_to "Edit", edit_rental_item_path(@rental_item), class: "btn btn-primary btn-sm" %>
     <%= button_to "Delete", @rental_item, method: :delete, class: "btn btn-danger btn-sm", form: { data: { turbo_confirm: "Delete this rental item?" } } %>
   </div>
 </div>
@@ -25,6 +25,17 @@
             <span class="text-muted">No image provided</span>
           </div>
         <% end %>
+      </div>
+    </div>
+
+    <div class="card nu-card mb-4">
+      <div class="card-body">
+        <h2 class="h6 text-muted text-uppercase mb-3">Availability Calendar</h2>
+        <div data-controller="calendar" 
+             data-calendar-event-url-value="<%= rental_item_bookings_calendar_data_path(@rental_item) %>"
+             data-calendar-min-date-value="<%= @rental_item.available_from.iso8601 %>"
+             data-calendar-max-date-value="<%= @rental_item.available_to.iso8601 %>"
+             style="height: 500px;"></div>
       </div>
     </div>
 
@@ -45,7 +56,7 @@
 
           <% if @rental_item.deposit_required.present? && @rental_item.deposit_required > 0 %>
             <dt class="col-sm-4">Suggested deposit</dt>
-            <dd class="col-sm-8">${{ number_with_precision(@rental_item.deposit_required, precision: 2) }}</dd>
+            <dd class="col-sm-8"><%= number_with_precision(@rental_item.deposit_required, precision: 2) %></dd>
           <% end %>
         </dl>
       </div>
@@ -56,7 +67,31 @@
     <div class="card nu-card mb-3">
       <div class="card-body">
         <h2 class="h6 text-muted text-uppercase mb-3">Price</h2>
-        <p class="h3 text-success mb-3">${{ number_with_precision(@rental_item.rental_price, precision: 2) }}<span class="text-muted fs-6">/<%= @rental_item.rental_period.gsub("per_", "") %></span></p>
+        <p class="h3 text-primary mb-3"><%= number_with_precision(@rental_item.rental_price, precision: 2) %><span class="text-muted fs-6">/<%= @rental_item.rental_period.gsub("per_", "") %></span></p>
+      </div>
+    </div>
+
+    <div class="card nu-card mb-3">
+      <div class="card-body">
+        <h2 class="h6 text-muted text-uppercase mb-3">Request Booking</h2>
+        <%= form_with url: rental_item_bookings_path(@rental_item), method: :post, local: true, class: "needs-validation" do |f| %>
+          <div class="mb-3">
+            <%= f.label :start_date, "Start date", class: "form-label" %>
+            <%= f.date_field :start_date, class: "form-control", required: true, min: @rental_item.available_from, max: @rental_item.available_to %>
+          </div>
+
+          <div class="mb-3">
+            <%= f.label :end_date, "End date", class: "form-label" %>
+            <%= f.date_field :end_date, class: "form-control", required: true, min: @rental_item.available_from, max: @rental_item.available_to %>
+          </div>
+
+          <div class="mb-3">
+            <%= f.label :notes, "Additional notes (optional)", class: "form-label" %>
+            <%= f.text_area :notes, class: "form-control", rows: 3, placeholder: "Ask about specific dates, ask any questions, etc." %>
+          </div>
+
+          <%= f.submit "Request booking", class: "btn btn-primary w-100" %>
+        <% end %>
       </div>
     </div>
 
@@ -64,11 +99,11 @@
       <div class="card-body">
         <h2 class="h6 text-muted text-uppercase">Contact Owner</h2>
         <p class="mb-1"><strong><%= @rental_item.owner_name %></strong></p>
-        <p class="mb-2"><%= mail_to @rental_item.owner_email, @rental_item.owner_email, class: "link-success" %></p>
+        <p class="mb-2"><%= mail_to @rental_item.owner_email, @rental_item.owner_email, class: "link-primary" %></p>
         <% if @rental_item.owner_phone.present? %>
           <p class="mb-3"><%= @rental_item.owner_phone %></p>
         <% end %>
-        <button class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#contactModal">Send a message</button>
+        <button class="btn btn-outline-primary w-100" data-bs-toggle="modal" data-bs-target="#contactModal">Send a message</button>
       </div>
     </div>
 
@@ -86,7 +121,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5 text-success" id="contactModalLabel">Inquire about "<%= @rental_item.title %>"</h1>
+        <h1 class="modal-title fs-5 text-primary" id="contactModalLabel">Inquire about "<%= @rental_item.title %>"</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <%= form_with url: create_rental_item_contact_path, method: :post, local: true, class: "needs-validation" do |f| %>
@@ -110,7 +145,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-          <%= f.submit "Send message", class: "btn btn-success" %>
+          <%= f.submit "Send message", class: "btn btn-primary" %>
         </div>
       <% end %>
     </div>

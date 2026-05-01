@@ -10,7 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_01_172819) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_01_182225) do
+  create_table "bookings", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.date "end_date", null: false
+    t.text "notes"
+    t.integer "rental_item_id", null: false
+    t.date "start_date", null: false
+    t.string "status", default: "pending", null: false
+    t.datetime "updated_at", null: false
+    t.index ["rental_item_id", "start_date", "end_date"], name: "index_bookings_on_rental_item_id_and_start_date_and_end_date"
+    t.index ["rental_item_id"], name: "index_bookings_on_rental_item_id"
+  end
+
   create_table "found_items", force: :cascade do |t|
     t.string "brand"
     t.string "category", null: false
@@ -64,4 +76,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_01_172819) do
     t.string "title"
     t.datetime "updated_at", null: false
   end
+
+  add_foreign_key "bookings", "rental_items"
 end
