@@ -7,6 +7,7 @@ class CreateMarketplaceListings < ActiveRecord::Migration[8.1]
       t.string :condition
       t.string :image_url
       t.string :location, null: false
+      t.string :custom_category
 
       t.string :listing_type, null: false
       t.decimal :price
