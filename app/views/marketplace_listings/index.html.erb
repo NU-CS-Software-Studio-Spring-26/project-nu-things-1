@@ -53,7 +53,7 @@
             <p class="card-text text-muted small mb-2"><%= truncate(item.description, length: 80) %></p>
 
             <div class="mb-2">
-              <span class="badge text-bg-success"><%= item.category %></span>
+              <span class="badge text-bg-success"><%= item.category_label %></span>
               <% if item.condition.present? %>
                 <span class="badge text-bg-light border"><%= item.condition %></span>
               <% end %>
@@ -61,7 +61,7 @@
 
             <div class="mb-3">
               <% if item.listing_type == "for_sale" %>
-                <p class="h5 text-success mb-1">${{ number_with_precision(item.price, precision: 2) }}</p>
+                <p class="h5 text-success mb-1">$<%= number_with_precision(item.price, precision: 2) %></p>
               <% else %>
                 <p class="h6 text-purple mb-1">Looking to buy</p>
               <% end %>

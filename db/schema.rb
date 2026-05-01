@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_01_213100) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_01_214530) do
   create_table "found_items", force: :cascade do |t|
     t.string "brand"
     t.string "category", null: false
@@ -52,6 +52,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_01_213100) do
     t.string "contact_name"
     t.string "contact_phone"
     t.datetime "created_at", null: false
+    t.string "custom_category"
     t.text "description"
     t.string "image_url"
     t.string "listing_type"
