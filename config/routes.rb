@@ -3,7 +3,16 @@ Rails.application.routes.draw do
 
   resources :lost_items
   resources :found_items
-  resources :rental_items
+  resources :rental_items do
+    resources :bookings, only: [ :create ] do
+      member do
+        patch :cancel
+      end
+      collection do
+        get :calendar_data
+      end
+    end
+  end
   resources :marketplace_listings
 
   post "contacts/create_lost_item_contact", to: "contacts#create_lost_item_contact", as: :create_lost_item_contact

@@ -1,4 +1,6 @@
 class RentalItem < ApplicationRecord
+  has_many :bookings, dependent: :destroy
+
   CATEGORIES = %w[ Camping\ Gear Electronics Tools Books Furniture Sports\ Equipment Other ].freeze
   CONDITIONS = %w[ Like\ New Good Fair ].freeze
   RENTAL_PERIODS = %w[ per_day per_week per_month ].freeze

@@ -2,19 +2,19 @@
 
 <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4">
   <div>
-    <h1 class="h2 mb-1 text-success">Rental Marketplace</h1>
+    <h1 class="h2 mb-1 text-primary">Rental Marketplace</h1>
     <p class="text-muted mb-0">Browse items available for rent or post something you'd like to share.</p>
   </div>
-  <%= link_to "Post item for rent", new_rental_item_path, class: "btn btn-success" %>
+  <%= link_to "Post item for rent", new_rental_item_path, class: "btn btn-primary" %>
 </div>
 
 <div class="card nu-card mb-4">
   <div class="card-body">
-    <h6 class="card-title text-success mb-3">Filter by category</h6>
+    <h6 class="card-title text-primary mb-3">Filter by category</h6>
     <div class="d-flex flex-wrap gap-2">
-      <%= link_to "All categories", rental_items_path, class: "btn btn-sm #{params[:category].blank? ? 'btn-success' : 'btn-outline-success'}" %>
+      <%= link_to "All categories", rental_items_path, class: "btn btn-sm #{params[:category].blank? ? 'btn-primary' : 'btn-outline-primary'}" %>
       <% @categories.each do |category| %>
-        <%= link_to category, rental_items_path(category: category), class: "btn btn-sm #{params[:category] == category ? 'btn-success' : 'btn-outline-success'}" %>
+        <%= link_to category, rental_items_path(category: category), class: "btn btn-sm #{params[:category] == category ? 'btn-primary' : 'btn-outline-primary'}" %>
       <% end %>
     </div>
   </div>
@@ -37,17 +37,17 @@
             <p class="card-text text-muted small mb-2"><%= truncate(item.description, length: 80) %></p>
 
             <div class="mb-2">
-              <span class="badge text-bg-success"><%= item.category %></span>
+              <span class="badge text-bg-primary"><%= item.category %></span>
               <span class="badge text-bg-light border"><%= item.condition %></span>
             </div>
 
             <div class="mb-3">
-              <p class="h5 text-success mb-1">${{ number_with_precision(item.rental_price, precision: 2) }}<span class="text-muted fs-6">/<%= item.rental_period.gsub("per_", "") %></span></p>
+              <p class="h5 text-primary mb-1"><%= number_with_precision(item.rental_price, precision: 2) %><span class="text-muted fs-6">/<%= item.rental_period.gsub("per_", "") %></span></p>
               <p class="text-muted small mb-0"><%= item.location %></p>
             </div>
 
             <div class="d-grid gap-2">
-              <%= link_to "View details", item, class: "btn btn-sm btn-success" %>
+              <%= link_to "View details", item, class: "btn btn-sm btn-primary" %>
             </div>
           </div>
         </div>
