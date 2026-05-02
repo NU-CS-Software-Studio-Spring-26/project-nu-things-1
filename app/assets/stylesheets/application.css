@@ -51,6 +51,54 @@
   color: var(--nu-purple) !important;
 }
 
+/* Override Bootstrap button colors to be purple */
+.btn-primary {
+  background-color: var(--nu-purple) !important;
+  border-color: var(--nu-purple) !important;
+  color: #fff !important;
+}
+
+.btn-primary:hover {
+  background-color: var(--nu-purple-dark) !important;
+  border-color: var(--nu-purple-dark) !important;
+}
+
+.btn-primary:focus,
+.btn-primary.focus {
+  background-color: var(--nu-purple-dark) !important;
+  border-color: var(--nu-purple-dark) !important;
+  box-shadow: 0 0 0 0.25rem rgba(75, 46, 131, 0.5) !important;
+}
+
+.btn-success {
+  background-color: var(--nu-purple) !important;
+  border-color: var(--nu-purple) !important;
+  color: #fff !important;
+}
+
+.btn-success:hover {
+  background-color: var(--nu-purple-dark) !important;
+  border-color: var(--nu-purple-dark) !important;
+}
+
+.btn-success:focus,
+.btn-success.focus {
+  background-color: var(--nu-purple-dark) !important;
+  border-color: var(--nu-purple-dark) !important;
+  box-shadow: 0 0 0 0.25rem rgba(75, 46, 131, 0.5) !important;
+}
+
+.btn-outline-primary {
+  color: var(--nu-purple) !important;
+  border-color: var(--nu-purple) !important;
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--nu-purple) !important;
+  border-color: var(--nu-purple) !important;
+  color: #fff !important;
+}
+
 .nu-card {
   border: none;
   border-radius: 1rem;
@@ -146,6 +194,19 @@
   background: #f6f1ff;
   border-color: var(--nu-purple-dark);
   color: var(--nu-purple-dark);
+}
+
+.nu-rentals {
+  background: var(--nu-purple);
+  border-color: var(--nu-purple);
+  color: #fff;
+}
+
+.nu-rentals:hover,
+.nu-rentals:focus {
+  background: var(--nu-purple-dark);
+  border-color: var(--nu-purple-dark);
+  color: #fff;
 }
 
 .nu-btn-primary {
