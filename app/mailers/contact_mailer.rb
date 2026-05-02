@@ -27,4 +27,13 @@ class ContactMailer < ApplicationMailer
 
     mail(to: @rental_item.owner_email, subject: "Rental inquiry for: #{@rental_item.title}")
   end
+
+  def marketplace_listing_contact(marketplace_listing, sender_name, sender_email, message)
+    @marketplace_listing = marketplace_listing
+    @sender_name = sender_name
+    @sender_email = sender_email
+    @message = message
+
+    mail(to: @marketplace_listing.contact_email, subject: "Marketplace message about: #{@marketplace_listing.title}")
+  end
 end

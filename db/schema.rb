@@ -10,19 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_01_182225) do
-  create_table "bookings", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.date "end_date", null: false
-    t.text "notes"
-    t.integer "rental_item_id", null: false
-    t.date "start_date", null: false
-    t.string "status", default: "pending", null: false
-    t.datetime "updated_at", null: false
-    t.index ["rental_item_id", "start_date", "end_date"], name: "index_bookings_on_rental_item_id_and_start_date_and_end_date"
-    t.index ["rental_item_id"], name: "index_bookings_on_rental_item_id"
-  end
-
+ActiveRecord::Schema[8.1].define(version: 2026_05_01_213100) do
   create_table "found_items", force: :cascade do |t|
     t.string "brand"
     t.string "category", null: false
@@ -57,6 +45,24 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_01_182225) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "marketplace_listings", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "description", null: false
+    t.string "category", null: false
+    t.string "condition"
+    t.string "image_url"
+    t.string "location", null: false
+    t.string "custom_category"
+    t.string "listing_type", null: false
+    t.decimal "price"
+    t.string "contact_name", null: false
+    t.string "contact_email", null: false
+    t.string "contact_phone"
+    t.string "status", default: "active", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "rental_items", force: :cascade do |t|
     t.date "available_from"
     t.date "available_to"
@@ -76,6 +82,4 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_01_182225) do
     t.string "title"
     t.datetime "updated_at", null: false
   end
-
-  add_foreign_key "bookings", "rental_items"
 end

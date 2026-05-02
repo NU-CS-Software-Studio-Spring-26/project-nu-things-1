@@ -1,0 +1,33 @@
+# Minimal valid records for controller and model tests.
+for_sale_one:
+  title: "Camping Tent"
+  description: "Lightly used 2-person tent, great condition."
+  category: "Camping Gear"
+  location: "Evanston"
+  listing_type: "for_sale"
+  price: 45.00
+  contact_name: "Test Seller"
+  contact_email: "seller@u.northwestern.edu"
+  status: active
+
+wanted_one:
+  title: "Calculus Textbook"
+  description: "Looking for Calculus: Early Transcendentals 8th edition."
+  category: "Books"
+  location: "Main Library"
+  listing_type: "wanted"
+  contact_name: "Test Buyer"
+  contact_email: "buyer@u.northwestern.edu"
+  status: active
+
+other_category:
+  title: "Vintage lamp"
+  description: "A vintage floor lamp in working condition."
+  category: "Other"
+  custom_category: "Lighting"
+  location: "Evanston"
+  listing_type: "for_sale"
+  price: 25.00
+  contact_name: "Test Seller Two"
+  contact_email: "seller2@u.northwestern.edu"
+  status: active

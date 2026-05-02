@@ -1,0 +1,31 @@
+<h2>New message about your marketplace listing</h2>
+
+<p>Hi <%= @marketplace_listing.contact_name %>,</p>
+
+<p>Someone reached out regarding your marketplace listing.</p>
+
+<h3><strong><%= @marketplace_listing.title %></strong></h3>
+
+<% if @marketplace_listing.listing_type == "for_sale" && @marketplace_listing.price.present? %>
+  <p><strong>Price:</strong> $<%= number_with_precision(@marketplace_listing.price, precision: 2) %></p>
+<% else %>
+  <p><strong>Type:</strong> Wanted</p>
+<% end %>
+
+<hr>
+
+<p><strong>Sender's Name:</strong> <%= @sender_name %></p>
+<p><strong>Sender's Email:</strong> <%= @sender_email %></p>
+
+<h3>Message:</h3>
+<p><%= simple_format(@message) %></p>
+
+<hr>
+
+<p>You can reply directly to <strong><%= @sender_email %></strong> to continue the conversation.</p>
+
+<p>---<br>
+Northwestern Lost and Found Board<br>
+<%= link_to "View this listing", marketplace_listing_url(@marketplace_listing) %>
+</p>
+
