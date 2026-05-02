@@ -4,7 +4,7 @@ class BookingMailer < ApplicationMailer
   def confirmation_email(booking)
     @booking = booking
     @rental_item = booking.rental_item
-    
+
     mail(
       to: @rental_item.owner_email,
       subject: "New booking request for #{@rental_item.title}"

@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   resources :lost_items
   resources :found_items
   resources :rental_items do
-    resources :bookings, only: [:create] do
+    resources :bookings, only: [ :create ] do
       member do
         patch :cancel
       end

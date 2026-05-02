@@ -1,10 +1,10 @@
 class BookingsController < ApplicationController
   before_action :set_rental_item
-  before_action :set_booking, only: [:show, :cancel]
+  before_action :set_booking, only: [ :show, :cancel ]
 
   def create
     @booking = @rental_item.bookings.build(booking_params)
-    
+
     if @booking.save
       BookingMailer.confirmation_email(@booking).deliver_later
       redirect_to @rental_item, notice: "Booking request created successfully!"
@@ -33,7 +33,7 @@ class BookingsController < ApplicationController
         display: "background"
       }
     end
-    
+
     render json: events
   end
 

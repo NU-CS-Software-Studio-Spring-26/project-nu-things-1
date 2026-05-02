@@ -1,7 +1,7 @@
 class Booking < ApplicationRecord
   belongs_to :rental_item
 
-  STATUSES = ["pending", "confirmed", "cancelled"].freeze
+  STATUSES = [ "pending", "confirmed", "cancelled" ].freeze
 
   validates :start_date, :end_date, presence: true
   validates :status, inclusion: { in: STATUSES }
@@ -18,7 +18,7 @@ class Booking < ApplicationRecord
 
   def end_date_after_start_date
     return if end_date.blank? || start_date.blank?
-    
+
     if end_date < start_date
       errors.add(:end_date, "must be after start date")
     end
@@ -31,7 +31,7 @@ class Booking < ApplicationRecord
       .where(rental_item_id: rental_item_id)
       .where("(start_date, end_date) OVERLAPS (?, ?)", start_date, end_date)
       .where.not(id: id)
-    
+
     if overlapping.any?
       errors.add(:base, "These dates overlap with an existing booking")
     end
