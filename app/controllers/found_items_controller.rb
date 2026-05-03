@@ -1,5 +1,6 @@
 class FoundItemsController < ApplicationController
-  before_action :set_found_item, only: %i[show edit update destroy]
+  before_action :require_login, only: %i[new create claim]
+  before_action :set_found_item, only: %i[show edit update destroy claim]
 
   def index
     @found_items = FoundItem.order(date_found: :desc, created_at: :desc)
@@ -25,6 +26,16 @@ class FoundItemsController < ApplicationController
     else
       render :new, status: :unprocessable_entity
     end
+  end
+
+  def claim
+    if @found_item.status != "unclaimed"
+      redirect_to @found_item, alert: "This item is not available to claim."
+      return
+    end
+
+    @found_item.update!(status: "claimed", claimed_by_user_id: current_user.id)
+    redirect_to @found_item, notice: "You marked this item as claimed."
   end
 
   def update

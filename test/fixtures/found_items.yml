@@ -21,6 +21,7 @@ two:
   contact_name: "Finder Two"
   contact_email: "found_two@example.com"
   status: claimed
+  claimed_by_user: nu_student
   image_url:
   storage_location: "Main Library desk"
   color:

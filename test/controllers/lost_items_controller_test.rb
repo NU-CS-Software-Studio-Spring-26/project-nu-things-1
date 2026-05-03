@@ -10,12 +10,26 @@ class LostItemsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should get new" do
+  test "should redirect new when not signed in" do
+    get new_lost_item_url
+    assert_redirected_to new_session_url
+  end
+
+  test "should get new when signed in" do
+    sign_in_as(users(:nu_student))
     get new_lost_item_url
     assert_response :success
   end
 
-  test "should create lost_item" do
+  test "should redirect create when not signed in" do
+    assert_no_difference("LostItem.count") do
+      post lost_items_url, params: { lost_item: { brand: @lost_item.brand, category: @lost_item.category, color: @lost_item.color, contact_email: @lost_item.contact_email, contact_name: @lost_item.contact_name, date_lost: @lost_item.date_lost, description: @lost_item.description, image_url: @lost_item.image_url, location_lost: @lost_item.location_lost, reward: @lost_item.reward, status: @lost_item.status, title: "Unauthorized create" } }
+    end
+    assert_redirected_to new_session_url
+  end
+
+  test "should create lost_item when signed in" do
+    sign_in_as(users(:nu_student))
     assert_difference("LostItem.count") do
       post lost_items_url, params: { lost_item: { brand: @lost_item.brand, category: @lost_item.category, color: @lost_item.color, contact_email: @lost_item.contact_email, contact_name: @lost_item.contact_name, date_lost: @lost_item.date_lost, description: @lost_item.description, image_url: @lost_item.image_url, location_lost: @lost_item.location_lost, reward: @lost_item.reward, status: @lost_item.status, title: @lost_item.title } }
     end

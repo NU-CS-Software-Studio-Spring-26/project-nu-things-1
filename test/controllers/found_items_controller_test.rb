@@ -10,12 +10,26 @@ class FoundItemsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should get new" do
+  test "should redirect new when not signed in" do
+    get new_found_item_url
+    assert_redirected_to new_session_url
+  end
+
+  test "should get new when signed in" do
+    sign_in_as(users(:nu_student))
     get new_found_item_url
     assert_response :success
   end
 
-  test "should create found_item" do
+  test "should redirect create when not signed in" do
+    assert_no_difference("FoundItem.count") do
+      post found_items_url, params: { found_item: { brand: @found_item.brand, category: @found_item.category, color: @found_item.color, contact_email: @found_item.contact_email, contact_name: @found_item.contact_name, date_found: @found_item.date_found, description: @found_item.description, image_url: @found_item.image_url, location_found: @found_item.location_found, status: @found_item.status, storage_location: @found_item.storage_location, title: "Unauthorized" } }
+    end
+    assert_redirected_to new_session_url
+  end
+
+  test "should create found_item when signed in" do
+    sign_in_as(users(:nu_student))
     assert_difference("FoundItem.count") do
       post found_items_url, params: { found_item: { brand: @found_item.brand, category: @found_item.category, color: @found_item.color, contact_email: @found_item.contact_email, contact_name: @found_item.contact_name, date_found: @found_item.date_found, description: @found_item.description, image_url: @found_item.image_url, location_found: @found_item.location_found, status: @found_item.status, storage_location: @found_item.storage_location, title: @found_item.title } }
     end
@@ -44,5 +58,32 @@ class FoundItemsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to found_items_url
+  end
+
+  test "should redirect claim when not signed in" do
+    post claim_found_item_url(@found_item)
+    assert_redirected_to new_session_url
+  end
+
+  test "should claim found_item when signed in" do
+    sign_in_as(users(:nu_student))
+    assert_equal "unclaimed", @found_item.status
+
+    post claim_found_item_url(@found_item)
+
+    assert_redirected_to found_item_url(@found_item)
+    @found_item.reload
+    assert_equal "claimed", @found_item.status
+    assert_equal users(:nu_student).id, @found_item.claimed_by_user_id
+  end
+
+  test "should not claim already claimed item" do
+    item = found_items(:two)
+    sign_in_as(users(:nu_student))
+
+    post claim_found_item_url(item)
+
+    assert_redirected_to found_item_url(item)
+    assert_match(/not available/i, flash[:alert].to_s)
   end
 end

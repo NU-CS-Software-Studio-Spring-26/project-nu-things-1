@@ -35,6 +35,12 @@
           <div class="d-flex flex-column flex-sm-row nu-cta-group gap-2">
             <%= link_to "Report Lost Item", new_lost_item_path, class: "btn btn-outline-light btn-sm nu-pill-btn" %>
             <%= link_to "Report Found Item", new_found_item_path, class: "btn btn-light btn-sm text-purple nu-pill-btn" %>
+            <% if signed_in? %>
+              <%= button_to "Sign out", session_path, method: :delete, class: "btn btn-outline-light btn-sm nu-pill-btn", form: { class: "d-inline" } %>
+            <% else %>
+              <%= link_to "Sign up", new_registration_path, class: "btn btn-outline-light btn-sm nu-pill-btn" %>
+              <%= link_to "Sign in", new_session_path, class: "btn btn-outline-light btn-sm nu-pill-btn" %>
+            <% end %>
           </div>
         </div>
       </div>
