@@ -2,8 +2,12 @@
 # Run: bin/rails db:seed
 
 # SQLite (and Postgres) enforce FKs: remove rows that reference users before users.
-ApplicationRecord.connection.execute("DELETE FROM claims")
-ApplicationRecord.connection.execute("DELETE FROM login_tokens")
+# Skip tables that are not migrated yet (e.g. older Heroku DBs).
+conn = ApplicationRecord.connection
+%w[claims login_tokens].each do |table|
+  next unless conn.table_exists?(table)
+  conn.execute("DELETE FROM #{conn.quote_table_name(table)}")
+end
 
 LostItem.destroy_all
 FoundItem.destroy_all
@@ -476,7 +480,7 @@ found_seed = [
 
 found_seed.each { |attrs| FoundItem.create!(attrs) }
 
-Booking.destroy_all
+Booking.destroy_all if ApplicationRecord.connection.table_exists?("bookings")
 RentalItem.destroy_all
 
 rental_seed = [
