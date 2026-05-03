@@ -13,8 +13,10 @@
   </div>
   <div class="d-flex flex-wrap gap-2">
     <%= link_to "Back to marketplace", marketplace_listings_path, class: "btn btn-outline-secondary btn-sm" %>
-    <%= link_to "Edit", edit_marketplace_listing_path(@marketplace_listing), class: "btn btn-primary btn-sm" %>
-    <%= button_to "Delete", @marketplace_listing, method: :delete, class: "btn btn-danger btn-sm", form: { data: { turbo_confirm: "Delete this listing?" } } %>
+    <% if admin? %>
+      <%= link_to "Edit", edit_marketplace_listing_path(@marketplace_listing), class: "btn btn-primary btn-sm" %>
+      <%= button_to "Delete", @marketplace_listing, method: :delete, class: "btn btn-danger btn-sm", form: { data: { turbo_confirm: "Delete this listing?" } } %>
+    <% end %>
   </div>
 </div>
 

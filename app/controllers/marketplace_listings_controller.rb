@@ -1,4 +1,5 @@
 class MarketplaceListingsController < ApplicationController
+  before_action :require_admin, only: %i[edit update destroy]
   before_action :set_marketplace_listing, only: %i[show edit update destroy]
 
   def index

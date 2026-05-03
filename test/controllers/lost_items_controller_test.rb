@@ -42,19 +42,59 @@ class LostItemsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should get edit" do
+  test "should redirect edit when not signed in" do
+    get edit_lost_item_url(@lost_item)
+    assert_redirected_to new_session_url
+  end
+
+  test "should redirect edit when signed in but not admin" do
+    sign_in_as(users(:nu_student))
+    get edit_lost_item_url(@lost_item)
+    assert_redirected_to root_url
+    assert_match(/permission/i, flash[:alert].to_s)
+  end
+
+  test "should get edit when admin" do
+    sign_in_as(users(:admin))
     get edit_lost_item_url(@lost_item)
     assert_response :success
   end
 
-  test "should update lost_item" do
+  test "should redirect update when not admin" do
+    sign_in_as(users(:nu_student))
     patch lost_item_url(@lost_item), params: { lost_item: { brand: @lost_item.brand, category: @lost_item.category, color: @lost_item.color, contact_email: @lost_item.contact_email, contact_name: @lost_item.contact_name, date_lost: @lost_item.date_lost, description: @lost_item.description, image_url: @lost_item.image_url, location_lost: @lost_item.location_lost, reward: @lost_item.reward, status: @lost_item.status, title: @lost_item.title } }
-    assert_redirected_to lost_item_url(@lost_item)
+    assert_redirected_to root_url
   end
 
-  test "should destroy lost_item" do
-    assert_difference("LostItem.count", -1) do
+  test "should update lost_item when admin" do
+    sign_in_as(users(:admin))
+    patch lost_item_url(@lost_item), params: { lost_item: { brand: @lost_item.brand, category: @lost_item.category, color: @lost_item.color, contact_email: @lost_item.contact_email, contact_name: @lost_item.contact_name, date_lost: @lost_item.date_lost, description: "Updated by admin.", image_url: @lost_item.image_url, location_lost: @lost_item.location_lost, reward: @lost_item.reward, status: @lost_item.status, title: @lost_item.title } }
+    assert_redirected_to lost_item_url(@lost_item)
+    assert_equal "Updated by admin.", @lost_item.reload.description
+  end
+
+  test "should redirect destroy when not admin" do
+    sign_in_as(users(:nu_student))
+    assert_no_difference("LostItem.count") do
       delete lost_item_url(@lost_item)
+    end
+    assert_redirected_to root_url
+  end
+
+  test "should destroy lost_item when admin" do
+    sign_in_as(users(:admin))
+    item = LostItem.create!(
+      title: "Delete me",
+      description: "Temporary row for destroy test.",
+      category: "Test",
+      location_lost: "Campus",
+      date_lost: Date.current,
+      contact_name: "Admin",
+      contact_email: "admin@u.northwestern.edu",
+      status: "open"
+    )
+    assert_difference("LostItem.count", -1) do
+      delete lost_item_url(item)
     end
 
     assert_redirected_to lost_items_url

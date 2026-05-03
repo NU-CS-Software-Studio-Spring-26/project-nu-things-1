@@ -17,6 +17,11 @@ class User < ApplicationRecord
     value.to_s.strip.downcase.presence
   end
 
+  def admin?
+    ae = Rails.application.config.x.admin_email
+    ae.present? && email == ae
+  end
+
   private
 
   def normalize_email

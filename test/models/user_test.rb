@@ -17,6 +17,11 @@ class UserTest < ActiveSupport::TestCase
     assert user.valid?
   end
 
+  test "admin? is true only for configured admin email" do
+    assert users(:admin).admin?
+    assert_not users(:nu_student).admin?
+  end
+
   test "rejects duplicate email" do
     email = "dup-uniqueness-test@u.northwestern.edu"
     User.create!(email: email, password: "password123", password_confirmation: "password123")

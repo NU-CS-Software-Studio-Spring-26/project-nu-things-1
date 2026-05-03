@@ -1,4 +1,5 @@
 class RentalItemsController < ApplicationController
+  before_action :require_admin, only: %i[edit update destroy]
   before_action :set_rental_item, only: %i[ show edit update destroy ]
 
   def index
