@@ -1,6 +1,10 @@
 # Northwestern-themed sample data for development and demos.
 # Run: bin/rails db:seed
 
+# SQLite (and Postgres) enforce FKs: remove rows that reference users before users.
+ApplicationRecord.connection.execute("DELETE FROM claims")
+ApplicationRecord.connection.execute("DELETE FROM login_tokens")
+
 LostItem.destroy_all
 FoundItem.destroy_all
 User.destroy_all
@@ -131,6 +135,105 @@ lost_seed = [
     image_url: "https://picsum.photos/seed/nu-lost-wallet/600/400",
     color: "Brown",
     brand: nil
+  },
+  {
+    title: "Beats Studio Buds case (empty)",
+    description: "Black oval charging case only; no earbuds. Small crack on hinge.",
+    category: "Electronics",
+    location_lost: "SPAC — women's locker room bench",
+    date_lost: Date.new(2026, 4, 22),
+    contact_name: "Nina Okonkwo",
+    contact_email: "nina.okonkwo@u.northwestern.edu",
+    status: "open",
+    reward: "$15",
+    color: "Black",
+    brand: "Beats"
+  },
+  {
+    title: "Medill lanyard + press pass holder",
+    description: "Black retractable badge reel with Medill sticker; no ID inside.",
+    category: "IDs & cards",
+    location_lost: "Fisk Hall — basement print lab",
+    date_lost: Date.new(2026, 4, 21),
+    contact_name: "Chris Alvarez",
+    contact_email: "chris.alvarez@u.northwestern.edu",
+    status: "open",
+    color: "Black",
+    brand: nil
+  },
+  {
+    title: "Graphing calculator (TI-84 CE)",
+    description: "Color screen model; name on masking tape on battery door.",
+    category: "Electronics",
+    location_lost: "Tech M152 — back row under seat",
+    date_lost: Date.new(2026, 4, 20),
+    contact_name: "Hannah Park",
+    contact_email: "hannah.park@u.northwestern.edu",
+    status: "open",
+    color: "Black",
+    brand: "Texas Instruments"
+  },
+  {
+    title: "Northwestern quarter-zip (purple, size L)",
+    description: "NU bookstore quarter-zip; left on bleachers after intramural game.",
+    category: "Clothing",
+    location_lost: "Henry Crown Sports Pavilion — court 2 bleachers",
+    date_lost: Date.new(2026, 4, 19),
+    contact_name: "Ethan Morales",
+    contact_email: "ethan.morales@u.northwestern.edu",
+    status: "open",
+    image_url: "https://picsum.photos/seed/nu-lost-zip/600/400",
+    color: "Purple",
+    brand: "Nike"
+  },
+  {
+    title: "Violin bow (carbon fiber)",
+    description: "Slim black carbon bow in soft case; forgot after orchestra rehearsal.",
+    category: "Other",
+    location_lost: "Pick-Staiger Concert Hall — practice room hallway",
+    date_lost: Date.new(2026, 4, 7),
+    contact_name: "Sophie Lin",
+    contact_email: "sophie.lin@u.northwestern.edu",
+    status: "open",
+    reward: "Dinner at Fran's",
+    color: "Black",
+    brand: "CodaBow"
+  },
+  {
+    title: "Surface Pen (Microsoft)",
+    description: "Slim silver pen; tip slightly worn; pairs with Surface Pro.",
+    category: "Electronics",
+    location_lost: "Annenberg Hall — seminar table by windows",
+    date_lost: Date.new(2026, 4, 6),
+    contact_name: "Imani Washington",
+    contact_email: "imani.washington@u.northwestern.edu",
+    status: "resolved",
+    color: "Silver",
+    brand: "Microsoft"
+  },
+  {
+    title: "Red North Face beanie",
+    description: "Knit beanie with small pom; name tag sewn inside (faded).",
+    category: "Clothing",
+    location_lost: "Lakefill — stone bench near sailing center",
+    date_lost: Date.new(2026, 4, 5),
+    contact_name: "Lucas Meyer",
+    contact_email: "lucas.meyer@u.northwestern.edu",
+    status: "open",
+    color: "Red",
+    brand: "The North Face"
+  },
+  {
+    title: "Bike U-lock (Kryptonite) with key",
+    description: "Mini U-lock; single key on small carabiner; scratched paint from rack.",
+    category: "Other",
+    location_lost: "Garage bike cage — Sheridan side",
+    date_lost: Date.new(2026, 4, 4),
+    contact_name: "Zoe Nakamura",
+    contact_email: "zoe.nakamura@u.northwestern.edu",
+    status: "open",
+    color: "Black",
+    brand: "Kryptonite"
   }
 ]
 
@@ -263,11 +366,117 @@ found_seed = [
     image_url: "https://picsum.photos/seed/nu-found-wallet/600/400",
     color: "Gray",
     brand: nil
+  },
+  {
+    title: "Northwestern knit scarf (purple and white stripes)",
+    description: "Hand-knit style scarf; no tags; slight grass stain on one end.",
+    category: "Clothing",
+    location_found: "Ryan Field — section 112 aisle after spring game",
+    date_found: Date.new(2026, 4, 22),
+    contact_name: "Pat O'Neill",
+    contact_email: "pat.oneill@u.northwestern.edu",
+    status: "unclaimed",
+    storage_location: "Athletics guest services cage",
+    image_url: "https://picsum.photos/seed/nu-found-scarf/600/400",
+    color: "Purple",
+    brand: nil
+  },
+  {
+    title: "iPad mini in folio case",
+    description: "Space gray iPad mini in navy folio; passcode locked — will hold for owner verification.",
+    category: "Electronics",
+    location_found: "University Hall — lecture hall 101, front row",
+    date_found: Date.new(2026, 4, 21),
+    contact_name: "Prof. desk (turned in by student)",
+    contact_email: "lostfound@northwestern.edu",
+    status: "unclaimed",
+    storage_location: "University Hall department office",
+    color: "Space gray",
+    brand: "Apple"
+  },
+  {
+    title: "Clarinet in black hard case",
+    description: "Yamaha student model; case has Bienen practice room sticker.",
+    category: "Other",
+    location_found: "Regenstein Hall — basement locker corridor",
+    date_found: Date.new(2026, 4, 20),
+    contact_name: "Facilities night staff",
+    contact_email: "music.facilities@northwestern.edu",
+    status: "unclaimed",
+    storage_location: "Regenstein main office locked closet",
+    color: "Black",
+    brand: "Yamaha"
+  },
+  {
+    title: "Prescription glasses (round frames)",
+    description: "Thin gold wire frames; lenses in case; found in restroom.",
+    category: "Other",
+    location_found: "Norris — second floor restroom counter",
+    date_found: Date.new(2026, 4, 9),
+    contact_name: "Norris building manager",
+    contact_email: "norris.info@northwestern.edu",
+    status: "unclaimed",
+    storage_location: "Norris information desk",
+    color: "Gold",
+    brand: nil
+  },
+  {
+    title: "Wildcat foam finger",
+    description: "Purple #1 foam finger; minor tear at seam.",
+    category: "Other",
+    location_found: "Welsh-Ryan Arena — concourse under seat",
+    date_found: Date.new(2026, 4, 8),
+    contact_name: "Event staff",
+    contact_email: "nusports.facilities@northwestern.edu",
+    status: "claimed",
+    storage_location: "Arena operations office",
+    color: "Purple",
+    brand: nil
+  },
+  {
+    title: "Stanley tumbler (40oz, cream)",
+    description: "Handle intact; sticker that says 'Go 'Cats' on side.",
+    category: "Drinkware",
+    location_found: "The Arch — picnic tables south side",
+    date_found: Date.new(2026, 4, 7),
+    contact_name: "Tour guide staff",
+    contact_email: "admissions.visit@northwestern.edu",
+    status: "unclaimed",
+    color: "Cream",
+    brand: "Stanley"
+  },
+  {
+    title: "Mechanical keyboard (75%, white)",
+    description: "Gasket-mount board; white keycaps; USB-C coiled cable attached.",
+    category: "Electronics",
+    location_found: "Mudd Library — basement computer lab desk 14",
+    date_found: Date.new(2026, 4, 6),
+    contact_name: "Library circulation",
+    contact_email: "library-help@northwestern.edu",
+    status: "unclaimed",
+    storage_location: "Mudd circulation lost shelf",
+    image_url: "https://picsum.photos/seed/nu-found-kb/600/400",
+    color: "White",
+    brand: "Keychron"
+  },
+  {
+    title: "Dorm desk lamp (gooseneck LED)",
+    description: "Black base; USB port on base; works — left after move-out weekend.",
+    category: "Other",
+    location_found: "1835 Hinman — move-out donation pile (sorted to lost & found)",
+    date_found: Date.new(2026, 4, 5),
+    contact_name: "Residential Services",
+    contact_email: "residential@northwestern.edu",
+    status: "unclaimed",
+    storage_location: "1835 Hinman service desk",
+    color: "Black",
+    brand: "IKEA"
   }
 ]
 
 found_seed.each { |attrs| FoundItem.create!(attrs) }
 
+Booking.destroy_all
 RentalItem.destroy_all
 
 rental_seed = [
@@ -405,4 +614,165 @@ rental_seed = [
 
 rental_seed.each { |attrs| RentalItem.create!(attrs) }
 
-puts "Seeded #{LostItem.count} lost items, #{FoundItem.count} found items, and #{RentalItem.count} rental items."
+MarketplaceListing.destroy_all
+
+marketplace_seed = [
+  {
+    title: "M2 MacBook Air (13\", 512GB) — lightly used",
+    description: "2023 model, space gray. Battery cycle count ~120. No dents; screen is flawless. Includes original box and charger. Selling because I upgraded to a pro machine for thesis work.",
+    category: "Electronics",
+    listing_type: "for_sale",
+    price: 849.00,
+    condition: "Like New",
+    location: "Evanston — pickup near Foster-Walker",
+    contact_name: "Kevin Zhao",
+    contact_email: "kevin.zhao@u.northwestern.edu",
+    contact_phone: "(847) 555-0142",
+    image_url: "https://picsum.photos/seed/nu-mba/600/400",
+    status: "active"
+  },
+  {
+    title: "Sony WH-1000XM5 headphones",
+    description: "Black over-ear noise canceling. Purchased fall 2025; still under warranty card included. Comes with case and cable.",
+    category: "Electronics",
+    listing_type: "for_sale",
+    price: 265.00,
+    condition: "Like New",
+    location: "Tech — can meet at main lobby",
+    contact_name: "Amelia Rossi",
+    contact_email: "amelia.rossi@u.northwestern.edu",
+    contact_phone: "(312) 555-0198",
+    image_url: "https://picsum.photos/seed/nu-sony/600/400",
+    status: "active"
+  },
+  {
+    title: "Wanted: Econ 310 intermediate micro reader (current edition)",
+    description: "Missed the bookstore bundle deadline. Looking for a clean used copy or PDF access code transfer if allowed. Will pay cash or Venmo.",
+    category: "Books",
+    listing_type: "wanted",
+    condition: "Good",
+    location: "Campus — flexible meetup",
+    contact_name: "Marcus Bell",
+    contact_email: "marcus.bell@u.northwestern.edu",
+    status: "active"
+  },
+  {
+    title: "Ikea MALM desk + Alex drawer unit",
+    description: "White 47\" desk with Alex 5-drawer on one side. Minor scuffs on top from monitor arm. Disassembled partially for easier move; all hardware bagged and labeled.",
+    category: "Furniture",
+    listing_type: "for_sale",
+    price: 120.00,
+    condition: "Good",
+    location: "Off-campus house on Orrington — ground floor",
+    contact_name: "Tessa Nguyen",
+    contact_email: "tessa.nguyen@u.northwestern.edu",
+    contact_phone: "(847) 555-0221",
+    image_url: "https://picsum.photos/seed/nu-desk/600/400",
+    status: "active"
+  },
+  {
+    title: "Bauer Vapor hockey skates (senior 9.5)",
+    description: "Heat-molded once; sharpened regularly. Upgraded skates so letting these go. Some puck marks on toes but steel and holders are solid.",
+    category: "Sports Equipment",
+    listing_type: "for_sale",
+    price: 175.00,
+    condition: "Good",
+    location: "Henry Crown — locker room meetup after 6pm weekdays",
+    contact_name: "Jake O'Connor",
+    contact_email: "jake.oconnor@u.northwestern.edu",
+    status: "active"
+  },
+  {
+    title: "DeWalt 20V combo (impact + drill) with bag",
+    description: "Two tools, two batteries, charger. Used for one apartment move and a few IKEA builds. Great for off-campus repairs.",
+    category: "Tools",
+    listing_type: "for_sale",
+    price: 195.00,
+    condition: "Good",
+    location: "Downtown Evanston — alley pickup with loading zone",
+    contact_name: "Olivia Hart",
+    contact_email: "olivia.hart@u.northwestern.edu",
+    contact_phone: "(224) 555-0167",
+    image_url: "https://picsum.photos/seed/nu-dewalt/600/400",
+    status: "active"
+  },
+  {
+    title: "REI Magma 15 sleeping bag (regular)",
+    description: "Down bag rated 15°F; stored uncompressed in cotton sack. Used on two BWCA trips. No odors; always liner used.",
+    category: "Camping Gear",
+    listing_type: "for_sale",
+    price: 310.00,
+    condition: "Like New",
+    location: "Norris circle — can bring to library if easier",
+    contact_name: "Ben Carter",
+    contact_email: "ben.carter@u.northwestern.edu",
+    status: "active"
+  },
+  {
+    title: "Wanted: TI-84 Plus CE (any color)",
+    description: "Need for Chem lab data logging this quarter. Not picky on color; just need working USB port and good battery door.",
+    category: "Electronics",
+    listing_type: "wanted",
+    location: "Tech quad — text to coordinate",
+    contact_name: "Yasmin Farah",
+    contact_email: "yasmin.farah@u.northwestern.edu",
+    contact_phone: "(773) 555-0133",
+    status: "active"
+  },
+  {
+    title: "Yamaha YFL-222 flute (student model)",
+    description: "Serviced last year at Evanston shop; pads seal well. Case, cleaning rod, and swab included. Selling after switching to clarinet for ensemble needs.",
+    category: "Other",
+    custom_category: "Musical instruments",
+    listing_type: "for_sale",
+    price: 425.00,
+    condition: "Good",
+    location: "Pick-Staiger — meet after rehearsal blocks",
+    contact_name: "Elena Volkov",
+    contact_email: "elena.volkov@u.northwestern.edu",
+    status: "active"
+  },
+  {
+    title: "Mini fridge (3.1 cu ft, Energy Star)",
+    description: "Black compact fridge with small freezer shelf. Quiet; RA-approved sticker from prior year still on back. Defrosted and wiped down.",
+    category: "Other",
+    custom_category: "Appliances",
+    listing_type: "for_sale",
+    price: 85.00,
+    condition: "Fair",
+    location: "1835 Hinman — elevator loading",
+    contact_name: "Diego Ramirez",
+    contact_email: "diego.ramirez@u.northwestern.edu",
+    contact_phone: "(847) 555-0204",
+    image_url: "https://picsum.photos/seed/nu-fridge/600/400",
+    status: "active"
+  },
+  {
+    title: "Set of 6 McCormick FE / DTC course readers (bundle)",
+    description: "From sophomore design sequence; spiral-bound readers with minimal highlighting. Selling as a set only.",
+    category: "Books",
+    listing_type: "for_sale",
+    price: 45.00,
+    condition: "Fair",
+    location: "Tech B wing atrium",
+    contact_name: "Priya Nair",
+    contact_email: "priya.nair@u.northwestern.edu",
+    status: "completed"
+  },
+  {
+    title: "Older listing — Herman Miller chair (sold elsewhere)",
+    description: "Placeholder inactive listing for testing filters.",
+    category: "Furniture",
+    listing_type: "for_sale",
+    price: 1.00,
+    condition: "Good",
+    location: "N/A",
+    contact_name: "Seed Data",
+    contact_email: "seed@u.northwestern.edu",
+    status: "inactive"
+  }
+]
+
+marketplace_seed.each { |attrs| MarketplaceListing.create!(attrs) }
+
+puts "Seeded #{LostItem.count} lost items, #{FoundItem.count} found items, #{RentalItem.count} rental items, and #{MarketplaceListing.count} marketplace listings."
