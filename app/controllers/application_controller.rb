@@ -5,9 +5,24 @@ class ApplicationController < ActionController::Base
   # Changes to the importmap will invalidate the etag for HTML responses
   stale_when_importmap_changes
 
-  helper_method :current_user, :signed_in?
+  helper_method :current_user, :signed_in?, :admin?
 
   private
+
+  def admin?
+    current_user&.admin?
+  end
+
+  def require_admin
+    unless signed_in?
+      store_return_to
+      redirect_to new_session_path, alert: "Please sign in with your Northwestern account to continue."
+      return
+    end
+    return if current_user.admin?
+
+    redirect_back fallback_location: root_path, alert: "You don't have permission to do that."
+  end
 
   def current_user
     return @current_user if defined?(@current_user)

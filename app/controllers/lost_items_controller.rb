@@ -1,5 +1,6 @@
 class LostItemsController < ApplicationController
   before_action :require_login, only: %i[new create]
+  before_action :require_admin, only: %i[edit update destroy]
   before_action :set_lost_item, only: %i[show edit update destroy]
 
   def index

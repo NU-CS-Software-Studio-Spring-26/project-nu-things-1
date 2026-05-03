@@ -8,8 +8,10 @@
   </div>
   <div class="d-flex flex-wrap gap-2">
     <%= link_to "Back to rentals", rental_items_path, class: "btn btn-outline-secondary btn-sm" %>
-    <%= link_to "Edit", edit_rental_item_path(@rental_item), class: "btn btn-primary btn-sm" %>
-    <%= button_to "Delete", @rental_item, method: :delete, class: "btn btn-danger btn-sm", form: { data: { turbo_confirm: "Delete this rental item?" } } %>
+    <% if admin? %>
+      <%= link_to "Edit", edit_rental_item_path(@rental_item), class: "btn btn-primary btn-sm" %>
+      <%= button_to "Delete", @rental_item, method: :delete, class: "btn btn-danger btn-sm", form: { data: { turbo_confirm: "Delete this rental item?" } } %>
+    <% end %>
   </div>
 </div>
 

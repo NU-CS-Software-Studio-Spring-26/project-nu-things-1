@@ -1,5 +1,6 @@
 class FoundItemsController < ApplicationController
   before_action :require_login, only: %i[new create claim]
+  before_action :require_admin, only: %i[edit update destroy]
   before_action :set_found_item, only: %i[show edit update destroy claim]
 
   def index
