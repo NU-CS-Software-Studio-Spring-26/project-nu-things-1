@@ -1,5 +1,6 @@
 ENV["RAILS_ENV"] ||= "test"
-ENV["ADMIN_EMAIL"] ||= "admin@u.northwestern.edu"
+# CI often sets ADMIN_EMAIL to blank; ||= does not replace "", which would leave admin unset.
+ENV["ADMIN_EMAIL"] = "admin@u.northwestern.edu" if ENV["ADMIN_EMAIL"].to_s.strip.empty?
 require_relative "../config/environment"
 require "rails/test_help"
 
