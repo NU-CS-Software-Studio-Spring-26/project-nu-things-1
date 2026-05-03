@@ -1,6 +1,8 @@
 class FoundItem < ApplicationRecord
   STATUSES = %w[unclaimed claimed].freeze
 
+  belongs_to :claimed_by_user, class_name: "User", optional: true
+
   validates :title, :description, :category, :location_found, :date_found,
             :contact_name, :contact_email, :status, presence: true
   validates :status, inclusion: { in: STATUSES }

@@ -3,6 +3,7 @@
 
 LostItem.destroy_all
 FoundItem.destroy_all
+User.destroy_all
 
 lost_seed = [
   {

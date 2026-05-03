@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_01_213100) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_02_210002) do
   create_table "bookings", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.date "end_date", null: false
@@ -23,9 +23,22 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_01_213100) do
     t.index ["rental_item_id"], name: "index_bookings_on_rental_item_id"
   end
 
+  create_table "claims", force: :cascade do |t|
+    t.bigint "claimable_id", null: false
+    t.string "claimable_type", null: false
+    t.datetime "created_at", null: false
+    t.string "status", default: "requested", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["claimable_type", "claimable_id"], name: "index_claims_on_claimable_type_and_claimable_id"
+    t.index ["user_id", "claimable_type", "claimable_id"], name: "index_claims_on_user_and_claimable", unique: true
+    t.index ["user_id"], name: "index_claims_on_user_id"
+  end
+
   create_table "found_items", force: :cascade do |t|
     t.string "brand"
     t.string "category", null: false
+    t.integer "claimed_by_user_id"
     t.string "color"
     t.string "contact_email", null: false
     t.string "contact_name", null: false
@@ -38,6 +51,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_01_213100) do
     t.string "storage_location"
     t.string "title", null: false
     t.datetime "updated_at", null: false
+    t.index ["claimed_by_user_id"], name: "index_found_items_on_claimed_by_user_id"
+  end
+
+  create_table "login_tokens", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "expires_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "used_at"
+    t.integer "user_id", null: false
+    t.index ["expires_at"], name: "index_login_tokens_on_expires_at"
+    t.index ["user_id"], name: "index_login_tokens_on_user_id"
   end
 
   create_table "lost_items", force: :cascade do |t|
@@ -95,5 +119,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_01_213100) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "users", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "email", null: false
+    t.string "password_digest", null: false
+    t.datetime "updated_at", null: false
+    t.index "lower(email)", name: "index_users_on_lower_email", unique: true
+  end
+
   add_foreign_key "bookings", "rental_items"
+  add_foreign_key "claims", "users"
+  add_foreign_key "found_items", "users", column: "claimed_by_user_id"
+  add_foreign_key "login_tokens", "users"
 end

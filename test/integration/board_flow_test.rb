@@ -1,6 +1,10 @@
 require "test_helper"
 
 class BoardFlowTest < ActionDispatch::IntegrationTest
+  setup do
+    sign_in_as(users(:nu_student))
+  end
+
   test "home and index pages load" do
     get root_url
     assert_response :success

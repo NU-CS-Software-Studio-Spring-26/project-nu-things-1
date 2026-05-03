@@ -47,12 +47,36 @@
   </div>
 
   <div class="col-lg-5">
+    <% if @found_item.status == "unclaimed" %>
+      <div class="card nu-card mb-3 border-primary border-opacity-25">
+        <div class="card-body">
+          <h2 class="h6 text-muted text-uppercase">Claim</h2>
+          <% if signed_in? %>
+            <p class="small text-muted mb-3">If this is your item, claim it so others know it is resolved.</p>
+            <%= button_to "Claim this item", claim_found_item_path(@found_item), method: :post, class: "btn btn-primary w-100" %>
+          <% else %>
+            <p class="small text-muted mb-3">Sign in with your Northwestern account to claim this item.</p>
+            <%= link_to "Sign in to claim", new_session_path, class: "btn btn-primary w-100" %>
+          <% end %>
+        </div>
+      </div>
+    <% elsif @found_item.claimed_by_user.present? %>
+      <div class="card nu-card mb-3">
+        <div class="card-body">
+          <h2 class="h6 text-muted text-uppercase">Claimed</h2>
+          <p class="mb-0 small text-muted">
+            Recorded for <strong><%= @found_item.claimed_by_user.email %></strong>.
+          </p>
+        </div>
+      </div>
+    <% end %>
+
     <div class="card nu-card mb-3">
       <div class="card-body">
         <h2 class="h6 text-muted text-uppercase">Contact</h2>
         <p class="mb-1"><strong><%= @found_item.contact_name %></strong></p>
         <p class="mb-3"><%= mail_to @found_item.contact_email, @found_item.contact_email, class: "link-primary" %></p>
-        <button class="btn btn-info text-dark w-100" data-bs-toggle="modal" data-bs-target="#contactModal">Send a message</button>
+        <button class="btn btn-info text-dark w-100" type="button" data-bs-toggle="modal" data-bs-target="#contactModal">Send a message</button>
       </div>
     </div>
 
@@ -78,7 +102,7 @@
       <%= form_with url: create_found_item_contact_path, method: :post, local: true, class: "needs-validation" do |f| %>
         <div class="modal-body">
           <%= hidden_field_tag :found_item_id, @found_item.id %>
-          
+
           <div class="mb-3">
             <%= f.label :sender_name, "Your name", class: "form-label" %>
             <%= f.text_field :sender_name, class: "form-control", required: true, placeholder: "Enter your name" %>

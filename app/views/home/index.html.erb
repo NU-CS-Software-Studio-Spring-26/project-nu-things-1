@@ -4,6 +4,11 @@
   <div class="row align-items-center g-4">
     <div class="col-lg-7">
       <h1 class="display-6 fw-bold text-purple mb-3">Northwestern Lost and Found Board</h1>
+      <p class="lead nu-section-lead mb-0">
+        Posting a lost or found report and claiming a found item require a Northwestern
+        <%= link_to "sign-in", new_session_path, class: "link-primary" %> (or
+        <%= link_to "sign up", new_registration_path, class: "link-primary" %> first).
+      </p>
     </div>
     <div class="col-lg-5">
       <div class="card nu-card nu-home-actions">
