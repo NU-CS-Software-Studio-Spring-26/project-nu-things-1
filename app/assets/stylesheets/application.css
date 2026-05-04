@@ -31,6 +31,11 @@
   letter-spacing: 0.02em;
 }
 
+.nu-navbar-greeting {
+  font-weight: 600;
+  opacity: 0.95;
+}
+
 .nu-pill-btn {
   border-radius: 999px;
   font-weight: 600;
@@ -49,6 +54,18 @@
 
 .text-purple {
   color: var(--nu-purple) !important;
+}
+
+.nu-link-purple {
+  color: var(--nu-purple);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.nu-link-purple:hover,
+.nu-link-purple:focus {
+  color: var(--nu-purple-dark);
 }
 
 /* Override Bootstrap button colors to be purple */
@@ -209,6 +226,20 @@
   color: #fff;
 }
 
+/* Marketplace post CTA — outline style (distinct from solid lost/rental) */
+.nu-marketplace-post {
+  background: #fff;
+  border: 1px solid var(--nu-purple);
+  color: var(--nu-purple);
+}
+
+.nu-marketplace-post:hover,
+.nu-marketplace-post:focus {
+  background: #f6f1ff;
+  border-color: var(--nu-purple-dark);
+  color: var(--nu-purple-dark);
+}
+
 .nu-btn-primary {
   background: var(--nu-purple);
   border: 1px solid var(--nu-purple);
@@ -237,6 +268,29 @@
 
 .nu-section-lead {
   color: #5b6472;
+}
+
+.nu-rental-item-form .card-title {
+  color: var(--nu-purple) !important;
+}
+
+/* Category filter: "Other" stays outline (white fill, purple border/text), even when selected */
+.nu-filter-other {
+  background-color: #fff !important;
+  color: var(--nu-purple) !important;
+  border-color: var(--nu-purple) !important;
+}
+
+.nu-filter-other:hover,
+.nu-filter-other:focus {
+  background-color: #f6f1ff !important;
+  color: var(--nu-purple-dark) !important;
+  border-color: var(--nu-purple-dark) !important;
+}
+
+.nu-filter-other--selected {
+  font-weight: 700;
+  border-width: 2px !important;
 }
 
 .nu-list-grid {

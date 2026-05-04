@@ -20,8 +20,8 @@
     <div class="card nu-card mb-4">
       <div class="card-body">
         <h2 class="h6 text-muted text-uppercase mb-3">Photo</h2>
-        <% if @rental_item.image_url.present? %>
-          <%= image_tag @rental_item.image_url, alt: @rental_item.title, class: "nu-item-img d-block mx-auto", style: "max-height: 400px; object-fit: contain;" %>
+        <% if @rental_item.listing_image_available? %>
+          <%= listing_image_tag @rental_item, alt: @rental_item.title, class: "nu-item-img d-block mx-auto", style: "max-height: 400px; object-fit: contain;" %>
         <% else %>
           <div class="bg-light d-flex align-items-center justify-content-center" style="height: 300px;">
             <span class="text-muted">No image provided</span>

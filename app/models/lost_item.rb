@@ -1,4 +1,6 @@
 class LostItem < ApplicationRecord
+  include ListingPhotoAttachment
+
   STATUSES = %w[open resolved].freeze
 
   validates :title, :description, :category, :location_lost, :date_lost,

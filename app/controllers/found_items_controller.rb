@@ -1,12 +1,11 @@
 class FoundItemsController < ApplicationController
-  before_action :require_login, only: %i[new create claim]
   before_action :require_admin, only: %i[edit update destroy]
   before_action :set_found_item, only: %i[show edit update destroy claim]
 
   def index
-    @found_items = FoundItem.order(date_found: :desc, created_at: :desc)
-    @found_items = @found_items.where(category: params[:category]) if params[:category].present?
-    @categories = FoundItem.distinct.pluck(:category).sort + [ "Other" ]
+    @found_items = FoundItem.with_attached_photo.order(date_found: :desc, created_at: :desc)
+    @categories = filter_category_options(FoundItem)
+    @found_items = filter_where_in(@found_items, :category, params[:category], @categories)
   end
 
   def show
@@ -55,11 +54,11 @@ class FoundItemsController < ApplicationController
   private
 
   def set_found_item
-    @found_item = FoundItem.find(params.expect(:id))
+    @found_item = FoundItem.with_attached_photo.find(params.expect(:id))
   end
 
   def found_item_params
     params.expect(found_item: [ :title, :description, :category, :location_found, :date_found,
-                                  :contact_name, :contact_email, :status, :image_url, :storage_location, :color, :brand ])
+                                  :contact_name, :contact_email, :status, :image_url, :photo, :storage_location, :color, :brand ])
   end
 end

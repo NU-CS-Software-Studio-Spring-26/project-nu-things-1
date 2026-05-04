@@ -1,4 +1,4 @@
-<%= form_with model: found_item do |f| %>
+<%= form_with model: found_item, html: { multipart: true } do |f| %>
   <div class="card nu-card nu-form-card">
     <div class="card-body">
       <%= render "shared/errors", object: found_item %>
@@ -40,8 +40,11 @@
           <%= f.label :status, "Status *", class: "form-label" %>
           <%= f.select :status, FoundItem::STATUSES.map { |s| [s.titleize, s] }, {}, class: "form-select" %>
         </div>
+        <div class="col-12">
+          <%= render "application/listing_photo_upload", form: f, record: found_item %>
+        </div>
         <div class="col-md-8">
-          <%= f.label :image_url, "Image URL (optional)", class: "form-label" %>
+          <%= f.label :image_url, "Or image URL (optional)", class: "form-label" %>
           <%= f.text_field :image_url, class: "form-control", placeholder: "https://…" %>
         </div>
 

@@ -1,12 +1,11 @@
 class LostItemsController < ApplicationController
-  before_action :require_login, only: %i[new create]
   before_action :require_admin, only: %i[edit update destroy]
   before_action :set_lost_item, only: %i[show edit update destroy]
 
   def index
-    @lost_items = LostItem.order(date_lost: :desc, created_at: :desc)
-    @lost_items = @lost_items.where(category: params[:category]) if params[:category].present?
-    @categories = LostItem.distinct.pluck(:category).sort + [ "Other" ]
+    @lost_items = LostItem.with_attached_photo.order(date_lost: :desc, created_at: :desc)
+    @categories = filter_category_options(LostItem)
+    @lost_items = filter_where_in(@lost_items, :category, params[:category], @categories)
   end
 
   def show
@@ -45,11 +44,11 @@ class LostItemsController < ApplicationController
   private
 
   def set_lost_item
-    @lost_item = LostItem.find(params.expect(:id))
+    @lost_item = LostItem.with_attached_photo.find(params.expect(:id))
   end
 
   def lost_item_params
     params.expect(lost_item: [ :title, :description, :category, :location_lost, :date_lost,
-                               :contact_name, :contact_email, :status, :image_url, :reward, :color, :brand ])
+                               :contact_name, :contact_email, :status, :image_url, :photo, :reward, :color, :brand ])
   end
 end

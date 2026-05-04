@@ -7,10 +7,20 @@
         <h1 class="h4 text-purple mb-2">Sign in</h1>
         <p class="text-muted mb-4">
           Use your <strong>@u.northwestern.edu</strong> or <strong>@northwestern.edu</strong> email and password.
-          Need an account? <%= link_to "Sign up", new_registration_path, class: "link-primary" %>.
+          Need an account? <%= link_to "Sign up", new_registration_path, class: "nu-link-purple" %>.
         </p>
 
         <%= form_with url: session_path, method: :post do |f| %>
+          <% if @return_to.present? %>
+            <%= hidden_field_tag :return_to, @return_to %>
+          <% end %>
+
+          <div class="mb-3">
+            <%= label_tag :first_name, "First name (optional)", class: "form-label" %>
+            <%= text_field_tag :first_name, params[:first_name], class: "form-control", autocomplete: "given-name", maxlength: 80, placeholder: "How we should greet you" %>
+            <div class="form-text">If you haven’t set this on your account yet, enter it here and we’ll save it when you sign in.</div>
+          </div>
+
           <div class="mb-3">
             <%= label_tag :email, "Email", class: "form-label" %>
             <%= email_field_tag :email, params[:email], class: "form-control", required: true, autocomplete: "username", placeholder: "you@u.northwestern.edu" %>

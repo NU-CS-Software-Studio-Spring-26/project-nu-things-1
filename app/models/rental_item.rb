@@ -1,4 +1,6 @@
 class RentalItem < ApplicationRecord
+  include ListingPhotoAttachment
+
   has_many :bookings, dependent: :destroy
 
   CATEGORIES = %w[ Camping\ Gear Electronics Tools Books Furniture Sports\ Equipment Other ].freeze

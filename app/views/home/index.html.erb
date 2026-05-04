@@ -1,18 +1,19 @@
-<% content_for :title, "Home — Northwestern Lost and Found Board" %>
+<% content_for :title, "Home — NU Things" %>
 
 <div class="nu-hero p-4 p-md-5 mb-4">
   <div class="row align-items-center g-4">
     <div class="col-lg-7">
-      <h1 class="display-6 fw-bold text-purple mb-3">Northwestern Lost and Found Board</h1>
+      <h1 class="display-6 fw-bold text-purple mb-3">NU Things</h1>
       <p class="lead nu-section-lead mb-0">
-        Posting a lost or found report and claiming a found item require a Northwestern
-        <%= link_to "sign-in", new_session_path, class: "link-primary" %> (or
-        <%= link_to "sign up", new_registration_path, class: "link-primary" %> first).
+        Posting listings (lost, found, rentals, or marketplace) and claiming a found item require a Northwestern
+        <%= link_to "sign-in", new_session_path, class: "nu-link-purple" %> (or
+        <%= link_to "sign up", new_registration_path, class: "nu-link-purple" %> first).
       </p>
     </div>
     <div class="col-lg-5">
       <div class="card nu-card nu-home-actions">
         <div class="card-body">
+          <p class="small fw-semibold text-purple text-uppercase mb-2" style="letter-spacing: 0.04em;">Browse</p>
           <div class="row g-2 mb-2">
             <div class="col-6">
               <%= link_to lost_items_path, class: "nu-browse-card nu-browse-lost text-decoration-none" do %>
@@ -42,59 +43,41 @@
               <% end %>
             </div>
           </div>
+          <div class="row g-2 mb-2">
+            <div class="col-6">
+              <%= link_to rental_items_path, class: "nu-browse-card nu-browse-found text-decoration-none" do %>
+                <span class="nu-browse-symbol" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" class="nu-browse-icon" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 10h16v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-9z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                    <path d="M3 10V7a2 2 0 0 1 2-2h2V3h2v2h6V3h2v2h2a2 2 0 0 1 2 2v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M8 14h8M8 17h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                  </svg>
+                </span>
+                <span class="nu-browse-title">Need to rent?</span>
+                <span class="nu-browse-subtitle">Browse gear and tools—or post something to rent out</span>
+              <% end %>
+            </div>
+            <div class="col-6">
+              <%= link_to marketplace_listings_path, class: "nu-browse-card nu-browse-lost text-decoration-none" do %>
+                <span class="nu-browse-symbol" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" class="nu-browse-icon" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6 9h15l-1.2 12H7.2L6 9z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                    <path d="M9 9V7a3 3 0 0 1 6 0v2" stroke="currentColor" stroke-width="2"/>
+                  </svg>
+                </span>
+                <span class="nu-browse-title">Buy or sell?</span>
+                <span class="nu-browse-subtitle">Browse listings for sale or post what you're looking for</span>
+              <% end %>
+            </div>
+          </div>
+          <p class="small fw-semibold text-purple text-uppercase mb-2 mt-1" style="letter-spacing: 0.04em;">Post something</p>
           <div class="d-grid gap-2">
-            <%= link_to "Report lost item", new_lost_item_path, class: "btn nu-pill-btn nu-report-lost" %>
-            <%= link_to "Report found item", new_found_item_path, class: "btn nu-pill-btn nu-report-found" %>
-            <%= link_to "Browse rentals", rental_items_path, class: "btn nu-pill-btn nu-rentals" %>
-            <%= link_to "Browse marketplace", marketplace_listings_path, class: "btn nu-pill-btn nu-rentals" %>
+            <%= link_to_new_listing "Post lost item", new_lost_item_path, class: "btn nu-pill-btn nu-report-lost" %>
+            <%= link_to_new_listing "Post found item", new_found_item_path, class: "btn nu-pill-btn nu-report-found" %>
+            <%= link_to_new_listing "Post rental item", new_rental_item_path, class: "btn nu-pill-btn nu-rentals" %>
+            <%= link_to_new_listing "Post marketplace listing", new_marketplace_listing_path, class: "btn nu-pill-btn nu-marketplace-post" %>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="row g-4 mb-5">
-  <div class="col-md-3">
-    <div class="card nu-card h-100">
-      <div class="card-body">
-        <h2 class="h5 card-title text-purple">Lost something?</h2>
-        <p class="card-text text-muted">Create a lost-item post with where and when you last had it, plus a way for finders to reach you.</p>
-        <%= link_to "Go to Lost Items", lost_items_path, class: "btn btn-sm btn-outline-primary me-2" %>
-        <%= link_to "New report", new_lost_item_path, class: "btn btn-sm btn-primary" %>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-md-3">
-    <div class="card nu-card h-100">
-      <div class="card-body">
-        <h2 class="h5 card-title text-purple">Found something?</h2>
-        <p class="card-text text-muted">List what you picked up and where you turned it in (or where you are holding it) so the owner can follow up.</p>
-        <%= link_to "Go to Found Items", found_items_path, class: "btn btn-sm btn-outline-primary me-2" %>
-        <%= link_to "New report", new_found_item_path, class: "btn btn-sm btn-primary" %>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-md-3">
-    <div class="card nu-card h-100">
-      <div class="card-body">
-        <h2 class="h5 card-title text-purple">Need to rent?</h2>
-        <p class="card-text text-muted">Browse rental items from camping gear to tools or post something you'd like to rent out to earn some cash.</p>
-        <%= link_to "Browse rentals", rental_items_path, class: "btn btn-sm btn-outline-primary me-2" %>
-        <%= link_to "Post item", new_rental_item_path, class: "btn btn-sm btn-primary" %>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-md-3">
-    <div class="card nu-card h-100">
-      <div class="card-body">
-        <h2 class="h5 card-title text-purple">Buy or sell?</h2>
-        <p class="card-text text-muted">Post items for sale or request things you’re looking for. Contact each other to arrange pickup and payment.</p>
-        <%= link_to "Browse marketplace", marketplace_listings_path, class: "btn btn-sm btn-outline-primary me-2" %>
-        <%= link_to "Post listing", new_marketplace_listing_path, class: "btn btn-sm btn-primary" %>
       </div>
     </div>
   </div>

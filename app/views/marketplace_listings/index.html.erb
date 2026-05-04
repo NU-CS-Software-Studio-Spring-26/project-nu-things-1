@@ -5,7 +5,7 @@
     <h1 class="h2 mb-1 text-purple">Marketplace</h1>
     <p class="nu-section-lead mb-0">Browse items for sale or post what you’re looking to buy.</p>
   </div>
-  <%= link_to "Post listing", new_marketplace_listing_path, class: "btn btn-primary nu-pill-btn" %>
+  <%= link_to_new_listing "Post listing", new_marketplace_listing_path, class: "btn btn-primary nu-pill-btn" %>
 </div>
 
 <div class="card nu-card mb-4">
@@ -36,8 +36,8 @@
     <% @marketplace_listings.each do |item| %>
       <div class="col-md-6 col-lg-4">
         <div class="card nu-card h-100">
-          <% if item.image_url.present? %>
-            <%= image_tag item.image_url, alt: item.title, class: "card-img-top", style: "height: 200px; object-fit: cover;" %>
+          <% if item.listing_image_available? %>
+            <%= listing_image_tag item, alt: item.title, class: "card-img-top", style: "height: 200px; object-fit: cover;" %>
           <% else %>
             <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
               <span class="text-muted">No image</span>
@@ -78,7 +78,7 @@
   </div>
 <% else %>
   <div class="alert nu-soft-alert">
-    No listings yet. Be the first to <%= link_to "post a listing", new_marketplace_listing_path, class: "alert-link" %>.
+    No listings yet. Be the first to <%= link_to_new_listing "post a listing", new_marketplace_listing_path, class: "alert-link" %>.
   </div>
 <% end %>
 

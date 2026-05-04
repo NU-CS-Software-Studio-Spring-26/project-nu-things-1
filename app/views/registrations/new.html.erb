@@ -22,6 +22,12 @@
           <% end %>
 
           <div class="mb-3">
+            <%= f.label :first_name, "First name", class: "form-label" %>
+            <%= f.text_field :first_name, class: "form-control", required: true, autocomplete: "given-name", maxlength: 80, placeholder: "Alex" %>
+            <div class="form-text">Shown in the nav when you’re signed in (not from your email).</div>
+          </div>
+
+          <div class="mb-3">
             <%= f.label :email, "Northwestern email", class: "form-label" %>
             <%= f.email_field :email, class: "form-control", required: true, autocomplete: "username", placeholder: "you@u.northwestern.edu" %>
           </div>

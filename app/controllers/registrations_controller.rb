@@ -5,6 +5,11 @@ class RegistrationsController < ApplicationController
 
   def create
     @user = User.new(registration_params)
+    if @user.first_name.blank?
+      @user.errors.add(:first_name, "can't be blank")
+      render :new, status: :unprocessable_entity
+      return
+    end
 
     if @user.save
       reset_session
@@ -22,6 +27,6 @@ class RegistrationsController < ApplicationController
   private
 
   def registration_params
-    params.expect(user: [ :email, :password, :password_confirmation ])
+    params.expect(user: [ :email, :first_name, :password, :password_confirmation ])
   end
 end

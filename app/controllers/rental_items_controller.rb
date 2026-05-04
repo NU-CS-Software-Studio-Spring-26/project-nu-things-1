@@ -3,9 +3,9 @@ class RentalItemsController < ApplicationController
   before_action :set_rental_item, only: %i[ show edit update destroy ]
 
   def index
-    @rental_items = RentalItem.where(status: "available").order(created_at: :desc)
-    @rental_items = @rental_items.where(category: params[:category]) if params[:category].present?
-    @categories = (RentalItem.distinct.pluck(:category).sort + [ "Other" ]).uniq
+    @rental_items = RentalItem.with_attached_photo.where(status: "available").order(created_at: :desc)
+    @categories = filter_category_options(RentalItem)
+    @rental_items = filter_where_in(@rental_items, :category, params[:category], @categories)
   end
 
   def show
@@ -44,12 +44,12 @@ class RentalItemsController < ApplicationController
   private
 
   def set_rental_item
-    @rental_item = RentalItem.find(params.expect(:id))
+    @rental_item = RentalItem.with_attached_photo.find(params.expect(:id))
   end
 
   def rental_item_params
     params.expect(rental_item: [ :title, :description, :category, :rental_price, :rental_period,
-                                  :condition, :location, :available_from, :available_to, :image_url,
+                                  :condition, :location, :available_from, :available_to, :image_url, :photo,
                                   :owner_name, :owner_email, :owner_phone, :deposit_required, :status ])
   end
 end
