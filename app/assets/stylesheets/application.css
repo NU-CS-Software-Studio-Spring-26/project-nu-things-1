@@ -251,6 +251,29 @@
   color: #5b6472;
 }
 
+.nu-rental-item-form .card-title {
+  color: var(--nu-purple) !important;
+}
+
+/* Category filter: "Other" stays outline (white fill, purple border/text), even when selected */
+.nu-filter-other {
+  background-color: #fff !important;
+  color: var(--nu-purple) !important;
+  border-color: var(--nu-purple) !important;
+}
+
+.nu-filter-other:hover,
+.nu-filter-other:focus {
+  background-color: #f6f1ff !important;
+  color: var(--nu-purple-dark) !important;
+  border-color: var(--nu-purple-dark) !important;
+}
+
+.nu-filter-other--selected {
+  font-weight: 700;
+  border-width: 2px !important;
+}
+
 .nu-list-grid {
   display: grid;
   gap: 1rem;
