@@ -45,7 +45,7 @@
             </div>
 
             <div class="mb-3">
-              <p class="h5 text-primary mb-1"><%= number_with_precision(item.rental_price, precision: 2) %><span class="text-muted fs-6">/<%= item.rental_period.gsub("per_", "") %></span></p>
+              <p class="h5 text-primary mb-1"><%= format_rental_rate(item) %></p>
               <p class="text-muted small mb-0"><%= item.location %></p>
             </div>
 

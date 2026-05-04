@@ -46,7 +46,7 @@
 
           <% if @rental_item.deposit_required.present? && @rental_item.deposit_required > 0 %>
             <dt class="col-sm-4">Suggested deposit</dt>
-            <dd class="col-sm-8"><%= number_with_precision(@rental_item.deposit_required, precision: 2) %></dd>
+            <dd class="col-sm-8">$<%= number_with_precision(@rental_item.deposit_required, precision: 2) %></dd>
           <% end %>
         </dl>
       </div>
@@ -57,7 +57,7 @@
     <div class="card nu-card mb-3">
       <div class="card-body">
         <h2 class="h6 text-muted text-uppercase mb-3">Price</h2>
-        <p class="h3 text-primary mb-3"><%= number_with_precision(@rental_item.rental_price, precision: 2) %><span class="text-muted fs-6">/<%= @rental_item.rental_period.gsub("per_", "") %></span></p>
+        <p class="h3 text-primary mb-3"><%= format_rental_rate(@rental_item) %></p>
       </div>
     </div>
 

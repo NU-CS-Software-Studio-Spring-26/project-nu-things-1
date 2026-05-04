@@ -424,6 +424,91 @@
   font-weight: 600;
 }
 
+/* Marketplace — powder “for sale” / “wanted”, purple price, per-category category pills */
+.nu-mp-type-for-sale {
+  color: #4a3568;
+  background: linear-gradient(150deg, #faf6ff 0%, #ebe2ff 48%, #e2d8f8 100%);
+  border: 1px solid rgba(75, 46, 131, 0.26);
+  font-weight: 600;
+}
+
+.nu-mp-type-wanted {
+  color: #3d4a55;
+  background: linear-gradient(150deg, #f2f6fb 0%, #e4ecf6 50%, #dae6f0 100%);
+  border: 1px solid rgba(85, 118, 150, 0.22);
+  font-weight: 600;
+}
+
+.nu-mp-price {
+  color: var(--nu-purple);
+  font-weight: 700;
+}
+
+.nu-mp-cat {
+  font-weight: 600;
+  border-width: 1px;
+  border-style: solid;
+}
+
+.nu-mp-cat--camping-gear {
+  color: #274a3c;
+  background: linear-gradient(150deg, #e8f5ef 0%, #d4ecdf 45%, #c8e5d6 100%);
+  border-color: rgba(45, 110, 85, 0.3);
+}
+
+.nu-mp-cat--electronics {
+  color: #6a5218;
+  background: linear-gradient(150deg, #fff9e6 0%, #fff0c2 42%, #ffe8a8 100%);
+  border-color: rgba(200, 155, 40, 0.35);
+}
+
+.nu-mp-cat--tools {
+  color: #3a4558;
+  background: linear-gradient(150deg, #e9eef5 0%, #d8e2ee 48%, #ccd9ea 100%);
+  border-color: rgba(75, 105, 140, 0.28);
+}
+
+.nu-mp-cat--books {
+  color: #5c3842;
+  background: linear-gradient(150deg, #faf0f2 0%, #f0dfe4 45%, #e8d3da 100%);
+  border-color: rgba(150, 85, 105, 0.22);
+}
+
+.nu-mp-cat--furniture {
+  color: #5c4228;
+  background: linear-gradient(150deg, #faf3ea 0%, #f0e0d0 48%, #e6d2c2 100%);
+  border-color: rgba(160, 110, 70, 0.28);
+}
+
+.nu-mp-cat--sports-equipment {
+  color: #6b3038;
+  background: linear-gradient(150deg, #fff0f1 0%, #fad8dd 42%, #f2c8cf 100%);
+  border-color: rgba(190, 70, 90, 0.3);
+}
+
+.nu-mp-cat--other {
+  color: #4d4260;
+  background: linear-gradient(150deg, #f5f0ff 0%, #eae2f7 50%, #e0d6f2 100%);
+  border-color: rgba(95, 70, 140, 0.22);
+}
+
+.nu-marketplace .link-primary {
+  color: var(--nu-purple) !important;
+}
+
+.nu-marketplace .link-primary:hover,
+.nu-marketplace .link-primary:focus {
+  color: var(--nu-purple-dark) !important;
+}
+
+.nu-marketplace h5.card-title a:not(.btn) {
+  color: var(--nu-purple-dark);
+}
+
+.nu-marketplace h5.card-title a:not(.btn):hover {
+  color: var(--nu-purple);
+}
+
 .nu-footer {
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(4px);

@@ -76,4 +76,25 @@ module ApplicationHelper
     else "nu-badge-found-default"
     end
   end
+
+  # e.g. "$35.00/week" — uses stored rental_period (per_day / per_week / per_month).
+  def format_rental_rate(record)
+    return "" unless record.respond_to?(:rental_price) && record.rental_price.present?
+
+    period = record.rental_period.to_s.sub(/\Aper_/, "")
+    "$#{number_with_precision(record.rental_price, precision: 2)}/#{period}"
+  end
+
+  def marketplace_category_slug(category)
+    category.to_s.parameterize.presence || "other"
+  end
+
+  # Powdery per-category pill (uses canonical `category`, not custom label, so "Other" still styles as Other).
+  def marketplace_category_badge_class(category)
+    "nu-mp-cat nu-mp-cat--#{marketplace_category_slug(category)}"
+  end
+
+  def marketplace_listing_type_badge_class(listing_type)
+    listing_type.to_s == "wanted" ? "nu-mp-type-wanted" : "nu-mp-type-for-sale"
+  end
 end
