@@ -338,6 +338,28 @@
   border-radius: 0.9rem;
 }
 
+/* Lost-item status pills — warm powder “still open” vs cool mint “resolved”, soft NU palette */
+.nu-badge-lost-open {
+  color: #5a4520;
+  background: linear-gradient(150deg, #fff8ee 0%, #ffeede 42%, #f5e6d8 100%);
+  border: 1px solid rgba(175, 125, 65, 0.28);
+  font-weight: 600;
+}
+
+.nu-badge-lost-resolved {
+  color: #2a4a42;
+  background: linear-gradient(150deg, #e9f6f0 0%, #dcefe6 48%, #d3e8df 100%);
+  border: 1px solid rgba(75, 130, 108, 0.3);
+  font-weight: 600;
+}
+
+.nu-badge-lost-default {
+  color: #534a5c;
+  background: linear-gradient(150deg, #f2eef9 0%, #e8e0f2 100%);
+  border: 1px solid rgba(75, 46, 131, 0.14);
+  font-weight: 600;
+}
+
 /* Found-item status pills — cool powder blue (open) vs warm dusty rose (closed), still soft NU palette */
 .nu-badge-found-unclaimed {
   color: #2f3d62;

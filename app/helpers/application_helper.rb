@@ -63,9 +63,9 @@ module ApplicationHelper
 
   def lost_status_badge_class(status)
     case status
-    when "open" then "text-bg-warning"
-    when "resolved" then "text-bg-success"
-    else "text-bg-secondary"
+    when "open" then "nu-badge-lost-open"
+    when "resolved" then "nu-badge-lost-resolved"
+    else "nu-badge-lost-default"
     end
   end
 
