@@ -19,6 +19,7 @@ class MarketplaceListingsController < ApplicationController
 
   def new
     @marketplace_listing = MarketplaceListing.new
+    apply_saved_identity_to_new_listing(@marketplace_listing)
   end
 
   def edit
@@ -26,6 +27,7 @@ class MarketplaceListingsController < ApplicationController
 
   def create
     @marketplace_listing = MarketplaceListing.new(marketplace_listing_params)
+    apply_saved_identity_to_new_listing(@marketplace_listing)
 
     if @marketplace_listing.save
       redirect_to @marketplace_listing, notice: "Listing was successfully created."

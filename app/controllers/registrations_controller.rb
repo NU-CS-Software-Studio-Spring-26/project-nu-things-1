@@ -1,6 +1,10 @@
 class RegistrationsController < ApplicationController
   def new
     @user = User.new
+    if signed_in?
+      fn = current_user.first_name.to_s.strip.presence || helpers.display_user_name(current_user).to_s.strip.presence
+      @user.first_name = fn if fn.present?
+    end
   end
 
   def create

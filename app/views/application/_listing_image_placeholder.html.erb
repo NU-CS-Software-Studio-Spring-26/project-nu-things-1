@@ -1,0 +1,70 @@
+<%# locals: height (String CSS height, e.g. "200px"), extra_classes (optional String, e.g. "card-img-top") %>
+<% height = local_assigns.fetch(:height, "200px") %>
+<% extra = local_assigns[:extra_classes].presence %>
+<% ph_id = local_assigns[:placeholder_id] || SecureRandom.hex(4) %>
+<% g_main = "nu-ph-wave-#{ph_id}" %>
+<% g_soft = "nu-ph-wave-soft-#{ph_id}" %>
+<div
+  class="nu-listing-image-placeholder <%= extra %>"
+  style="height: <%= height %>;"
+  role="img"
+  aria-label="No picture"
+>
+  <svg
+    class="nu-listing-image-placeholder__art"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 400 300"
+    preserveAspectRatio="none"
+    aria-hidden="true"
+    focusable="false"
+  >
+    <defs>
+      <linearGradient id="<%= g_main %>" x1="0%" y1="50%" x2="100%" y2="50%">
+        <stop offset="0%" stop-color="#b49ae8"/>
+        <stop offset="40%" stop-color="#4b2e83"/>
+        <stop offset="100%" stop-color="#9b7fd4"/>
+      </linearGradient>
+      <linearGradient id="<%= g_soft %>" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#836fff" stop-opacity="0.35"/>
+        <stop offset="100%" stop-color="#c4a8f0" stop-opacity="0.45"/>
+      </linearGradient>
+    </defs>
+    <!-- One-direction squiggles: smooth waves flowing left → right -->
+    <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke="url(#<%= g_main %>)">
+      <path stroke-width="1.85" opacity="0.55" d="M 0,42 C 28,22 52,62 80,42 S 136,22 160,42 S 216,62 240,42 S 296,22 320,42 S 376,62 400,42"/>
+      <path stroke-width="1.55" opacity="0.5" d="M 0,78 C 32,98 64,58 96,78 S 160,98 192,78 S 256,58 288,78 S 352,98 384,78 S 392,68 400,78"/>
+      <path stroke-width="2.05" opacity="0.62" d="M 0,118 C 36,88 72,148 108,118 S 180,88 216,118 S 288,148 324,118 S 368,92 400,118"/>
+      <path stroke-width="1.45" opacity="0.48" d="M 0,158 C 30,178 60,138 90,158 S 150,178 180,158 S 240,138 270,158 S 330,178 360,158 S 382,148 400,158"/>
+      <path stroke-width="1.9" opacity="0.58" d="M 0,198 C 34,168 68,228 102,198 S 174,168 208,198 S 280,228 314,198 S 366,172 400,198"/>
+      <path stroke-width="1.35" opacity="0.44" d="M 0,238 C 26,258 52,218 78,238 S 130,258 156,238 S 208,218 234,238 S 286,258 312,238 S 364,222 400,238"/>
+      <path stroke-width="1.65" opacity="0.52" d="M 0,272 C 40,248 80,296 120,272 S 200,248 240,272 S 320,296 360,272 S 388,260 400,272"/>
+    </g>
+    <g fill="none" stroke-linecap="round" stroke="url(#<%= g_soft %>)" stroke-width="1.1" opacity="0.7">
+      <path d="M 0,62 C 44,38 88,86 132,62 S 220,38 264,62 S 352,86 400,62"/>
+      <path d="M 0,182 C 48,206 96,158 144,182 S 240,206 288,182 S 336,158 400,182"/>
+    </g>
+    <!-- Loose rings / circles (outline only) -->
+    <g fill="none" stroke="url(#<%= g_main %>)" stroke-width="1.25" opacity="0.72">
+      <circle cx="44" cy="36" r="14"/>
+      <circle cx="62" cy="58" r="6"/>
+      <circle cx="24" cy="72" r="4"/>
+      <circle cx="356" cy="32" r="11"/>
+      <circle cx="378" cy="52" r="5.5"/>
+      <circle cx="338" cy="78" r="3.5"/>
+      <circle cx="52" cy="258" r="10"/>
+      <circle cx="34" cy="278" r="4"/>
+      <circle cx="348" cy="246" r="12"/>
+      <circle cx="372" cy="272" r="5"/>
+      <circle cx="318" cy="268" r="3"/>
+    </g>
+    <!-- Tiny corner hearts (soft fill, stationery vibe) — 24×24 path, scaled -->
+    <% heart = "M 12 21 C 9 18 4 14 4 10 C 4 7 6 5 9 5 C 11 5 12 7 12 9 C 12 7 13 5 15 5 C 18 5 20 7 20 10 C 20 14 15 18 12 21 Z" %>
+    <g fill="url(#<%= g_main %>)" stroke="none" opacity="0.36">
+      <path transform="translate(6,4) scale(0.48)" d="<%= heart %>"/>
+      <path transform="translate(382,4) scale(0.48)" d="<%= heart %>"/>
+      <path transform="translate(6,258) scale(0.48)" d="<%= heart %>"/>
+      <path transform="translate(382,258) scale(0.48)" d="<%= heart %>"/>
+    </g>
+  </svg>
+  <span class="nu-listing-image-placeholder__label">No picture</span>
+</div>

@@ -1,6 +1,6 @@
 class FoundItemsController < ApplicationController
   before_action :require_admin, only: %i[edit update destroy]
-  before_action :set_found_item, only: %i[show edit update destroy claim]
+  before_action :set_found_item, only: %i[show edit update destroy claim report]
 
   def index
     @found_items = FoundItem.with_attached_photo.order(date_found: :desc, created_at: :desc)
@@ -13,6 +13,7 @@ class FoundItemsController < ApplicationController
 
   def new
     @found_item = FoundItem.new
+    apply_saved_identity_to_new_listing(@found_item)
   end
 
   def edit
@@ -20,6 +21,7 @@ class FoundItemsController < ApplicationController
 
   def create
     @found_item = FoundItem.new(found_item_params)
+    apply_saved_identity_to_new_listing(@found_item)
 
     if @found_item.save
       redirect_to @found_item, notice: "Found item was successfully created."
@@ -49,6 +51,23 @@ class FoundItemsController < ApplicationController
   def destroy
     @found_item.destroy
     redirect_to found_items_path, notice: "Found item was successfully removed.", status: :see_other
+  end
+
+  def report
+    details = params[:report_details].to_s.strip
+    if details.length < 20
+      redirect_to @found_item, alert: "Please describe what’s wrong and why you’re reporting this post (at least 20 characters)."
+      return
+    end
+
+    name, email = reporter_identity_for_report
+    if name.blank? || email.blank? || !email.match?(URI::MailTo::EMAIL_REGEXP)
+      redirect_to @found_item, alert: "Please include your name and email so moderators can follow up if needed."
+      return
+    end
+
+    ContactMailer.found_item_report(@found_item, name, email, details).deliver_later
+    redirect_to @found_item, notice: "Thanks—your report was sent to the moderators."
   end
 
   private

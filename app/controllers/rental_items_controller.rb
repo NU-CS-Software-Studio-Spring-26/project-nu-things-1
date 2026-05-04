@@ -13,6 +13,7 @@ class RentalItemsController < ApplicationController
 
   def new
     @rental_item = RentalItem.new
+    apply_saved_identity_to_new_listing(@rental_item)
   end
 
   def edit
@@ -20,6 +21,7 @@ class RentalItemsController < ApplicationController
 
   def create
     @rental_item = RentalItem.new(rental_item_params)
+    apply_saved_identity_to_new_listing(@rental_item)
 
     if @rental_item.save
       redirect_to @rental_item, notice: "Rental item was successfully created."

@@ -1,5 +1,11 @@
 <% content_for :title, "#{@found_item.title} — Found Item" %>
 
+<div class="mb-3">
+  <%= link_to found_items_path, class: "btn btn-outline-secondary" do %>
+    <span aria-hidden="true">←</span> Back to found items
+  <% end %>
+</div>
+
 <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 mb-3">
   <div>
     <h1 class="h2 mb-2 text-purple"><%= @found_item.title %></h1>
@@ -7,7 +13,8 @@
     <span class="badge text-bg-light border ms-1"><%= @found_item.category %></span>
   </div>
   <div class="d-flex flex-wrap gap-2">
-    <%= link_to "Back to found items", found_items_path, class: "btn btn-outline-secondary btn-sm" %>
+    <%= link_to_new_listing "Post found item", new_found_item_path, class: "btn btn-sm nu-pill-btn nu-report-found" %>
+    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#reportListingModal">Report a problem</button>
     <% if admin? %>
       <%= link_to "Edit", edit_found_item_path(@found_item), class: "btn btn-primary btn-sm" %>
       <%= button_to "Delete", @found_item, method: :delete, class: "btn btn-danger btn-sm", form: { data: { turbo_confirm: "Delete this found item post?" } } %>
@@ -15,8 +22,19 @@
   </div>
 </div>
 
-<div class="row g-4">
+<div class="row g-4 align-items-lg-start">
   <div class="col-lg-7">
+    <div class="card nu-card mb-4">
+      <div class="card-body">
+        <h2 class="h6 text-muted text-uppercase mb-3">Photo</h2>
+        <% if @found_item.listing_image_available? %>
+          <%= listing_image_tag @found_item, alt: @found_item.title, class: "nu-item-img d-block mx-auto", style: "max-height: 400px; object-fit: contain;" %>
+        <% else %>
+          <%= render "application/listing_image_placeholder", height: "300px", extra_classes: "rounded nu-listing-image-placeholder--in-body" %>
+        <% end %>
+      </div>
+    </div>
+
     <div class="card nu-card">
       <div class="card-body">
         <h2 class="h6 text-muted text-uppercase">Description</h2>
@@ -49,49 +67,44 @@
   </div>
 
   <div class="col-lg-5">
-    <% if @found_item.status == "unclaimed" %>
-      <div class="card nu-card mb-3 border-primary border-opacity-25">
-        <div class="card-body">
-          <h2 class="h6 text-muted text-uppercase">Claim</h2>
-          <% if signed_in? %>
-            <p class="small text-muted mb-3">If this is your item, claim it so others know it is resolved.</p>
-            <%= button_to "Claim this item", claim_found_item_path(@found_item), method: :post, class: "btn btn-primary w-100" %>
-          <% else %>
-            <p class="small text-muted mb-3">Sign in with your Northwestern account to claim this item.</p>
-            <%= link_to "Sign in to claim", new_session_path, class: "btn btn-primary w-100" %>
-          <% end %>
+    <div class="nu-listing-show-sidebar">
+      <% if @found_item.status == "unclaimed" %>
+        <div class="card nu-card mb-3 border-primary border-opacity-25">
+          <div class="card-body">
+            <h2 class="h6 text-muted text-uppercase">Claim</h2>
+            <% if signed_in? %>
+              <p class="small text-muted mb-3">If this is your item, claim it so others know it is resolved.</p>
+              <%= button_to "Claim this item", claim_found_item_path(@found_item), method: :post, class: "btn btn-primary w-100" %>
+            <% else %>
+              <p class="small text-muted mb-3">Sign in with your Northwestern account to claim this item.</p>
+              <%= link_to "Sign in to claim", new_session_path, class: "btn btn-primary w-100" %>
+            <% end %>
+          </div>
         </div>
-      </div>
-    <% elsif @found_item.claimed_by_user.present? %>
-      <div class="card nu-card mb-3">
-        <div class="card-body">
-          <h2 class="h6 text-muted text-uppercase">Claimed</h2>
-          <p class="mb-0 small text-muted">
-            Recorded for <strong><%= @found_item.claimed_by_user.email %></strong>.
-          </p>
+      <% elsif @found_item.claimed_by_user.present? %>
+        <div class="card nu-card mb-3">
+          <div class="card-body">
+            <h2 class="h6 text-muted text-uppercase">Claimed</h2>
+            <p class="mb-0 small text-muted">
+              Recorded for <strong><%= @found_item.claimed_by_user.email %></strong>.
+            </p>
+          </div>
         </div>
-      </div>
-    <% end %>
+      <% end %>
 
-    <div class="card nu-card mb-3">
-      <div class="card-body">
-        <h2 class="h6 text-muted text-uppercase">Contact</h2>
-        <p class="mb-1"><strong><%= @found_item.contact_name %></strong></p>
-        <p class="mb-3"><%= mail_to @found_item.contact_email, @found_item.contact_email, class: "link-primary" %></p>
-        <button class="btn btn-info text-dark w-100" type="button" data-bs-toggle="modal" data-bs-target="#contactModal">Send a message</button>
+      <div class="card nu-card mb-0">
+        <div class="card-body">
+          <h2 class="h6 text-muted text-uppercase">Contact</h2>
+          <p class="mb-1"><strong><%= @found_item.contact_name %></strong></p>
+          <p class="mb-3"><%= mail_to @found_item.contact_email, @found_item.contact_email, class: "link-primary" %></p>
+          <button class="btn btn-info text-dark w-100" type="button" data-bs-toggle="modal" data-bs-target="#contactModal">Send a message</button>
+        </div>
       </div>
     </div>
-
-    <% if @found_item.listing_image_available? %>
-      <div class="card nu-card">
-        <div class="card-body">
-          <h2 class="h6 text-muted text-uppercase mb-3">Photo</h2>
-          <%= listing_image_tag @found_item, alt: @found_item.title, class: "nu-item-img d-block mx-auto" %>
-        </div>
-      </div>
-    <% end %>
   </div>
 </div>
+
+<%= render "shared/listing_report_modal", form_url: report_found_item_path(@found_item), listing_title: @found_item.title %>
 
 <!-- Contact Modal -->
 <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
@@ -107,12 +120,12 @@
 
           <div class="mb-3">
             <%= f.label :sender_name, "Your name", class: "form-label" %>
-            <%= f.text_field :sender_name, class: "form-control", required: true, placeholder: "Enter your name" %>
+            <%= f.text_field :sender_name, value: prefilled_sender_name_field, class: "form-control", required: true, placeholder: "Enter your name" %>
           </div>
 
           <div class="mb-3">
             <%= f.label :sender_email, "Your email", class: "form-label" %>
-            <%= f.email_field :sender_email, class: "form-control", required: true, placeholder: "Enter your email" %>
+            <%= f.email_field :sender_email, value: prefilled_sender_email_field, class: "form-control", required: true, placeholder: "Enter your email" %>
           </div>
 
           <div class="mb-3">

@@ -1,12 +1,13 @@
 <% content_for :title, "#{@marketplace_listing.title} — Marketplace Listing" %>
 
+<div class="nu-marketplace">
 <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 mb-3">
   <div>
     <h1 class="h2 mb-2 text-purple"><%= @marketplace_listing.title %></h1>
-    <span class="badge <%= @marketplace_listing.listing_type == 'wanted' ? 'text-bg-light border' : 'text-bg-success' %>">
+    <span class="badge <%= marketplace_listing_type_badge_class(@marketplace_listing.listing_type) %>">
       <%= @marketplace_listing.listing_type == "wanted" ? "Wanted" : "For sale" %>
     </span>
-    <span class="badge text-bg-success ms-1"><%= @marketplace_listing.category_label %></span>
+    <span class="badge <%= marketplace_category_badge_class(@marketplace_listing.category) %> ms-1"><%= @marketplace_listing.category_label %></span>
     <% if @marketplace_listing.condition.present? %>
       <span class="badge text-bg-light border ms-1"><%= @marketplace_listing.condition %></span>
     <% end %>
@@ -28,9 +29,7 @@
         <% if @marketplace_listing.listing_image_available? %>
           <%= listing_image_tag @marketplace_listing, alt: @marketplace_listing.title, class: "nu-item-img d-block mx-auto", style: "max-height: 400px; object-fit: contain;" %>
         <% else %>
-          <div class="bg-light d-flex align-items-center justify-content-center" style="height: 300px;">
-            <span class="text-muted">No image provided</span>
-          </div>
+          <%= render "application/listing_image_placeholder", height: "300px", extra_classes: "rounded nu-listing-image-placeholder--in-body" %>
         <% end %>
       </div>
     </div>
@@ -53,7 +52,7 @@
       <div class="card nu-card mb-3">
         <div class="card-body">
           <h2 class="h6 text-muted text-uppercase mb-3">Price</h2>
-          <p class="h3 text-success mb-0">$<%= number_with_precision(@marketplace_listing.price, precision: 2) %></p>
+          <p class="h3 nu-mp-price mb-0">$<%= number_with_precision(@marketplace_listing.price, precision: 2) %></p>
         </div>
       </div>
     <% else %>
@@ -100,12 +99,12 @@
 
           <div class="mb-3">
             <%= f.label :sender_name, "Your name", class: "form-label" %>
-            <%= f.text_field :sender_name, class: "form-control", required: true, placeholder: "Enter your name" %>
+            <%= f.text_field :sender_name, value: prefilled_sender_name_field, class: "form-control", required: true, placeholder: "Enter your name" %>
           </div>
 
           <div class="mb-3">
             <%= f.label :sender_email, "Your email", class: "form-label" %>
-            <%= f.email_field :sender_email, class: "form-control", required: true, placeholder: "Enter your email" %>
+            <%= f.email_field :sender_email, value: prefilled_sender_email_field, class: "form-control", required: true, placeholder: "Enter your email" %>
           </div>
 
           <div class="mb-3">
@@ -121,4 +120,4 @@
     </div>
   </div>
 </div>
-
+</div>

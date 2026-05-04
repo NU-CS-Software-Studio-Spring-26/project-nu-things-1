@@ -124,10 +124,31 @@
 }
 
 .nu-hero {
+  position: relative;
+  overflow: hidden;
   border-radius: 1rem;
-  background: linear-gradient(145deg, #f1eafe, #fff8de);
-  border: 1px solid rgba(75, 46, 131, 0.14);
+  background:
+    radial-gradient(circle at 92% 6%, rgba(131, 111, 255, 0.18), transparent 34%),
+    radial-gradient(circle at 10% 20%, rgba(255, 205, 112, 0.12), transparent 26%),
+    linear-gradient(175deg, #faf7f2 0%, #f5f0ff 38%, #ebe3f7 68%, #fffbf5 100%);
+  border: 1px solid rgba(75, 46, 131, 0.12);
   box-shadow: 0 0.4rem 1.25rem rgba(75, 46, 131, 0.08);
+}
+
+/* Ruled notebook layer inside hero only (page body unchanged) */
+.nu-hero-paper {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.98;
+}
+
+.nu-hero__inner {
+  position: relative;
+  z-index: 1;
 }
 
 .nu-home-actions {
@@ -270,6 +291,48 @@
   color: #5b6472;
 }
 
+/* Rental marketplace — Bootstrap primary/info default to blue; align with NU purple */
+.nu-rental-market .text-primary {
+  color: var(--nu-purple) !important;
+}
+
+.nu-rental-market .text-bg-primary {
+  color: #fff !important;
+  background-color: var(--nu-purple) !important;
+}
+
+.nu-rental-market .link-primary {
+  color: var(--nu-purple) !important;
+}
+
+.nu-rental-market .link-primary:hover,
+.nu-rental-market .link-primary:focus {
+  color: var(--nu-purple-dark) !important;
+}
+
+.nu-rental-market .alert-info {
+  color: #3a3055;
+  background: linear-gradient(180deg, #f7f2ff, #fff);
+  border: 1px solid rgba(75, 46, 131, 0.28);
+}
+
+.nu-rental-market .alert-info .alert-link {
+  color: var(--nu-purple-dark);
+  font-weight: 600;
+}
+
+.nu-rental-market .alert-info .alert-link:hover {
+  color: var(--nu-purple);
+}
+
+.nu-rental-market h5.card-title a:not(.btn) {
+  color: var(--nu-purple-dark);
+}
+
+.nu-rental-market h5.card-title a:not(.btn):hover {
+  color: var(--nu-purple);
+}
+
 .nu-rental-item-form .card-title {
   color: var(--nu-purple) !important;
 }
@@ -338,6 +401,135 @@
   border-radius: 0.9rem;
 }
 
+/* Lost-item status pills — warm powder “still open” vs cool mint “resolved”, soft NU palette */
+.nu-badge-lost-open {
+  color: #5a4520;
+  background: linear-gradient(150deg, #fff8ee 0%, #ffeede 42%, #f5e6d8 100%);
+  border: 1px solid rgba(175, 125, 65, 0.28);
+  font-weight: 600;
+}
+
+.nu-badge-lost-resolved {
+  color: #2a4a42;
+  background: linear-gradient(150deg, #e9f6f0 0%, #dcefe6 48%, #d3e8df 100%);
+  border: 1px solid rgba(75, 130, 108, 0.3);
+  font-weight: 600;
+}
+
+.nu-badge-lost-default {
+  color: #534a5c;
+  background: linear-gradient(150deg, #f2eef9 0%, #e8e0f2 100%);
+  border: 1px solid rgba(75, 46, 131, 0.14);
+  font-weight: 600;
+}
+
+/* Found-item status pills — cool powder blue (open) vs warm dusty rose (closed), still soft NU palette */
+.nu-badge-found-unclaimed {
+  color: #2f3d62;
+  background: linear-gradient(150deg, #e3ecff 0%, #d8e4ff 42%, #e0e8ff 100%);
+  border: 1px solid rgba(90, 118, 190, 0.28);
+  font-weight: 600;
+}
+
+.nu-badge-found-claimed {
+  color: #5c424c;
+  background: linear-gradient(150deg, #faf2f4 0%, #f2e4ea 45%, #ebe0e8 100%);
+  border: 1px solid rgba(140, 95, 115, 0.22);
+  font-weight: 600;
+}
+
+.nu-badge-found-default {
+  color: #534a5c;
+  background: linear-gradient(150deg, #f2eef9 0%, #e8e0f2 100%);
+  border: 1px solid rgba(75, 46, 131, 0.14);
+  font-weight: 600;
+}
+
+/* Marketplace — powder “for sale” / “wanted”, purple price, per-category category pills */
+.nu-mp-type-for-sale {
+  color: #4a3568;
+  background: linear-gradient(150deg, #faf6ff 0%, #ebe2ff 48%, #e2d8f8 100%);
+  border: 1px solid rgba(75, 46, 131, 0.26);
+  font-weight: 600;
+}
+
+.nu-mp-type-wanted {
+  color: #3d4a55;
+  background: linear-gradient(150deg, #f2f6fb 0%, #e4ecf6 50%, #dae6f0 100%);
+  border: 1px solid rgba(85, 118, 150, 0.22);
+  font-weight: 600;
+}
+
+.nu-mp-price {
+  color: var(--nu-purple);
+  font-weight: 700;
+}
+
+.nu-mp-cat {
+  font-weight: 600;
+  border-width: 1px;
+  border-style: solid;
+}
+
+.nu-mp-cat--camping-gear {
+  color: #274a3c;
+  background: linear-gradient(150deg, #e8f5ef 0%, #d4ecdf 45%, #c8e5d6 100%);
+  border-color: rgba(45, 110, 85, 0.3);
+}
+
+.nu-mp-cat--electronics {
+  color: #6a5218;
+  background: linear-gradient(150deg, #fff9e6 0%, #fff0c2 42%, #ffe8a8 100%);
+  border-color: rgba(200, 155, 40, 0.35);
+}
+
+.nu-mp-cat--tools {
+  color: #3a4558;
+  background: linear-gradient(150deg, #e9eef5 0%, #d8e2ee 48%, #ccd9ea 100%);
+  border-color: rgba(75, 105, 140, 0.28);
+}
+
+.nu-mp-cat--books {
+  color: #5c3842;
+  background: linear-gradient(150deg, #faf0f2 0%, #f0dfe4 45%, #e8d3da 100%);
+  border-color: rgba(150, 85, 105, 0.22);
+}
+
+.nu-mp-cat--furniture {
+  color: #5c4228;
+  background: linear-gradient(150deg, #faf3ea 0%, #f0e0d0 48%, #e6d2c2 100%);
+  border-color: rgba(160, 110, 70, 0.28);
+}
+
+.nu-mp-cat--sports-equipment {
+  color: #6b3038;
+  background: linear-gradient(150deg, #fff0f1 0%, #fad8dd 42%, #f2c8cf 100%);
+  border-color: rgba(190, 70, 90, 0.3);
+}
+
+.nu-mp-cat--other {
+  color: #4d4260;
+  background: linear-gradient(150deg, #f5f0ff 0%, #eae2f7 50%, #e0d6f2 100%);
+  border-color: rgba(95, 70, 140, 0.22);
+}
+
+.nu-marketplace .link-primary {
+  color: var(--nu-purple) !important;
+}
+
+.nu-marketplace .link-primary:hover,
+.nu-marketplace .link-primary:focus {
+  color: var(--nu-purple-dark) !important;
+}
+
+.nu-marketplace h5.card-title a:not(.btn) {
+  color: var(--nu-purple-dark);
+}
+
+.nu-marketplace h5.card-title a:not(.btn):hover {
+  color: var(--nu-purple);
+}
+
 .nu-footer {
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(4px);
@@ -350,6 +542,62 @@
   border-radius: 0.5rem;
   border: 1px solid #e5e7eb;
   background: #fff;
+}
+
+/* Lost / found item show: sticky sidebar (contact, claim, etc.) under navbar while scrolling details (lg+) */
+@media (min-width: 992px) {
+  .nu-listing-show-sidebar {
+    position: sticky;
+    top: 5.75rem;
+    align-self: flex-start;
+  }
+}
+
+/* Artsy placeholder when a listing has no photo — horizontal waves, rings, corner hearts */
+.nu-listing-image-placeholder {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(ellipse 85% 70% at 50% 50%, rgba(255, 255, 255, 0.55), transparent 62%),
+    linear-gradient(155deg, #faf7ff 0%, #f0e8ff 38%, #fff9f0 72%, #f5f0ff 100%);
+  border-bottom: 1px solid rgba(75, 46, 131, 0.08);
+}
+
+.nu-listing-image-placeholder.card-img-top {
+  border-bottom: 1px solid rgba(75, 46, 131, 0.1);
+}
+
+.nu-listing-image-placeholder__art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.nu-listing-image-placeholder__label {
+  position: relative;
+  z-index: 1;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #5b4678;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.95);
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(75, 46, 131, 0.12);
+  backdrop-filter: blur(3px);
+}
+
+.nu-listing-image-placeholder.nu-listing-image-placeholder--in-body {
+  border: 1px solid rgba(75, 46, 131, 0.12);
 }
 
 .form-control,

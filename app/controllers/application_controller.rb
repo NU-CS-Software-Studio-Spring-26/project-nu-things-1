@@ -90,6 +90,29 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  # Pre-fills "your name" / email on new listing forms from the signed-in account (first name + Northwestern email).
+  def apply_saved_identity_to_new_listing(record)
+    return unless signed_in?
+    return if record.persisted?
+
+    u = current_user
+    display = u.first_name.to_s.strip.presence || helpers.display_user_name(u).to_s.strip.presence
+    return if display.blank?
+
+    if record.respond_to?(:contact_name=) && record.contact_name.blank?
+      record.contact_name = display
+    end
+    if record.respond_to?(:contact_email=) && record.contact_email.blank?
+      record.contact_email = u.email
+    end
+    if record.respond_to?(:owner_name=) && record.owner_name.blank?
+      record.owner_name = display
+    end
+    if record.respond_to?(:owner_email=) && record.owner_email.blank?
+      record.owner_email = u.email
+    end
+  end
+
   def store_return_to
     session[:return_to] = request.fullpath if request.get? || request.head?
   end
@@ -113,5 +136,16 @@ class ApplicationController < ActionController::Base
 
   def filter_category_options(model)
     (model.distinct.pluck(:category).compact + [ "Other" ]).uniq.sort
+  end
+
+  # Name + email for lost/found listing report mailers (signed-in uses account; guests use form params).
+  def reporter_identity_for_report
+    if signed_in?
+      u = current_user
+      n = u.first_name.to_s.strip.presence || helpers.display_user_name(u).to_s.strip
+      [ n.presence || u.email.to_s.split("@", 2).first.to_s, u.email ]
+    else
+      [ params[:reporter_name].to_s.strip, params[:reporter_email].to_s.strip.downcase ]
+    end
   end
 end
