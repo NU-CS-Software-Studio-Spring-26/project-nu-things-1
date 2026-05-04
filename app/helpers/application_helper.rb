@@ -71,9 +71,9 @@ module ApplicationHelper
 
   def found_status_badge_class(status)
     case status
-    when "unclaimed" then "text-bg-info"
-    when "claimed" then "text-bg-secondary"
-    else "text-bg-secondary"
+    when "unclaimed" then "nu-badge-found-unclaimed"
+    when "claimed" then "nu-badge-found-claimed"
+    else "nu-badge-found-default"
     end
   end
 end

@@ -338,6 +338,28 @@
   border-radius: 0.9rem;
 }
 
+/* Found-item status pills — cool powder blue (open) vs warm dusty rose (closed), still soft NU palette */
+.nu-badge-found-unclaimed {
+  color: #2f3d62;
+  background: linear-gradient(150deg, #e3ecff 0%, #d8e4ff 42%, #e0e8ff 100%);
+  border: 1px solid rgba(90, 118, 190, 0.28);
+  font-weight: 600;
+}
+
+.nu-badge-found-claimed {
+  color: #5c424c;
+  background: linear-gradient(150deg, #faf2f4 0%, #f2e4ea 45%, #ebe0e8 100%);
+  border: 1px solid rgba(140, 95, 115, 0.22);
+  font-weight: 600;
+}
+
+.nu-badge-found-default {
+  color: #534a5c;
+  background: linear-gradient(150deg, #f2eef9 0%, #e8e0f2 100%);
+  border: 1px solid rgba(75, 46, 131, 0.14);
+  font-weight: 600;
+}
+
 .nu-footer {
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(4px);
