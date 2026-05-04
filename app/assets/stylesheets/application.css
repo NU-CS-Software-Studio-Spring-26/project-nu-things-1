@@ -51,6 +51,18 @@
   color: var(--nu-purple) !important;
 }
 
+.nu-link-purple {
+  color: var(--nu-purple);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.nu-link-purple:hover,
+.nu-link-purple:focus {
+  color: var(--nu-purple-dark);
+}
+
 /* Override Bootstrap button colors to be purple */
 .btn-primary {
   background-color: var(--nu-purple) !important;
