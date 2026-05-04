@@ -91,9 +91,9 @@ Solid Cache, Solid Queue, and Solid Cable are configured to use the **same** Pos
 
 ## Communication (team norms)
 
-- **Primary channel:** *TBD â€” e.g. Slack workspace or Discord server (add link when created).*
+- **Primary channel:** Slack and an iMessage Group
 - **Response times:** Aim to reply to messages within **24 hours** on weekdays; say if you are blocked sooner.
-- **Decisions:** Product questions default to **simple majority** among the four members; if there is a tie, rotate a â€œdecider of the week.â€
+- **Decisions:** Product questions default to **simple majority** among the four members; if there is a tie, rotate a decider of the week.
 - **Blockers:** Post in the primary channel with `@channel` or DM two teammates if urgent; escalate to the course staff **before** the deadline if the team cannot resolve an environment or merge issue within 48 hours.
 
 ## License / disclaimer
