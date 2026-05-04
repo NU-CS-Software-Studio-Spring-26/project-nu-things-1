@@ -270,6 +270,48 @@
   color: #5b6472;
 }
 
+/* Rental marketplace — Bootstrap primary/info default to blue; align with NU purple */
+.nu-rental-market .text-primary {
+  color: var(--nu-purple) !important;
+}
+
+.nu-rental-market .text-bg-primary {
+  color: #fff !important;
+  background-color: var(--nu-purple) !important;
+}
+
+.nu-rental-market .link-primary {
+  color: var(--nu-purple) !important;
+}
+
+.nu-rental-market .link-primary:hover,
+.nu-rental-market .link-primary:focus {
+  color: var(--nu-purple-dark) !important;
+}
+
+.nu-rental-market .alert-info {
+  color: #3a3055;
+  background: linear-gradient(180deg, #f7f2ff, #fff);
+  border: 1px solid rgba(75, 46, 131, 0.28);
+}
+
+.nu-rental-market .alert-info .alert-link {
+  color: var(--nu-purple-dark);
+  font-weight: 600;
+}
+
+.nu-rental-market .alert-info .alert-link:hover {
+  color: var(--nu-purple);
+}
+
+.nu-rental-market h5.card-title a:not(.btn) {
+  color: var(--nu-purple-dark);
+}
+
+.nu-rental-market h5.card-title a:not(.btn):hover {
+  color: var(--nu-purple);
+}
+
 .nu-rental-item-form .card-title {
   color: var(--nu-purple) !important;
 }
@@ -394,6 +436,53 @@
   border-radius: 0.5rem;
   border: 1px solid #e5e7eb;
   background: #fff;
+}
+
+/* Artsy placeholder when a listing has no photo — horizontal waves, rings, corner hearts */
+.nu-listing-image-placeholder {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(ellipse 85% 70% at 50% 50%, rgba(255, 255, 255, 0.55), transparent 62%),
+    linear-gradient(155deg, #faf7ff 0%, #f0e8ff 38%, #fff9f0 72%, #f5f0ff 100%);
+  border-bottom: 1px solid rgba(75, 46, 131, 0.08);
+}
+
+.nu-listing-image-placeholder.card-img-top {
+  border-bottom: 1px solid rgba(75, 46, 131, 0.1);
+}
+
+.nu-listing-image-placeholder__art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.nu-listing-image-placeholder__label {
+  position: relative;
+  z-index: 1;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #5b4678;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.95);
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(75, 46, 131, 0.12);
+  backdrop-filter: blur(3px);
+}
+
+.nu-listing-image-placeholder.nu-listing-image-placeholder--in-body {
+  border: 1px solid rgba(75, 46, 131, 0.12);
 }
 
 .form-control,

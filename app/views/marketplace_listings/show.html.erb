@@ -28,9 +28,7 @@
         <% if @marketplace_listing.listing_image_available? %>
           <%= listing_image_tag @marketplace_listing, alt: @marketplace_listing.title, class: "nu-item-img d-block mx-auto", style: "max-height: 400px; object-fit: contain;" %>
         <% else %>
-          <div class="bg-light d-flex align-items-center justify-content-center" style="height: 300px;">
-            <span class="text-muted">No image provided</span>
-          </div>
+          <%= render "application/listing_image_placeholder", height: "300px", extra_classes: "rounded nu-listing-image-placeholder--in-body" %>
         <% end %>
       </div>
     </div>
