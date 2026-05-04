@@ -1,5 +1,11 @@
 <% content_for :title, "#{@lost_item.title} — Lost Item" %>
 
+<div class="mb-3">
+  <%= link_to lost_items_path, class: "btn btn-outline-secondary" do %>
+    <span aria-hidden="true">←</span> Back to lost items
+  <% end %>
+</div>
+
 <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 mb-3">
   <div>
     <h1 class="h2 mb-2 text-purple"><%= @lost_item.title %></h1>
@@ -7,7 +13,6 @@
     <span class="badge text-bg-light border ms-1"><%= @lost_item.category %></span>
   </div>
   <div class="d-flex flex-wrap gap-2">
-    <%= link_to "Back to lost items", lost_items_path, class: "btn btn-outline-secondary btn-sm" %>
     <%= link_to_new_listing "Post lost item", new_lost_item_path, class: "btn btn-sm nu-pill-btn nu-report-lost" %>
     <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#reportListingModal">Report a problem</button>
     <% if admin? %>
@@ -17,8 +22,19 @@
   </div>
 </div>
 
-<div class="row g-4">
+<div class="row g-4 align-items-lg-start">
   <div class="col-lg-7">
+    <div class="card nu-card mb-4">
+      <div class="card-body">
+        <h2 class="h6 text-muted text-uppercase mb-3">Photo</h2>
+        <% if @lost_item.listing_image_available? %>
+          <%= listing_image_tag @lost_item, alt: @lost_item.title, class: "nu-item-img d-block mx-auto", style: "max-height: 400px; object-fit: contain;" %>
+        <% else %>
+          <%= render "application/listing_image_placeholder", height: "300px", extra_classes: "rounded nu-listing-image-placeholder--in-body" %>
+        <% end %>
+      </div>
+    </div>
+
     <div class="card nu-card">
       <div class="card-body">
         <h2 class="h6 text-muted text-uppercase">Description</h2>
@@ -51,23 +67,16 @@
   </div>
 
   <div class="col-lg-5">
-    <div class="card nu-card mb-3">
-      <div class="card-body">
-        <h2 class="h6 text-muted text-uppercase">Contact</h2>
-        <p class="mb-1"><strong><%= @lost_item.contact_name %></strong></p>
-        <p class="mb-3"><%= mail_to @lost_item.contact_email, @lost_item.contact_email, class: "link-primary" %></p>
-        <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#contactModal">Send a message</button>
-      </div>
-    </div>
-
-    <% if @lost_item.listing_image_available? %>
-      <div class="card nu-card">
+    <div class="nu-lost-show-sidebar">
+      <div class="card nu-card mb-0">
         <div class="card-body">
-          <h2 class="h6 text-muted text-uppercase mb-3">Photo</h2>
-          <%= listing_image_tag @lost_item, alt: @lost_item.title, class: "nu-item-img d-block mx-auto" %>
+          <h2 class="h6 text-muted text-uppercase">Contact</h2>
+          <p class="mb-1"><strong><%= @lost_item.contact_name %></strong></p>
+          <p class="mb-3"><%= mail_to @lost_item.contact_email, @lost_item.contact_email, class: "link-primary" %></p>
+          <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#contactModal">Send a message</button>
         </div>
       </div>
-    <% end %>
+    </div>
   </div>
 </div>
 

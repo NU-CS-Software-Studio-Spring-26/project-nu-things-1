@@ -544,6 +544,15 @@
   background: #fff;
 }
 
+/* Lost item show: photo first; sidebar sticks under navbar while scrolling long description (lg+) */
+@media (min-width: 992px) {
+  .nu-lost-show-sidebar {
+    position: sticky;
+    top: 5.75rem;
+    align-self: flex-start;
+  }
+}
+
 /* Artsy placeholder when a listing has no photo — horizontal waves, rings, corner hearts */
 .nu-listing-image-placeholder {
   position: relative;
