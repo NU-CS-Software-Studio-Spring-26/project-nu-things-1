@@ -544,9 +544,9 @@
   background: #fff;
 }
 
-/* Lost item show: photo first; sidebar sticks under navbar while scrolling long description (lg+) */
+/* Lost / found item show: sticky sidebar (contact, claim, etc.) under navbar while scrolling details (lg+) */
 @media (min-width: 992px) {
-  .nu-lost-show-sidebar {
+  .nu-listing-show-sidebar {
     position: sticky;
     top: 5.75rem;
     align-self: flex-start;
