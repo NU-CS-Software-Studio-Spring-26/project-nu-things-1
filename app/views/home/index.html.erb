@@ -5,7 +5,7 @@
     <div class="col-lg-7">
       <h1 class="display-6 fw-bold text-purple mb-3">NU Things</h1>
       <p class="lead nu-section-lead mb-0">
-        Posting a lost or found report and claiming a found item require a Northwestern
+        Posting listings (lost, found, rentals, or marketplace) and claiming a found item require a Northwestern
         <%= link_to "sign-in", new_session_path, class: "nu-link-purple" %> (or
         <%= link_to "sign up", new_registration_path, class: "nu-link-purple" %> first).
       </p>
@@ -13,6 +13,7 @@
     <div class="col-lg-5">
       <div class="card nu-card nu-home-actions">
         <div class="card-body">
+          <p class="small fw-semibold text-purple text-uppercase mb-2" style="letter-spacing: 0.04em;">Browse</p>
           <div class="row g-2 mb-2">
             <div class="col-6">
               <%= link_to lost_items_path, class: "nu-browse-card nu-browse-lost text-decoration-none" do %>
@@ -69,11 +70,12 @@
               <% end %>
             </div>
           </div>
+          <p class="small fw-semibold text-purple text-uppercase mb-2 mt-1" style="letter-spacing: 0.04em;">Post something</p>
           <div class="d-grid gap-2">
-            <%= link_to "Report lost item", new_lost_item_path, class: "btn nu-pill-btn nu-report-lost" %>
-            <%= link_to "Report found item", new_found_item_path, class: "btn nu-pill-btn nu-report-found" %>
-            <%= link_to "Post Rental Item", new_rental_item_path, class: "btn nu-pill-btn nu-rentals" %>
-            <%= link_to "Post Marketplace Listing", new_marketplace_listing_path, class: "btn nu-pill-btn nu-report-found" %>
+            <%= link_to_new_listing "Post lost item", new_lost_item_path, class: "btn nu-pill-btn nu-report-lost" %>
+            <%= link_to_new_listing "Post found item", new_found_item_path, class: "btn nu-pill-btn nu-report-found" %>
+            <%= link_to_new_listing "Post rental item", new_rental_item_path, class: "btn nu-pill-btn nu-rentals" %>
+            <%= link_to_new_listing "Post marketplace listing", new_marketplace_listing_path, class: "btn nu-pill-btn nu-marketplace-post" %>
           </div>
         </div>
       </div>

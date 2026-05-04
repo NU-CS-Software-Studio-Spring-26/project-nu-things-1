@@ -1,4 +1,6 @@
 class FoundItem < ApplicationRecord
+  include ListingPhotoAttachment
+
   STATUSES = %w[unclaimed claimed].freeze
 
   belongs_to :claimed_by_user, class_name: "User", optional: true

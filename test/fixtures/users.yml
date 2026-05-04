@@ -1,11 +1,13 @@
 admin:
   email: admin@u.northwestern.edu
-  password_digest: <%= BCrypt::Password.create("password", cost: BCrypt::Engine::MIN_COST) %>
+  first_name: Admin
+  password_digest: pbkdf2:100000:YWJjZGVmZ2hpamtsbW5vcA==:g7l+CFoLxVtBDCWOufpYmfH9SJySE1TslYDgewhulRE=
   created_at: <%= Time.utc(2026, 1, 1, 12, 0, 0) %>
   updated_at: <%= Time.utc(2026, 1, 1, 12, 0, 0) %>
 
 nu_student:
   email: student@u.northwestern.edu
-  password_digest: <%= BCrypt::Password.create("password", cost: BCrypt::Engine::MIN_COST) %>
+  first_name: Sam
+  password_digest: pbkdf2:100000:cXJzdHV2d3h5ejEyMzQ1Ng==:k1PP5DxDbE/bhugboN1c5UCLnAp9PbtICtuQdEsOZTM=
   created_at: <%= Time.utc(2026, 1, 1, 12, 0, 0) %>
   updated_at: <%= Time.utc(2026, 1, 1, 12, 0, 0) %>

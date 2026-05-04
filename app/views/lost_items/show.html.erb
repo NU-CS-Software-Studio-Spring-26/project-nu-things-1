@@ -58,11 +58,11 @@
       </div>
     </div>
 
-    <% if @lost_item.image_url.present? %>
+    <% if @lost_item.listing_image_available? %>
       <div class="card nu-card">
         <div class="card-body">
           <h2 class="h6 text-muted text-uppercase mb-3">Photo</h2>
-          <%= image_tag @lost_item.image_url, alt: @lost_item.title, class: "nu-item-img d-block mx-auto" %>
+          <%= listing_image_tag @lost_item, alt: @lost_item.title, class: "nu-item-img d-block mx-auto" %>
         </div>
       </div>
     <% end %>

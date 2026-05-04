@@ -20,12 +20,42 @@ class MarketplaceListingsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should get new" do
+  test "should redirect new when not signed in" do
+    get new_marketplace_listing_url
+    assert_redirected_to new_session_url
+  end
+
+  test "should get new when signed in" do
+    sign_in_as(users(:nu_student))
     get new_marketplace_listing_url
     assert_response :success
   end
 
-  test "should create marketplace_listing" do
+  test "should redirect create when not signed in" do
+    assert_no_difference("MarketplaceListing.count") do
+      post marketplace_listings_url, params: {
+        marketplace_listing: {
+          title: @listing.title,
+          description: @listing.description,
+          category: @listing.category,
+          condition: @listing.condition,
+          image_url: @listing.image_url,
+          location: @listing.location,
+          listing_type: @listing.listing_type,
+          price: @listing.price,
+          contact_name: @listing.contact_name,
+          contact_email: @listing.contact_email,
+          contact_phone: @listing.contact_phone,
+          custom_category: @listing.custom_category,
+          status: @listing.status
+        }
+      }
+    end
+    assert_redirected_to new_session_url
+  end
+
+  test "should create marketplace_listing when signed in" do
+    sign_in_as(users(:nu_student))
     assert_difference("MarketplaceListing.count") do
       post marketplace_listings_url, params: {
         marketplace_listing: {

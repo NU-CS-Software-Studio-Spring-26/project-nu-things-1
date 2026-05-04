@@ -5,7 +5,40 @@ class ApplicationController < ActionController::Base
   # Changes to the importmap will invalidate the etag for HTML responses
   stale_when_importmap_changes
 
+  # Runs before other callbacks so listing "new/create" (and found-item claim) cannot post without a session,
+  # even if a controller callback list is changed accidentally.
+  prepend_before_action :enforce_listing_authentication
+
+  # Paths we accept for ?return_to= on the sign-in page (open-redirect safe).
+  POST_FORM_RETURN_PATHS = %w[
+    /lost_items/new
+    /found_items/new
+    /rental_items/new
+    /marketplace_listings/new
+  ].freeze
+
   helper_method :current_user, :signed_in?, :admin?
+
+  # Strip query string and (for absolute URLs) take only the path segment.
+  def self.strip_return_path(raw)
+    str = raw.is_a?(Array) ? raw.compact.map(&:to_s).find(&:present?) : raw&.to_s
+    str = str.to_s.strip.split("?", 2).first || ""
+
+    if str.start_with?("http://", "https://")
+      URI.parse(str).path.to_s.split("?", 2).first || ""
+    else
+      str
+    end
+  rescue URI::InvalidURIError
+    ""
+  end
+
+  def self.normalize_post_form_return_path(raw)
+    path = strip_return_path(raw)
+    return nil if path.blank?
+
+    POST_FORM_RETURN_PATHS.include?(path) ? path : nil
+  end
 
   private
 
@@ -40,11 +73,45 @@ class ApplicationController < ActionController::Base
     redirect_to new_session_path, alert: "Please sign in with your Northwestern account to continue."
   end
 
+  def enforce_listing_authentication
+    return unless listing_action_requires_sign_in?
+
+    require_login
+  end
+
+  def listing_action_requires_sign_in?
+    case controller_name
+    when "lost_items", "rental_items", "marketplace_listings"
+      action_name.in?(%w[new create])
+    when "found_items"
+      action_name.in?(%w[new create claim])
+    else
+      false
+    end
+  end
+
   def store_return_to
     session[:return_to] = request.fullpath if request.get? || request.head?
   end
 
   def pop_return_to
     session.delete(:return_to)
+  end
+
+  # Only apply a WHERE filter when the raw param is in +allowed+ (Strings).
+  # ActiveRecord already binds placeholders for where(column: value), but
+  # whitelisting avoids odd values and makes filter intent explicit.
+  def filter_where_in(relation, column, raw, allowed)
+    return relation if raw.blank?
+    return relation unless allowed.is_a?(Array)
+
+    value = raw.to_s
+    return relation unless allowed.include?(value)
+
+    relation.where(column => value)
+  end
+
+  def filter_category_options(model)
+    (model.distinct.pluck(:category).compact + [ "Other" ]).uniq.sort
   end
 end

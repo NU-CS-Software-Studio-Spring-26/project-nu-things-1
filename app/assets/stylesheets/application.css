@@ -31,6 +31,11 @@
   letter-spacing: 0.02em;
 }
 
+.nu-navbar-greeting {
+  font-weight: 600;
+  opacity: 0.95;
+}
+
 .nu-pill-btn {
   border-radius: 999px;
   font-weight: 600;
@@ -219,6 +224,20 @@
   background: var(--nu-purple-dark);
   border-color: var(--nu-purple-dark);
   color: #fff;
+}
+
+/* Marketplace post CTA — outline style (distinct from solid lost/rental) */
+.nu-marketplace-post {
+  background: #fff;
+  border: 1px solid var(--nu-purple);
+  color: var(--nu-purple);
+}
+
+.nu-marketplace-post:hover,
+.nu-marketplace-post:focus {
+  background: #f6f1ff;
+  border-color: var(--nu-purple-dark);
+  color: var(--nu-purple-dark);
 }
 
 .nu-btn-primary {

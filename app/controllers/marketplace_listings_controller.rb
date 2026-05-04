@@ -3,11 +3,15 @@ class MarketplaceListingsController < ApplicationController
   before_action :set_marketplace_listing, only: %i[show edit update destroy]
 
   def index
-    @marketplace_listings = MarketplaceListing.where(status: "active").order(created_at: :desc)
-    @marketplace_listings = @marketplace_listings.where(listing_type: params[:listing_type]) if params[:listing_type].present?
-    @marketplace_listings = @marketplace_listings.where(category: params[:category]) if params[:category].present?
-
-    @categories = (MarketplaceListing.distinct.pluck(:category).sort + [ "Other" ]).uniq
+    @marketplace_listings = MarketplaceListing.with_attached_photo.where(status: "active").order(created_at: :desc)
+    @marketplace_listings = filter_where_in(
+      @marketplace_listings,
+      :listing_type,
+      params[:listing_type],
+      MarketplaceListing::LISTING_TYPES
+    )
+    @categories = (MarketplaceListing.distinct.pluck(:category).compact + [ "Other" ]).uniq.sort
+    @marketplace_listings = filter_where_in(@marketplace_listings, :category, params[:category], @categories)
   end
 
   def show
@@ -46,7 +50,7 @@ class MarketplaceListingsController < ApplicationController
   private
 
   def set_marketplace_listing
-    @marketplace_listing = MarketplaceListing.find(params.expect(:id))
+    @marketplace_listing = MarketplaceListing.with_attached_photo.find(params.expect(:id))
   end
 
   def marketplace_listing_params
@@ -56,6 +60,7 @@ class MarketplaceListingsController < ApplicationController
       :category,
       :condition,
       :image_url,
+      :photo,
       :location,
       :listing_type,
       :price,

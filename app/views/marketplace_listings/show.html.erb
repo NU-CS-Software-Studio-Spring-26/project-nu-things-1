@@ -25,8 +25,8 @@
     <div class="card nu-card mb-4">
       <div class="card-body">
         <h2 class="h6 text-muted text-uppercase mb-3">Photo</h2>
-        <% if @marketplace_listing.image_url.present? %>
-          <%= image_tag @marketplace_listing.image_url, alt: @marketplace_listing.title, class: "nu-item-img d-block mx-auto", style: "max-height: 400px; object-fit: contain;" %>
+        <% if @marketplace_listing.listing_image_available? %>
+          <%= listing_image_tag @marketplace_listing, alt: @marketplace_listing.title, class: "nu-item-img d-block mx-auto", style: "max-height: 400px; object-fit: contain;" %>
         <% else %>
           <div class="bg-light d-flex align-items-center justify-content-center" style="height: 300px;">
             <span class="text-muted">No image provided</span>
