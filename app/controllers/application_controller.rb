@@ -90,6 +90,29 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  # Pre-fills "your name" / email on new listing forms from the signed-in account (first name + Northwestern email).
+  def apply_saved_identity_to_new_listing(record)
+    return unless signed_in?
+    return if record.persisted?
+
+    u = current_user
+    display = u.first_name.to_s.strip.presence || helpers.display_user_name(u).to_s.strip.presence
+    return if display.blank?
+
+    if record.respond_to?(:contact_name=) && record.contact_name.blank?
+      record.contact_name = display
+    end
+    if record.respond_to?(:contact_email=) && record.contact_email.blank?
+      record.contact_email = u.email
+    end
+    if record.respond_to?(:owner_name=) && record.owner_name.blank?
+      record.owner_name = display
+    end
+    if record.respond_to?(:owner_email=) && record.owner_email.blank?
+      record.owner_email = u.email
+    end
+  end
+
   def store_return_to
     session[:return_to] = request.fullpath if request.get? || request.head?
   end

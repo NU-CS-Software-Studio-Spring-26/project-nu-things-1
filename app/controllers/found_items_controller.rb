@@ -13,6 +13,7 @@ class FoundItemsController < ApplicationController
 
   def new
     @found_item = FoundItem.new
+    apply_saved_identity_to_new_listing(@found_item)
   end
 
   def edit
@@ -20,6 +21,7 @@ class FoundItemsController < ApplicationController
 
   def create
     @found_item = FoundItem.new(found_item_params)
+    apply_saved_identity_to_new_listing(@found_item)
 
     if @found_item.save
       redirect_to @found_item, notice: "Found item was successfully created."

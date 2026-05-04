@@ -17,7 +17,7 @@
 
           <div class="mb-3">
             <%= label_tag :first_name, "First name (optional)", class: "form-label" %>
-            <%= text_field_tag :first_name, params[:first_name], class: "form-control", autocomplete: "given-name", maxlength: 80, placeholder: "How we should greet you" %>
+            <%= text_field_tag :first_name, params[:first_name].presence || current_user&.first_name, class: "form-control", autocomplete: "given-name", maxlength: 80, placeholder: "How we should greet you" %>
             <div class="form-text">If you haven’t set this on your account yet, enter it here and we’ll save it when you sign in.</div>
           </div>
 

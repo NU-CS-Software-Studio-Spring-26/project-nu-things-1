@@ -13,6 +13,7 @@ class LostItemsController < ApplicationController
 
   def new
     @lost_item = LostItem.new
+    apply_saved_identity_to_new_listing(@lost_item)
   end
 
   def edit
@@ -20,6 +21,7 @@ class LostItemsController < ApplicationController
 
   def create
     @lost_item = LostItem.new(lost_item_params)
+    apply_saved_identity_to_new_listing(@lost_item)
 
     if @lost_item.save
       redirect_to @lost_item, notice: "Lost item was successfully created."

@@ -12,6 +12,26 @@ module ApplicationHelper
     local.tr("._", " ").titleize
   end
 
+  # Default "your name" for listing and contact forms when signed in (saved first name, else email-based display).
+  def prefilled_listing_contact_display
+    u = current_user
+    return unless u
+
+    u.first_name.to_s.strip.presence || display_user_name(u)
+  end
+
+  def prefilled_listing_email
+    current_user&.email
+  end
+
+  def prefilled_sender_name_field
+    params[:sender_name].presence || prefilled_listing_contact_display
+  end
+
+  def prefilled_sender_email_field
+    params[:sender_email].presence || prefilled_listing_email
+  end
+
   # Guest → sign in with return_to. Signed in → new listing form. Uses request.session so it never depends on controller helper_method resolution.
   def post_listing_url(new_path)
     path = ApplicationController.strip_return_path(new_path).presence
