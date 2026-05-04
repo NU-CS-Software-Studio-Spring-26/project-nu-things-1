@@ -137,4 +137,15 @@ class ApplicationController < ActionController::Base
   def filter_category_options(model)
     (model.distinct.pluck(:category).compact + [ "Other" ]).uniq.sort
   end
+
+  # Name + email for lost/found listing report mailers (signed-in uses account; guests use form params).
+  def reporter_identity_for_report
+    if signed_in?
+      u = current_user
+      n = u.first_name.to_s.strip.presence || helpers.display_user_name(u).to_s.strip
+      [ n.presence || u.email.to_s.split("@", 2).first.to_s, u.email ]
+    else
+      [ params[:reporter_name].to_s.strip, params[:reporter_email].to_s.strip.downcase ]
+    end
+  end
 end

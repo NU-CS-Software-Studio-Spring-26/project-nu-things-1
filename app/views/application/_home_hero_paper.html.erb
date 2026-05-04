@@ -1,0 +1,22 @@
+<%# Straight ruled lines (NU purple); no margin stripe — paper tone comes from .nu-hero CSS. %>
+<svg
+  class="nu-hero-paper"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 400 320"
+  preserveAspectRatio="none"
+  aria-hidden="true"
+  focusable="false"
+>
+  <defs>
+    <linearGradient id="nu-hero-rule-purple" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#4b2e83" stop-opacity="0.15"/>
+      <stop offset="50%" stop-color="#5c3d9a" stop-opacity="0.24"/>
+      <stop offset="100%" stop-color="#3a2466" stop-opacity="0.16"/>
+    </linearGradient>
+  </defs>
+  <g stroke="url(#nu-hero-rule-purple)" stroke-linecap="round">
+    <% [20, 36, 52, 68, 84, 100, 116, 132, 148, 164, 180, 196, 212, 228, 244, 260, 276, 292, 308].each do |y| %>
+    <line x1="0" y1="<%= y %>" x2="400" y2="<%= y %>" stroke-width="0.52"/>
+    <% end %>
+  </g>
+</svg>

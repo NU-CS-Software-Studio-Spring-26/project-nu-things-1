@@ -4,10 +4,15 @@ Rails.application.routes.draw do
   resource :registration, only: %i[new create]
   resource :session, only: %i[new create destroy]
 
-  resources :lost_items
+  resources :lost_items do
+    member do
+      post :report
+    end
+  end
   resources :found_items do
     member do
       post :claim
+      post :report
     end
   end
   resources :rental_items do

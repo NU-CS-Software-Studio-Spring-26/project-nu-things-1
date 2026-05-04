@@ -1,0 +1,9 @@
+Listing report — lost item
+
+Reporter: <%= @reporter_name %> <<%= @reporter_email %>>
+
+Lost item: <%= @lost_item.title %> (ID <%= @lost_item.id %>)
+<%= lost_item_url(@lost_item) %>
+
+What’s wrong / why they’re reporting it:
+<%= @details %>

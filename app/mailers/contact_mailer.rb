@@ -36,4 +36,36 @@ class ContactMailer < ApplicationMailer
 
     mail(to: @marketplace_listing.contact_email, subject: "Marketplace message about: #{@marketplace_listing.title}")
   end
+
+  def lost_item_report(lost_item, reporter_name, reporter_email, details)
+    @lost_item = lost_item
+    @reporter_name = reporter_name
+    @reporter_email = reporter_email
+    @details = details
+
+    mail(
+      to: listing_moderation_to,
+      reply_to: reporter_email,
+      subject: "[NU Things] Reported lost item ##{lost_item.id}: #{lost_item.title}"
+    )
+  end
+
+  def found_item_report(found_item, reporter_name, reporter_email, details)
+    @found_item = found_item
+    @reporter_name = reporter_name
+    @reporter_email = reporter_email
+    @details = details
+
+    mail(
+      to: listing_moderation_to,
+      reply_to: reporter_email,
+      subject: "[NU Things] Reported found item ##{found_item.id}: #{found_item.title}"
+    )
+  end
+
+  private
+
+  def listing_moderation_to
+    Rails.application.config.x.admin_email.presence || "admin@u.northwestern.edu"
+  end
 end

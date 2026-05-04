@@ -1,0 +1,9 @@
+<h2>Listing report — found item</h2>
+
+<p><strong>Reporter:</strong> <%= @reporter_name %> &lt;<%= @reporter_email %>&gt;</p>
+
+<p><strong>Found item:</strong> <%= @found_item.title %> (ID <%= @found_item.id %>)</p>
+<p><%= link_to "View listing", found_item_url(@found_item) %></p>
+
+<h3>What’s wrong / why they’re reporting it</h3>
+<p><%= simple_format(@details) %></p>

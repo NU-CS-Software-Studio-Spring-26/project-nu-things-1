@@ -1,0 +1,9 @@
+Listing report — found item
+
+Reporter: <%= @reporter_name %> <<%= @reporter_email %>>
+
+Found item: <%= @found_item.title %> (ID <%= @found_item.id %>)
+<%= found_item_url(@found_item) %>
+
+What’s wrong / why they’re reporting it:
+<%= @details %>

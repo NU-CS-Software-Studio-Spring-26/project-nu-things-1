@@ -1,0 +1,45 @@
+<%# locals: form_url:, listing_title: %>
+<div class="modal fade" id="reportListingModal" tabindex="-1" aria-labelledby="reportListingModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5 text-purple" id="reportListingModalLabel">Report a problem with this listing</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <%= form_with url: form_url, method: :post, local: true, class: "needs-validation" do |f| %>
+        <div class="modal-body">
+          <p class="small text-muted mb-3">Listing: <strong><%= listing_title %></strong></p>
+
+          <div class="mb-3">
+            <%= label_tag :report_details, "What’s wrong with this post, and why are you reporting it?", class: "form-label" %>
+            <%= text_area_tag :report_details, nil,
+                  class: "form-control",
+                  rows: 6,
+                  required: true,
+                  minlength: 20,
+                  maxlength: 5000,
+                  placeholder: "For example: misleading information, spam, wrong category, inappropriate content, or something else we should know." %>
+            <div class="form-text">At least 20 characters. This is sent to site moderators only, not to the poster.</div>
+          </div>
+
+          <% unless signed_in? %>
+            <div class="mb-3">
+              <%= label_tag :reporter_name, "Your name", class: "form-label" %>
+              <%= text_field_tag :reporter_name, prefilled_sender_name_field, class: "form-control", required: true, autocomplete: "name" %>
+            </div>
+            <div class="mb-0">
+              <%= label_tag :reporter_email, "Your email", class: "form-label" %>
+              <%= email_field_tag :reporter_email, prefilled_sender_email_field, class: "form-control", required: true, autocomplete: "email" %>
+            </div>
+          <% else %>
+            <p class="small text-muted mb-0">Reporting as <strong><%= current_user.email %></strong>.</p>
+          <% end %>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <%= submit_tag "Submit report", class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
