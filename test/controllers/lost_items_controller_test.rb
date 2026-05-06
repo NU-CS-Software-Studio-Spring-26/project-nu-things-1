@@ -86,7 +86,7 @@ class LostItemsControllerTest < ActionDispatch::IntegrationTest
     item = LostItem.create!(
       title: "Delete me",
       description: "Temporary row for destroy test.",
-      category: "Test",
+      category: "Book",
       location_lost: "Campus",
       date_lost: Date.current,
       contact_name: "Admin",

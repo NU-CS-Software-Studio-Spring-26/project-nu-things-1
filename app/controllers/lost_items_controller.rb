@@ -67,7 +67,7 @@ class LostItemsController < ApplicationController
   end
 
   def lost_item_params
-    params.expect(lost_item: [ :title, :description, :category, :location_lost, :date_lost,
+    params.expect(lost_item: [ :title, :description, :category, :custom_category, :location_lost, :date_lost,
                                :contact_name, :contact_email, :status, :image_url, :photo, :reward, :color, :brand ])
   end
 end

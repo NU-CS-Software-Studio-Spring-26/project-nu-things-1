@@ -10,7 +10,7 @@ class MarketplaceListingsController < ApplicationController
       params[:listing_type],
       MarketplaceListing::LISTING_TYPES
     )
-    @categories = (MarketplaceListing.distinct.pluck(:category).compact + [ "Other" ]).uniq.sort
+    @categories = (ListingCategories::VALUES + MarketplaceListing.distinct.pluck(:category).compact).uniq.sort
     @marketplace_listings = filter_where_in(@marketplace_listings, :category, params[:category], @categories)
   end
 

@@ -32,7 +32,7 @@ class LostItemTest < ActiveSupport::TestCase
     item = LostItem.create!(
       title: "Test keys",
       description: "Small key ring.",
-      category: "Keys",
+      category: "Accessories",
       location_lost: "Norris",
       date_lost: Date.current,
       contact_name: "A Student",
@@ -47,5 +47,22 @@ class LostItemTest < ActiveSupport::TestCase
     item.contact_email = "not-an-email"
     assert_not item.valid?
     assert item.errors.of_kind?(:contact_email, :invalid)
+  end
+
+  test "enforces title, name, and description limits" do
+    item = lost_items(:one)
+    item.title = "x" * (ListingTextLimits::TITLE_MAX_LENGTH + 1)
+    assert_not item.valid?
+    assert item.errors.of_kind?(:title, :too_long)
+
+    item.title = "ok"
+    item.contact_name = "n" * (ListingTextLimits::NAME_MAX_LENGTH + 1)
+    assert_not item.valid?
+    assert item.errors[:contact_name].any?
+
+    item.contact_name = "ok"
+    item.description = (["word"] * (ListingTextLimits::DESCRIPTION_MAX_WORDS + 1)).join(" ")
+    assert_not item.valid?
+    assert item.errors[:description].any?
   end
 end

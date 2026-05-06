@@ -32,25 +32,28 @@
             </div>
           </div>
 
-          <div class="mb-3">
+          <div class="mb-3" data-controller="field-limit" data-field-limit-max-chars-value="<%= ListingTextLimits::CUSTOM_CATEGORY_MAX_LENGTH %>">
             <%= form.label :custom_category, "If category is Other, specify", class: "form-label" %>
-            <%= form.text_field :custom_category, class: "form-control", placeholder: "e.g., Musical instrument, Kitchenware" %>
+            <%= form.text_field :custom_category, class: "form-control", placeholder: "e.g., Musical instrument, Kitchenware", maxlength: ListingTextLimits::CUSTOM_CATEGORY_MAX_LENGTH, data: { field_limit_target: "field", action: "input->field-limit#update" } %>
+            <small class="text-muted d-block mt-1" data-field-limit-target="count" aria-live="polite"></small>
           </div>
 
-          <div class="mb-3">
+          <div class="mb-3" data-controller="field-limit" data-field-limit-max-chars-value="<%= ListingTextLimits::TITLE_MAX_LENGTH %>">
             <%= form.label :title, class: "form-label" %>
-            <%= form.text_field :title, class: "form-control", required: true, placeholder: "e.g., Desk lamp, iClicker, Winter coat" %>
+            <%= form.text_field :title, class: "form-control", required: true, maxlength: ListingTextLimits::TITLE_MAX_LENGTH, placeholder: "e.g., Desk lamp, iClicker, Winter coat", data: { field_limit_target: "field", action: "input->field-limit#update" } %>
+            <small class="text-muted d-block mt-1" data-field-limit-target="count" aria-live="polite"></small>
           </div>
 
-          <div class="mb-3">
+          <div class="mb-3" data-controller="field-limit" data-field-limit-max-words-value="<%= ListingTextLimits::DESCRIPTION_MAX_WORDS %>">
             <%= form.label :description, class: "form-label" %>
-            <%= form.text_area :description, class: "form-control", required: true, placeholder: "Include condition, size/model, and any details a buyer/seller should know.", rows: 5 %>
+            <%= form.text_area :description, class: "form-control", required: true, placeholder: "Include condition, size/model, and any details a buyer/seller should know.", rows: 5, data: { field_limit_target: "field", action: "input->field-limit#update" } %>
+            <small class="text-muted d-block mt-1" data-field-limit-target="count" aria-live="polite"></small>
           </div>
 
           <div class="row">
             <div class="col-md-6 mb-3">
               <%= form.label :condition, class: "form-label" %>
-              <%= form.text_field :condition, class: "form-control", placeholder: "e.g., Like new, lightly used, missing charger (optional)" %>
+              <%= form.select :condition, MarketplaceListing::CONDITIONS, { prompt: "Select condition (optional)" }, class: "form-select" %>
             </div>
 
             <div class="col-md-6 mb-3">
@@ -71,9 +74,10 @@
             <%= form.text_field :image_url, class: "form-control", placeholder: "https://example.com/image.jpg" %>
           </div>
 
-          <div class="mb-3">
+          <div class="mb-3" data-controller="field-limit" data-field-limit-max-words-value="<%= ListingTextLimits::LOCATION_MAX_WORDS %>">
             <%= form.label :location, class: "form-label" %>
-            <%= form.text_field :location, class: "form-control", required: true, placeholder: "e.g., Northwestern Campus, Norris, Tech building" %>
+            <%= form.text_field :location, class: "form-control", required: true, placeholder: "e.g., Northwestern Campus, Norris, Tech building", data: { field_limit_target: "field", action: "input->field-limit#update" } %>
+            <small class="text-muted d-block mt-1" data-field-limit-target="count" aria-live="polite"></small>
           </div>
         </div>
       </div>
@@ -84,9 +88,10 @@
         <div class="card-body">
           <h5 class="card-title text-purple mb-4">Contact Information</h5>
 
-          <div class="mb-3">
+          <div class="mb-3" data-controller="field-limit" data-field-limit-max-chars-value="<%= ListingTextLimits::NAME_MAX_LENGTH %>">
             <%= form.label :contact_name, "Your name", class: "form-label" %>
-            <%= form.text_field :contact_name, class: "form-control", required: true %>
+            <%= form.text_field :contact_name, class: "form-control", required: true, maxlength: ListingTextLimits::NAME_MAX_LENGTH, data: { field_limit_target: "field", action: "input->field-limit#update" } %>
+            <small class="text-muted d-block mt-1" data-field-limit-target="count" aria-live="polite"></small>
           </div>
 
           <div class="mb-3">

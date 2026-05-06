@@ -90,7 +90,7 @@ class MarketplaceListingTest < ActiveSupport::TestCase
     listing = MarketplaceListing.create!(
       title: "Test item",
       description: "A description.",
-      category: "Books",
+      category: "Book",
       location: "Norris",
       listing_type: "wanted",
       contact_name: "A Student",

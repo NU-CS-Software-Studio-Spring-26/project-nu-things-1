@@ -10,7 +10,7 @@
   <div>
     <h1 class="h2 mb-2 text-purple"><%= @found_item.title %></h1>
     <span class="badge rounded-pill <%= found_status_badge_class(@found_item.status) %>"><%= @found_item.status.titleize %></span>
-    <span class="badge text-bg-light border ms-1"><%= @found_item.category %></span>
+    <span class="badge text-bg-light border ms-1"><%= @found_item.category_label %></span>
   </div>
   <div class="d-flex flex-wrap gap-2">
     <%= link_to_new_listing "Post found item", new_found_item_path, class: "btn btn-sm nu-pill-btn nu-report-found" %>
