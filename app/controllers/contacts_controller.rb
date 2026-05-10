@@ -1,6 +1,14 @@
 class ContactsController < ApplicationController
   before_action :require_login
 
+  # One bucket for all outbound contact mailers (spam / mailbox flood).
+  rate_limit to: 24, within: 1.hour, scope: :listing_contact_posts,
+             by: -> { "contact/user/#{current_user.id}" }, with: :notify_rate_limit,
+             only: %i[
+               create_lost_item_contact create_found_item_contact create_rental_item_contact
+               create_marketplace_listing_contact
+             ]
+
   def create_lost_item_contact
     @lost_item = LostItem.find(params[:lost_item_id])
     sender_name = params[:sender_name]

@@ -1,4 +1,7 @@
 class RegistrationsController < ApplicationController
+  rate_limit to: 5, within: 1.hour, only: :create, scope: :registration_create,
+             by: -> { request.remote_ip }, with: :notify_rate_limit
+
   def new
     @user = User.new
     if signed_in?

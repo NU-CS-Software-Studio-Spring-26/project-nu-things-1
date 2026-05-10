@@ -168,4 +168,20 @@ class ApplicationController < ActionController::Base
       [ params[:reporter_name].to_s.strip, params[:reporter_email].to_s.strip.downcase ]
     end
   end
+
+  # Used by +rate_limit ... with: :notify_rate_limit+ (HTML UX instead of bare 429).
+  def notify_rate_limit
+    redirect_back fallback_location: root_path,
+                  alert: "Too many attempts in a short time. Please wait a few minutes before trying again."
+  end
+
+  # Shared keys for listing report throttles (signed-in vs guest buckets).
+  def report_rate_limit_key
+    if signed_in?
+      "report/user/#{current_user.id}"
+    else
+      digest = Digest::SHA256.hexdigest([ params[:reporter_email].to_s.downcase.strip, request.remote_ip ].join(":"))[0, 48]
+      "report/guest/#{digest}"
+    end
+  end
 end

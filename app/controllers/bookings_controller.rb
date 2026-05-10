@@ -2,6 +2,9 @@ class BookingsController < ApplicationController
   before_action :set_rental_item
   before_action :set_booking, only: [ :show, :cancel ]
 
+  rate_limit to: 20, within: 1.hour, only: :create, scope: :rental_booking_requests,
+             by: -> { request.remote_ip }, with: :notify_rate_limit
+
   def create
     @booking = @rental_item.bookings.build(booking_params)
 
