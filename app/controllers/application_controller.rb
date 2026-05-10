@@ -169,6 +169,11 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  # Generic flash for non-attribute flows (contact forms, reports).
+  def profanity_blocked_alert
+    Rails.application.config.x.profanity_flash_alert
+  end
+
   # Used by +rate_limit ... with: :notify_rate_limit+ (HTML UX instead of bare 429).
   def notify_rate_limit
     redirect_back fallback_location: root_path,

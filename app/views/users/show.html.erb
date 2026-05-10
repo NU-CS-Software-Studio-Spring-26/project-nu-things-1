@@ -1,0 +1,152 @@
+<% display = display_user_name(@user).presence || "Member" %>
+<% content_for :title, "#{display} — Profile — NU Things" %>
+
+<h1 class="h2 mb-1 text-purple"><%= display %></h1>
+<p class="text-muted small mb-4">Profile — posts on NU Things.</p>
+
+<div class="d-flex flex-column gap-5">
+
+  <%# Lost items (authored) %>
+  <section>
+    <h2 class="h5 text-muted text-uppercase mb-3">Lost items posted</h2>
+    <% if @authored_lost_items.any? %>
+      <ul class="list-group nu-card overflow-hidden rounded">
+        <% @authored_lost_items.each do |item| %>
+          <li class="list-group-item d-flex flex-column flex-sm-row gap-3 align-items-sm-start">
+            <div class="flex-shrink-0">
+              <% if item.listing_image_available? %>
+                <%= listing_image_tag item, alt: item.title, class: "rounded", style: "width: 96px; height: 96px; object-fit: cover;" %>
+              <% else %>
+                <%= render "application/listing_image_placeholder", height: "96px", extra_classes: "rounded nu-listing-image-placeholder--tiny" %>
+              <% end %>
+            </div>
+            <div class="flex-grow-1 min-w-0">
+              <%= link_to item.title, item, class: "fw-semibold text-purple text-decoration-none" %>
+              <div class="small text-muted mt-1"><%= item.location_lost %> · <%= item.date_lost&.strftime("%b %-d, %Y") %></div>
+              <span class="badge rounded-pill <%= lost_status_badge_class(item.status) %> mt-2"><%= item.status.titleize %></span>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-muted mb-0">No lost item posts yet.</p>
+    <% end %>
+  </section>
+
+  <%# Found items posted (authored as finder) %>
+  <section>
+    <h2 class="h5 text-muted text-uppercase mb-3">Found items posted</h2>
+    <p class="small text-muted mb-3">Posts this person submitted as the finder.</p>
+    <% if @authored_found_items.any? %>
+      <ul class="list-group nu-card overflow-hidden rounded">
+        <% @authored_found_items.each do |item| %>
+          <li class="list-group-item d-flex flex-column flex-sm-row gap-3 align-items-sm-start">
+            <div class="flex-shrink-0">
+              <% if item.listing_image_available? %>
+                <%= listing_image_tag item, alt: item.title, class: "rounded", style: "width: 96px; height: 96px; object-fit: cover;" %>
+              <% else %>
+                <%= render "application/listing_image_placeholder", height: "96px", extra_classes: "rounded nu-listing-image-placeholder--tiny" %>
+              <% end %>
+            </div>
+            <div class="flex-grow-1 min-w-0">
+              <%= link_to item.title, item, class: "fw-semibold text-purple text-decoration-none" %>
+              <div class="small text-muted mt-1"><%= item.location_found %> · <%= item.date_found&.strftime("%b %-d, %Y") %></div>
+              <span class="badge rounded-pill <%= found_status_badge_class(item.status) %> mt-2"><%= item.status.titleize %></span>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-muted mb-0">No found item posts yet.</p>
+    <% end %>
+  </section>
+
+  <%# Marketplace %>
+  <section>
+    <h2 class="h5 text-muted text-uppercase mb-3">Marketplace listings</h2>
+    <% if @authored_marketplace_listings.any? %>
+      <ul class="list-group nu-card overflow-hidden rounded">
+        <% @authored_marketplace_listings.each do |listing| %>
+          <li class="list-group-item d-flex flex-column flex-sm-row gap-3 align-items-sm-start">
+            <div class="flex-shrink-0">
+              <% if listing.listing_image_available? %>
+                <%= listing_image_tag listing, alt: listing.title, class: "rounded", style: "width: 96px; height: 96px; object-fit: cover;" %>
+              <% else %>
+                <%= render "application/listing_image_placeholder", height: "96px", extra_classes: "rounded nu-listing-image-placeholder--tiny" %>
+              <% end %>
+            </div>
+            <div class="flex-grow-1 min-w-0">
+              <%= link_to listing.title, listing, class: "fw-semibold text-purple text-decoration-none" %>
+              <div class="small text-muted mt-1"><%= listing.location %> · <%= listing.category_label %></div>
+              <span class="badge <%= marketplace_listing_type_badge_class(listing.listing_type) %> mt-2"><%= listing.listing_type == "wanted" ? "Wanted" : "For sale" %></span>
+              <% if listing.status.present? %>
+                <span class="badge text-bg-light border mt-2 ms-1"><%= listing.status.titleize %></span>
+              <% end %>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-muted mb-0">No marketplace listings yet.</p>
+    <% end %>
+  </section>
+
+  <%# Rentals %>
+  <section>
+    <h2 class="h5 text-muted text-uppercase mb-3">Rental listings</h2>
+    <% if @authored_rental_items.any? %>
+      <ul class="list-group nu-card overflow-hidden rounded">
+        <% @authored_rental_items.each do |item| %>
+          <li class="list-group-item d-flex flex-column flex-sm-row gap-3 align-items-sm-start">
+            <div class="flex-shrink-0">
+              <% if item.listing_image_available? %>
+                <%= listing_image_tag item, alt: item.title, class: "rounded", style: "width: 96px; height: 96px; object-fit: cover;" %>
+              <% else %>
+                <%= render "application/listing_image_placeholder", height: "96px", extra_classes: "rounded nu-listing-image-placeholder--tiny" %>
+              <% end %>
+            </div>
+            <div class="flex-grow-1 min-w-0">
+              <%= link_to item.title, item, class: "fw-semibold text-primary text-decoration-none" %>
+              <div class="small text-muted mt-1"><%= item.location %></div>
+              <span class="text-primary fw-semibold small mt-2 d-inline-block"><%= format_rental_rate(item) %></span>
+              <% if item.status.present? %>
+                <span class="badge text-bg-light border mt-2 ms-2"><%= item.status.titleize %></span>
+              <% end %>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-muted mb-0">No rental listings yet.</p>
+    <% end %>
+  </section>
+
+  <%# Claimed found items %>
+  <section>
+    <h2 class="h5 text-muted text-uppercase mb-3">Found items marked claimed</h2>
+    <p class="small text-muted mb-3">Items they marked as claimed on the board.</p>
+    <% if @claimed_found_items.any? %>
+      <ul class="list-group nu-card overflow-hidden rounded">
+        <% @claimed_found_items.each do |item| %>
+          <li class="list-group-item d-flex flex-column flex-sm-row gap-3 align-items-sm-start">
+            <div class="flex-shrink-0">
+              <% if item.listing_image_available? %>
+                <%= listing_image_tag item, alt: item.title, class: "rounded", style: "width: 96px; height: 96px; object-fit: cover;" %>
+              <% else %>
+                <%= render "application/listing_image_placeholder", height: "96px", extra_classes: "rounded nu-listing-image-placeholder--tiny" %>
+              <% end %>
+            </div>
+            <div class="flex-grow-1 min-w-0">
+              <%= link_to item.title, item, class: "fw-semibold text-purple text-decoration-none" %>
+              <div class="small text-muted mt-1"><%= item.location_found %> · <%= item.date_found&.strftime("%b %-d, %Y") %></div>
+              <span class="badge rounded-pill <%= found_status_badge_class(item.status) %> mt-2"><%= item.status.titleize %></span>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-muted mb-0">No claimed items yet.</p>
+    <% end %>
+  </section>
+
+</div>

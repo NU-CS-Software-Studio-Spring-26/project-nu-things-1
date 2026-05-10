@@ -1,11 +1,14 @@
 class MarketplaceListing < ApplicationRecord
   include ListingPhotoAttachment
+  include ModeratedContent
 
   belongs_to :user, optional: true
 
   LISTING_TYPES = %w[for_sale wanted].freeze
   CATEGORIES = %w[Camping\ Gear Electronics Tools Books Furniture Sports\ Equipment Other].freeze
   STATUSES = %w[active completed inactive].freeze
+
+  moderate_attributes :title, :description, :location, :condition, :custom_category
 
   validates :title, :description, :category, :location, :contact_name, :contact_email, :listing_type, presence: true
   validates :contact_email, format: { with: URI::MailTo::EMAIL_REGEXP }

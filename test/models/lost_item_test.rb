@@ -48,4 +48,12 @@ class LostItemTest < ActiveSupport::TestCase
     assert_not item.valid?
     assert item.errors.of_kind?(:contact_email, :invalid)
   end
+
+  test "rejects moderated word in title" do
+    item = lost_items(:one)
+    item.title = "Item xxtestbadxx found"
+    assert_not item.valid?
+    msg = Moderate.configuration.error_message
+    assert_includes item.errors[:title], msg
+  end
 end

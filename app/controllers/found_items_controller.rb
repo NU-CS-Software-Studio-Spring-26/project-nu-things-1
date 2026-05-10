@@ -65,6 +65,11 @@ class FoundItemsController < ApplicationController
       return
     end
 
+    if Moderate::Text.bad_words?(details)
+      redirect_to @found_item, alert: profanity_blocked_alert
+      return
+    end
+
     name, email = reporter_identity_for_report
     if name.blank? || email.blank? || !email.match?(URI::MailTo::EMAIL_REGEXP)
       redirect_to @found_item, alert: "Please include your name and email so moderators can follow up if needed."
