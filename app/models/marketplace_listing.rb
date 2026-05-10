@@ -1,6 +1,8 @@
 class MarketplaceListing < ApplicationRecord
   include ListingPhotoAttachment
 
+  belongs_to :user, optional: true
+
   LISTING_TYPES = %w[for_sale wanted].freeze
   CATEGORIES = %w[Camping\ Gear Electronics Tools Books Furniture Sports\ Equipment Other].freeze
   STATUSES = %w[active completed inactive].freeze

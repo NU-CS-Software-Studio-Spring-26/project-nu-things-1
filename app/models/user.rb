@@ -5,6 +5,10 @@ class User < ApplicationRecord
 
   has_many :claimed_found_items, class_name: "FoundItem", foreign_key: :claimed_by_user_id,
                                  inverse_of: :claimed_by_user, dependent: :nullify
+  has_many :lost_items, inverse_of: :user, dependent: :nullify
+  has_many :found_items, inverse_of: :user, dependent: :nullify
+  has_many :marketplace_listings, inverse_of: :user, dependent: :nullify
+  has_many :rental_items, inverse_of: :user, dependent: :nullify
 
   attr_reader :password, :password_confirmation
   attr_writer :password_confirmation

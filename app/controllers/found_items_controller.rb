@@ -1,6 +1,7 @@
 class FoundItemsController < ApplicationController
-  before_action :require_admin, only: %i[edit update destroy]
   before_action :set_found_item, only: %i[show edit update destroy claim report]
+  before_action -> { require_owner_or_admin(@found_item) }, only: %i[edit update]
+  before_action :require_admin, only: %i[destroy]
 
   def index
     @found_items = FoundItem.with_attached_photo.order(date_found: :desc, created_at: :desc)
@@ -21,6 +22,7 @@ class FoundItemsController < ApplicationController
 
   def create
     @found_item = FoundItem.new(found_item_params)
+    @found_item.user = current_user
     apply_saved_identity_to_new_listing(@found_item)
 
     if @found_item.save

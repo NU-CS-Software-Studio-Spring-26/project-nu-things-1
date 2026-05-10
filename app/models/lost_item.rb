@@ -3,6 +3,8 @@ class LostItem < ApplicationRecord
 
   STATUSES = %w[open resolved].freeze
 
+  belongs_to :user, optional: true
+
   validates :title, :description, :category, :location_lost, :date_lost,
             :contact_name, :contact_email, :status, presence: true
   validates :status, inclusion: { in: STATUSES }

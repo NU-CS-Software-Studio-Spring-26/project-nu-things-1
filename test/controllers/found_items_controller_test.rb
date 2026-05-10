@@ -35,6 +35,7 @@ class FoundItemsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to found_item_url(FoundItem.last)
+    assert_equal users(:nu_student).id, FoundItem.last.user_id
   end
 
   test "should show found_item" do
@@ -47,30 +48,44 @@ class FoundItemsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_session_url
   end
 
-  test "should redirect edit when signed in but not admin" do
+  test "should redirect edit when signed in but not owner of legacy post" do
     sign_in_as(users(:nu_student))
-    get edit_found_item_url(@found_item)
+    get edit_found_item_url(found_items(:two))
     assert_redirected_to root_url
     assert_match(/permission/i, flash[:alert].to_s)
   end
 
-  test "should get edit when admin" do
-    sign_in_as(users(:admin))
+  test "should get edit when signed in as owner" do
+    sign_in_as(users(:nu_student))
     get edit_found_item_url(@found_item)
     assert_response :success
   end
 
-  test "should redirect update when not admin" do
+  test "should get edit when admin" do
+    sign_in_as(users(:admin))
+    get edit_found_item_url(found_items(:two))
+    assert_response :success
+  end
+
+  test "should redirect update when not owner on legacy post" do
     sign_in_as(users(:nu_student))
-    patch found_item_url(@found_item), params: { found_item: { brand: @found_item.brand, category: @found_item.category, color: @found_item.color, contact_email: @found_item.contact_email, contact_name: @found_item.contact_name, date_found: @found_item.date_found, description: @found_item.description, image_url: @found_item.image_url, location_found: @found_item.location_found, status: @found_item.status, storage_location: @found_item.storage_location, title: @found_item.title } }
+    patch found_item_url(found_items(:two)), params: { found_item: { brand: @found_item.brand, category: @found_item.category, color: @found_item.color, contact_email: @found_item.contact_email, contact_name: @found_item.contact_name, date_found: @found_item.date_found, description: @found_item.description, image_url: @found_item.image_url, location_found: @found_item.location_found, status: @found_item.status, storage_location: @found_item.storage_location, title: @found_item.title } }
     assert_redirected_to root_url
+  end
+
+  test "should update own found_item when signed in" do
+    sign_in_as(users(:nu_student))
+    patch found_item_url(@found_item), params: { found_item: { brand: @found_item.brand, category: @found_item.category, color: @found_item.color, contact_email: @found_item.contact_email, contact_name: @found_item.contact_name, date_found: @found_item.date_found, description: "Owner update.", image_url: @found_item.image_url, location_found: @found_item.location_found, status: @found_item.status, storage_location: @found_item.storage_location, title: @found_item.title } }
+    assert_redirected_to found_item_url(@found_item)
+    assert_equal "Owner update.", @found_item.reload.description
   end
 
   test "should update found_item when admin" do
     sign_in_as(users(:admin))
-    patch found_item_url(@found_item), params: { found_item: { brand: @found_item.brand, category: @found_item.category, color: @found_item.color, contact_email: @found_item.contact_email, contact_name: @found_item.contact_name, date_found: @found_item.date_found, description: "Admin update.", image_url: @found_item.image_url, location_found: @found_item.location_found, status: @found_item.status, storage_location: @found_item.storage_location, title: @found_item.title } }
-    assert_redirected_to found_item_url(@found_item)
-    assert_equal "Admin update.", @found_item.reload.description
+    legacy = found_items(:two)
+    patch found_item_url(legacy), params: { found_item: { brand: legacy.brand, category: legacy.category, color: legacy.color, contact_email: legacy.contact_email, contact_name: legacy.contact_name, date_found: legacy.date_found, description: "Admin update.", image_url: legacy.image_url, location_found: legacy.location_found, status: legacy.status, storage_location: legacy.storage_location, title: legacy.title } }
+    assert_redirected_to found_item_url(legacy)
+    assert_equal "Admin update.", legacy.reload.description
   end
 
   test "should redirect destroy when not admin" do

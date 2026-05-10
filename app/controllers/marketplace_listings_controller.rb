@@ -1,6 +1,7 @@
 class MarketplaceListingsController < ApplicationController
-  before_action :require_admin, only: %i[edit update destroy]
   before_action :set_marketplace_listing, only: %i[show edit update destroy]
+  before_action -> { require_owner_or_admin(@marketplace_listing) }, only: %i[edit update]
+  before_action :require_admin, only: %i[destroy]
 
   def index
     @marketplace_listings = MarketplaceListing.with_attached_photo.where(status: "active").order(created_at: :desc)
@@ -27,6 +28,7 @@ class MarketplaceListingsController < ApplicationController
 
   def create
     @marketplace_listing = MarketplaceListing.new(marketplace_listing_params)
+    @marketplace_listing.user = current_user
     apply_saved_identity_to_new_listing(@marketplace_listing)
 
     if @marketplace_listing.save

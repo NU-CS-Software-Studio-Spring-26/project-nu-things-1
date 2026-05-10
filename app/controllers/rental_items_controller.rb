@@ -1,6 +1,7 @@
 class RentalItemsController < ApplicationController
-  before_action :require_admin, only: %i[edit update destroy]
-  before_action :set_rental_item, only: %i[ show edit update destroy ]
+  before_action :set_rental_item, only: %i[show edit update destroy]
+  before_action -> { require_owner_or_admin(@rental_item) }, only: %i[edit update]
+  before_action :require_admin, only: %i[destroy]
 
   def index
     @rental_items = RentalItem.with_attached_photo.where(status: "available").order(created_at: :desc)
@@ -21,6 +22,7 @@ class RentalItemsController < ApplicationController
 
   def create
     @rental_item = RentalItem.new(rental_item_params)
+    @rental_item.user = current_user
     apply_saved_identity_to_new_listing(@rental_item)
 
     if @rental_item.save

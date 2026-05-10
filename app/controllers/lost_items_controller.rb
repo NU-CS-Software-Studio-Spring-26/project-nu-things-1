@@ -1,6 +1,7 @@
 class LostItemsController < ApplicationController
-  before_action :require_admin, only: %i[edit update destroy]
   before_action :set_lost_item, only: %i[show edit update destroy report]
+  before_action -> { require_owner_or_admin(@lost_item) }, only: %i[edit update]
+  before_action :require_admin, only: %i[destroy]
 
   def index
     @lost_items = LostItem.with_attached_photo.order(date_lost: :desc, created_at: :desc)
@@ -21,6 +22,7 @@ class LostItemsController < ApplicationController
 
   def create
     @lost_item = LostItem.new(lost_item_params)
+    @lost_item.user = current_user
     apply_saved_identity_to_new_listing(@lost_item)
 
     if @lost_item.save

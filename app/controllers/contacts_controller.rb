@@ -1,4 +1,6 @@
 class ContactsController < ApplicationController
+  before_action :require_login
+
   def create_lost_item_contact
     @lost_item = LostItem.find(params[:lost_item_id])
     sender_name = params[:sender_name]

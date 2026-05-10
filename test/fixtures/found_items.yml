@@ -1,4 +1,5 @@
 one:
+  user: nu_student
   title: "Fixture found item one"
   description: "Used by automated tests."
   category: "Test"
