@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
     /marketplace_listings/new
   ].freeze
 
-  helper_method :current_user, :signed_in?, :admin?
+  helper_method :current_user, :signed_in?, :admin?, :can_edit_post?
 
   # Strip query string and (for absolute URLs) take only the path segment.
   def self.strip_return_path(raw)
@@ -44,6 +44,26 @@ class ApplicationController < ActionController::Base
 
   def admin?
     current_user&.admin?
+  end
+
+  def can_edit_post?(record)
+    admin? || (signed_in? && record.user_id.present? && record.user_id == current_user.id)
+  end
+
+  def require_owner_or_admin(record)
+    unless signed_in?
+      store_return_to
+      redirect_to new_session_path, alert: "Please sign in with your Northwestern account to continue."
+      return
+    end
+    return if current_user.admin?
+    if record.user_id.blank?
+      redirect_back fallback_location: root_path, alert: "You don't have permission to do that."
+      return
+    end
+    return if record.user_id == current_user.id
+
+    redirect_back fallback_location: root_path, alert: "You don't have permission to do that."
   end
 
   def require_admin

@@ -1,5 +1,6 @@
 # Minimal valid records for controller and model tests.
 for_sale_one:
+  user: nu_student
   title: "Camping Tent"
   description: "Lightly used 2-person tent, great condition."
   category: "Camping Gear"

@@ -1,5 +1,6 @@
 # Minimal valid records for controller tests.
 one:
+  user: nu_student
   title: "Fixture lost item one"
   description: "Used by automated tests."
   category: "Test"
