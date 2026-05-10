@@ -3,6 +3,9 @@ class FoundItemsController < ApplicationController
   before_action -> { require_owner_or_admin(@found_item) }, only: %i[edit update]
   before_action :require_admin, only: %i[destroy]
 
+  rate_limit to: 25, within: 24.hours, only: :report, scope: :found_item_reports_found_items,
+             by: :report_rate_limit_key, with: :notify_rate_limit
+
   def index
     @found_items = FoundItem.with_attached_photo.order(date_found: :desc, created_at: :desc)
     @categories = filter_category_options(FoundItem)
