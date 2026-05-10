@@ -15,7 +15,9 @@ test:
   database: storage/test.sqlite3
 
 # Heroku provides DATABASE_URL. Solid Cache/Queue/Cable use the same Postgres database
-# (separate migration paths) so nothing relies on ephemeral SQLite files in production.
+# as primary (logical configs share one DB). Rails will not apply db/cache_migrate etc.
+# after schema_migrations exists, so Solid tables are created via db/migrate on primary
+# (see migration create_solid_cache_queue_and_cable_tables).
 production:
   primary: &primary_production
     adapter: postgresql
