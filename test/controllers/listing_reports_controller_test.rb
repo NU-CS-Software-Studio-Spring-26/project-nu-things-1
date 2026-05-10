@@ -12,7 +12,7 @@ class ListingReportsControllerTest < ActionDispatch::IntegrationTest
     assert_no_difference -> { ActiveJob::Base.queue_adapter.enqueued_jobs.size } do
       post report_lost_item_url(@lost_item),
            params: {
-             report_details: "Something wrong xxtestbadxx with this posting here extra text filler line two ok min length met",
+             report_details: "Something wrong xxtestbadxx with this posting here extra text filler line two ok min length met"
            }
     end
 
@@ -24,7 +24,7 @@ class ListingReportsControllerTest < ActionDispatch::IntegrationTest
     assert_difference -> { ActiveJob::Base.queue_adapter.enqueued_jobs.size }, 1 do
       post report_lost_item_url(@lost_item),
            params: {
-             report_details: "This spam listing looks duplicated from another campus board and should be removed by moderators here.",
+             report_details: "This spam listing looks duplicated from another campus board and should be removed by moderators here."
            }
     end
 
@@ -37,7 +37,7 @@ class ListingReportsControllerTest < ActionDispatch::IntegrationTest
     assert_no_difference -> { ActiveJob::Base.queue_adapter.enqueued_jobs.size } do
       post report_found_item_url(item),
            params: {
-             report_details: "Something wrong xxtestbadxx with this posting here extra text filler line two ok min length met",
+             report_details: "Something wrong xxtestbadxx with this posting here extra text filler line two ok min length met"
            }
     end
 

@@ -15,7 +15,7 @@ class ContactsControllerTest < ActionDispatch::IntegrationTest
              lost_item_id: @lost_item.id,
              sender_name: "Sam Student",
              sender_email: "student@u.northwestern.edu",
-             message: "Hello xxtestbadxx there.",
+             message: "Hello xxtestbadxx there."
            }
     end
 
@@ -30,7 +30,7 @@ class ContactsControllerTest < ActionDispatch::IntegrationTest
              lost_item_id: @lost_item.id,
              sender_name: "Sam Student",
              sender_email: "student@u.northwestern.edu",
-             message: "Is this still available? Thanks!",
+             message: "Is this still available? Thanks!"
            }
     end
 
