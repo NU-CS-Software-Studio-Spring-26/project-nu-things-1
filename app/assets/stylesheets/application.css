@@ -26,7 +26,7 @@ input::placeholder,
 textarea::placeholder,
 select::placeholder {
   color: #5a6170;
-  opacity: 1; /* Ensure full opacity for visibility */
+  opacity: 1; 
   font-weight: 500;
 }
 
@@ -93,7 +93,8 @@ a:not(.btn, .nav-link, .navbar-brand) {
 /* Navbar-dark defaults use translucent white on links — fails contrast on mid purple */
 .nu-navbar.navbar-dark .navbar-brand,
 .nu-navbar.navbar-dark .nav-link {
-  color: #fff !important;
+  color: #ffffff !important;
+  font-weight: 600;
 }
 
 .nu-navbar.navbar-dark .nav-link:hover,
@@ -102,8 +103,10 @@ a:not(.btn, .nav-link, .navbar-brand) {
 }
 
 .nu-navbar .btn-outline-light {
-  color: #fff;
-  border-color: #fff;
+  color: #ffffff;
+  border-color: #ffffff;
+  font-weight: 600;
+  border-width: 2px;
 }
 
 .nu-navbar .btn-outline-light:hover,
@@ -130,7 +133,8 @@ a:not(.btn, .nav-link, .navbar-brand) {
 }
 
 .text-purple {
-  color: var(--nu-purple) !important;
+  color: #3a2466 !important;
+  font-weight: 600;
 }
 
 /* Hero + semi-transparent panels: brand purple on lavender can dip below 4.5:1 */
@@ -139,10 +143,11 @@ a:not(.btn, .nav-link, .navbar-brand) {
 }
 
 .nu-link-purple {
-  color: var(--nu-purple);
-  font-weight: 600;
+  color: #3a2466;
+  font-weight: 700;
   text-decoration: underline;
-  text-underline-offset: 0.15em;
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 2px;
 }
 
 .nu-link-purple:hover,
@@ -289,16 +294,16 @@ a:not(.btn, .nav-link, .navbar-brand) {
 
 
 .nu-browse-title {
-  color: #1a1424;
-  font-weight: 800;
+  color: #0d0810;
+  font-weight: 900;
   font-size: 1.18rem;
   line-height: 1.2;
 }
 
 .nu-browse-subtitle {
-  color: #252b36;
+  color: #1a1f2a;
   font-size: 0.89rem;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .nu-report-lost {
@@ -381,7 +386,8 @@ a:not(.btn, .nav-link, .navbar-brand) {
 }
 
 .nu-section-lead {
-  color: var(--nu-text-muted-strong);
+  color: #1a1f2a;
+  font-weight: 600;
 }
 
 .nu-hero .nu-section-lead {
