@@ -16,6 +16,8 @@
   </div>
   <% if record.photo.attached? %>
     <div class="mt-2 small text-muted">Current saved photo:</div>
-    <%= image_tag record.photo, class: "img-thumbnail mt-1 nu-photo-preview-current" %>
+    <%= image_tag record.photo,
+          alt: "Current listing photo: #{record.title}",
+          class: "img-thumbnail mt-1 nu-photo-preview-current" %>
   <% end %>
 </div>

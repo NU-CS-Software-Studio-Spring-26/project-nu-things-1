@@ -22,6 +22,13 @@
     radial-gradient(circle at 15% 12%, rgba(255, 205, 112, 0.2), transparent 20%),
     linear-gradient(180deg, #f8f5ff 0%, #fffdf7 45%, #ffffff 100%);
   color: var(--nu-ink);
+  /* Comfortable default line height for low-vision zoom / text-only resize (Teach Access / WCAG-friendly) */
+  line-height: 1.5;
+}
+
+/* Long user-generated or marketing copy: limit line length for readability */
+.nu-prose {
+  max-width: 65ch;
 }
 
 /* No light purple tail — keeps white nav text ≥4.5:1 on entire bar */
@@ -198,7 +205,8 @@
 }
 
 .nu-profile-placeholder .nu-listing-image-placeholder__label {
-  font-size: 0.65rem;
+  /* ≥12px at default 16px root so label stays legible when zoomed */
+  font-size: 0.75rem;
   letter-spacing: 0.1em;
   padding: 0.25rem 0.5rem;
 }
@@ -686,7 +694,7 @@ ul.list-group.nu-card.rounded {
 .nu-listing-image-placeholder__label {
   position: relative;
   z-index: 1;
-  font-size: 0.78rem;
+  font-size: 0.8125rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
