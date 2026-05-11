@@ -41,6 +41,13 @@
     radial-gradient(circle at 15% 12%, rgba(255, 205, 112, 0.2), transparent 20%),
     linear-gradient(180deg, #f8f5ff 0%, #fffdf7 45%, #ffffff 100%);
   color: var(--nu-ink);
+  /* Comfortable default line height for low-vision zoom / text-only resize (Teach Access / WCAG-friendly) */
+  line-height: 1.5;
+}
+
+/* Long user-generated or marketing copy: limit line length for readability */
+.nu-prose {
+  max-width: 65ch;
 }
 
 /* No light purple tail — keeps white nav text ≥4.5:1 on entire bar */
@@ -182,12 +189,62 @@
   border: none;
   border-radius: 1rem;
   box-shadow: 0 0.5rem 1.35rem rgba(75, 46, 131, 0.1);
-  overflow: hidden;
+  /* Allow vertical growth at 200% text zoom; clip horizontal bleed only */
+  overflow-x: hidden;
+  overflow-y: visible;
+}
+
+/* Index listing cards: image area scales with zoom (no fixed px height) */
+.nu-listing-index-card-img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.nu-listing-image-placeholder.nu-listing-index-card-placeholder {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  min-height: 8rem;
+}
+
+/* Profile rows: thumbnail scales with root font size */
+.nu-profile-thumb {
+  width: 6rem;
+  height: 6rem;
+  max-width: 100%;
+  object-fit: cover;
+}
+
+.nu-listing-image-placeholder.nu-profile-placeholder {
+  width: 6rem;
+  height: 6rem;
+  max-width: 100%;
+  flex-shrink: 0;
+}
+
+.nu-profile-placeholder .nu-listing-image-placeholder__label {
+  /* ≥12px at default 16px root so label stays legible when zoomed */
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  padding: 0.25rem 0.5rem;
+}
+
+/* Profile list groups: do not clip enlarged text at high zoom */
+ul.list-group.nu-card.rounded {
+  overflow: visible;
+}
+
+.nu-card > .card-img-top:first-child,
+.nu-card > .nu-listing-image-placeholder:first-child {
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
 }
 
 .nu-hero {
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: visible;
   border-radius: 1rem;
   background:
     radial-gradient(circle at 92% 6%, rgba(131, 111, 255, 0.18), transparent 34%),
@@ -609,7 +666,7 @@
 
 .nu-item-img {
   max-width: 100%;
-  max-height: 280px;
+  max-height: 25rem;
   object-fit: contain;
   border-radius: 0.5rem;
   border: 1px solid #e5e7eb;
@@ -628,7 +685,8 @@
 /* Artsy placeholder when a listing has no photo — horizontal waves, rings, corner hearts */
 .nu-listing-image-placeholder {
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: visible;
   width: 100%;
   box-sizing: border-box;
   display: flex;
@@ -655,7 +713,7 @@
 .nu-listing-image-placeholder__label {
   position: relative;
   z-index: 1;
-  font-size: 0.78rem;
+  font-size: 0.8125rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -670,6 +728,17 @@
 
 .nu-listing-image-placeholder.nu-listing-image-placeholder--in-body {
   border: 1px solid rgba(75, 46, 131, 0.12);
+}
+
+/* Form photo previews: rem scales with zoom vs fixed px */
+.nu-photo-preview-preview {
+  max-height: 11.25rem;
+  object-fit: contain;
+}
+
+.nu-photo-preview-current {
+  max-height: 8.75rem;
+  object-fit: contain;
 }
 
 .form-control,

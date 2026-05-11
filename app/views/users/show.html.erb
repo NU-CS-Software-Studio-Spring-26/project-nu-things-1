@@ -10,14 +10,14 @@
   <section>
     <h2 class="h5 text-muted text-uppercase mb-3">Lost items posted</h2>
     <% if @authored_lost_items.any? %>
-      <ul class="list-group nu-card overflow-hidden rounded">
+      <ul class="list-group nu-card rounded">
         <% @authored_lost_items.each do |item| %>
           <li class="list-group-item d-flex flex-column flex-sm-row gap-3 align-items-sm-start">
             <div class="flex-shrink-0">
               <% if item.listing_image_available? %>
-                <%= listing_image_tag item, alt: item.title, class: "rounded", style: "width: 96px; height: 96px; object-fit: cover;" %>
+                <%= listing_image_tag item, alt: item.title, class: "rounded nu-profile-thumb" %>
               <% else %>
-                <%= render "application/listing_image_placeholder", height: "96px", extra_classes: "rounded nu-listing-image-placeholder--tiny" %>
+                <%= render "application/listing_image_placeholder", profile_thumb: true, extra_classes: "rounded nu-listing-image-placeholder--tiny" %>
               <% end %>
             </div>
             <div class="flex-grow-1 min-w-0">
@@ -38,14 +38,14 @@
     <h2 class="h5 text-muted text-uppercase mb-3">Found items posted</h2>
     <p class="small text-muted mb-3">Posts this person submitted as the finder.</p>
     <% if @authored_found_items.any? %>
-      <ul class="list-group nu-card overflow-hidden rounded">
+      <ul class="list-group nu-card rounded">
         <% @authored_found_items.each do |item| %>
           <li class="list-group-item d-flex flex-column flex-sm-row gap-3 align-items-sm-start">
             <div class="flex-shrink-0">
               <% if item.listing_image_available? %>
-                <%= listing_image_tag item, alt: item.title, class: "rounded", style: "width: 96px; height: 96px; object-fit: cover;" %>
+                <%= listing_image_tag item, alt: item.title, class: "rounded nu-profile-thumb" %>
               <% else %>
-                <%= render "application/listing_image_placeholder", height: "96px", extra_classes: "rounded nu-listing-image-placeholder--tiny" %>
+                <%= render "application/listing_image_placeholder", profile_thumb: true, extra_classes: "rounded nu-listing-image-placeholder--tiny" %>
               <% end %>
             </div>
             <div class="flex-grow-1 min-w-0">
@@ -65,14 +65,14 @@
   <section>
     <h2 class="h5 text-muted text-uppercase mb-3">Marketplace listings</h2>
     <% if @authored_marketplace_listings.any? %>
-      <ul class="list-group nu-card overflow-hidden rounded">
+      <ul class="list-group nu-card rounded">
         <% @authored_marketplace_listings.each do |listing| %>
           <li class="list-group-item d-flex flex-column flex-sm-row gap-3 align-items-sm-start">
             <div class="flex-shrink-0">
               <% if listing.listing_image_available? %>
-                <%= listing_image_tag listing, alt: listing.title, class: "rounded", style: "width: 96px; height: 96px; object-fit: cover;" %>
+                <%= listing_image_tag listing, alt: listing.title, class: "rounded nu-profile-thumb" %>
               <% else %>
-                <%= render "application/listing_image_placeholder", height: "96px", extra_classes: "rounded nu-listing-image-placeholder--tiny" %>
+                <%= render "application/listing_image_placeholder", profile_thumb: true, extra_classes: "rounded nu-listing-image-placeholder--tiny" %>
               <% end %>
             </div>
             <div class="flex-grow-1 min-w-0">
@@ -95,14 +95,14 @@
   <section>
     <h2 class="h5 text-muted text-uppercase mb-3">Rental listings</h2>
     <% if @authored_rental_items.any? %>
-      <ul class="list-group nu-card overflow-hidden rounded">
+      <ul class="list-group nu-card rounded">
         <% @authored_rental_items.each do |item| %>
           <li class="list-group-item d-flex flex-column flex-sm-row gap-3 align-items-sm-start">
             <div class="flex-shrink-0">
               <% if item.listing_image_available? %>
-                <%= listing_image_tag item, alt: item.title, class: "rounded", style: "width: 96px; height: 96px; object-fit: cover;" %>
+                <%= listing_image_tag item, alt: item.title, class: "rounded nu-profile-thumb" %>
               <% else %>
-                <%= render "application/listing_image_placeholder", height: "96px", extra_classes: "rounded nu-listing-image-placeholder--tiny" %>
+                <%= render "application/listing_image_placeholder", profile_thumb: true, extra_classes: "rounded nu-listing-image-placeholder--tiny" %>
               <% end %>
             </div>
             <div class="flex-grow-1 min-w-0">
@@ -126,14 +126,14 @@
     <h2 class="h5 text-muted text-uppercase mb-3">Found items marked claimed</h2>
     <p class="small text-muted mb-3">Items they marked as claimed on the board.</p>
     <% if @claimed_found_items.any? %>
-      <ul class="list-group nu-card overflow-hidden rounded">
+      <ul class="list-group nu-card rounded">
         <% @claimed_found_items.each do |item| %>
           <li class="list-group-item d-flex flex-column flex-sm-row gap-3 align-items-sm-start">
             <div class="flex-shrink-0">
               <% if item.listing_image_available? %>
-                <%= listing_image_tag item, alt: item.title, class: "rounded", style: "width: 96px; height: 96px; object-fit: cover;" %>
+                <%= listing_image_tag item, alt: item.title, class: "rounded nu-profile-thumb" %>
               <% else %>
-                <%= render "application/listing_image_placeholder", height: "96px", extra_classes: "rounded nu-listing-image-placeholder--tiny" %>
+                <%= render "application/listing_image_placeholder", profile_thumb: true, extra_classes: "rounded nu-listing-image-placeholder--tiny" %>
               <% end %>
             </div>
             <div class="flex-grow-1 min-w-0">

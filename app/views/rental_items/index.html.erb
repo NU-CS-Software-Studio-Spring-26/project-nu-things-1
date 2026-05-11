@@ -31,9 +31,9 @@
       <div class="col-md-6 col-lg-4">
         <div class="card nu-card h-100">
           <% if item.listing_image_available? %>
-            <%= listing_image_tag item, alt: item.title, class: "card-img-top", style: "height: 200px; object-fit: cover;" %>
+            <%= listing_image_tag item, alt: item.title, class: "card-img-top nu-listing-index-card-img" %>
           <% else %>
-            <%= render "application/listing_image_placeholder", height: "200px", extra_classes: "card-img-top" %>
+            <%= render "application/listing_image_placeholder", aspect_index_card: true, extra_classes: "card-img-top" %>
           <% end %>
           <div class="card-body">
             <h5 class="card-title"><%= link_to item.title, item, class: "text-decoration-none" %></h5>

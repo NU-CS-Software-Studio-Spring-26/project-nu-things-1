@@ -30,7 +30,7 @@
       <div class="card-body">
         <h2 class="h6 text-muted text-uppercase mb-3">Photo</h2>
         <% if @lost_item.listing_image_available? %>
-          <%= listing_image_tag @lost_item, alt: @lost_item.title, class: "nu-item-img d-block mx-auto", style: "max-height: 400px; object-fit: contain;" %>
+          <%= listing_image_tag @lost_item, alt: @lost_item.title, class: "nu-item-img d-block mx-auto" %>
         <% else %>
           <%= render "application/listing_image_placeholder", height: "300px", extra_classes: "rounded nu-listing-image-placeholder--in-body" %>
         <% end %>
@@ -40,7 +40,7 @@
     <div class="card nu-card">
       <div class="card-body">
         <h2 class="h6 text-muted text-uppercase">Description</h2>
-        <p class="mb-4"><%= simple_format(@lost_item.description) %></p>
+        <div class="mb-4 nu-prose"><%= simple_format(@lost_item.description) %></div>
 
         <dl class="row mb-0">
           <dt class="col-sm-4">Location lost</dt>
