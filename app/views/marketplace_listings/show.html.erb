@@ -29,7 +29,7 @@
       <div class="card-body">
         <h2 class="h6 text-muted text-uppercase mb-3">Photo</h2>
         <% if @marketplace_listing.listing_image_available? %>
-          <%= listing_image_tag @marketplace_listing, alt: @marketplace_listing.title, class: "nu-item-img d-block mx-auto", style: "max-height: 400px; object-fit: contain;" %>
+          <%= listing_image_tag @marketplace_listing, alt: @marketplace_listing.title, class: "nu-item-img d-block mx-auto" %>
         <% else %>
           <%= render "application/listing_image_placeholder", height: "300px", extra_classes: "rounded nu-listing-image-placeholder--in-body" %>
         <% end %>
