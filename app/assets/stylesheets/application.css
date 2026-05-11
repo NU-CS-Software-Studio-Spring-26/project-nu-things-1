@@ -132,12 +132,22 @@ a:not(.btn, .nav-link, .navbar-brand) {
   font-size: 0.875rem;
 }
 
-.nu-cta-group .btn {
+.nu-navbar-right {
+  align-items: flex-start;
+}
+
+@media (min-width: 992px) {
+  .nu-navbar-right {
+    align-items: center;
+  }
+}
+
+.nu-auth-group .btn {
   width: 100%;
 }
 
 @media (min-width: 576px) {
-  .nu-cta-group .btn {
+  .nu-auth-group .btn {
     width: auto;
   }
 }
