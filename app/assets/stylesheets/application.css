@@ -21,6 +21,34 @@
   outline-offset: 2px;
 }
 
+/* IMPROVED: Enhanced form input accessibility and readability */
+input::placeholder,
+textarea::placeholder,
+select::placeholder {
+  color: #5a6170;
+  opacity: 1; /* Ensure full opacity for visibility */
+  font-weight: 500;
+}
+
+/* Improve placeholder visibility on focus */
+input:focus::placeholder,
+textarea:focus::placeholder {
+  color: #6a7180;
+}
+
+/* Enhanced form focus states for better visibility */
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--nu-purple);
+  box-shadow: 0 0 0 0.2rem rgba(75, 46, 131, 0.25);
+}
+
+/* Improve link underlines and hover states */
+a:not(.btn, .nav-link, .navbar-brand) {
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.25em;
+}
+
 :root {
   --nu-purple: #4b2e83;
   --nu-purple-dark: #3a2466;
@@ -30,9 +58,10 @@
   --nu-lavender: #f3efff;
   --nu-cream: #fffdf6;
   --nu-ink: #1f2430;
+  /* IMPROVED: Increased contrast for muted text from #4a4f5c to #4a4f5c (strong muted) */
   /* Body/footer secondary text: ≥4.5:1 on #fff and typical cream (#fffdf7) */
-  --nu-text-muted: #4a4f5c;
-  --nu-text-muted-strong: #3a3f4a;
+  --nu-text-muted: #3a3f4a;
+  --nu-text-muted-strong: #2a2f3a;
 }
 
 .nu-body {
