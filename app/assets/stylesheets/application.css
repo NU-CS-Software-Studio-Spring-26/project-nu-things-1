@@ -2,6 +2,25 @@
  * Northwestern Lost and Found Board — global styles (Propshaft serves this file as-is).
  */
 
+/* Skip to main content link - WCAG 2.1 Level AA accessible keyboard navigation */
+.skip-to-main-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  padding: 0.5rem 1rem;
+  transform: translateY(-100%);
+  transition: transform 0.3s ease-out;
+}
+
+/* Show skip link on focus (keyboard navigation) and focus-visible (modern browsers) */
+.skip-to-main-content:focus,
+.skip-to-main-content:focus-visible {
+  transform: translateY(0);
+  outline: 3px solid #000;
+  outline-offset: 2px;
+}
+
 :root {
   --nu-purple: #4b2e83;
   --nu-purple-dark: #3a2466;
