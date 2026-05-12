@@ -5,7 +5,10 @@
 :root {
   --nu-purple: #4b2e83;
   --nu-purple-dark: #3a2466;
-  --nu-accent: #836fff;
+  /* Slightly deeper than #836fff for stronger contrast on white */
+  --nu-accent: #5b4bdb;
+  --nu-focus-ring: #1d4ed8;
+  --nu-text-muted: #4b5563;
   --nu-lavender: #f3efff;
   --nu-cream: #fffdf6;
   --nu-ink: #1f2430;
@@ -17,6 +20,32 @@
     radial-gradient(circle at 15% 12%, rgba(255, 205, 112, 0.2), transparent 20%),
     linear-gradient(180deg, #f8f5ff 0%, #fffdf7 45%, #ffffff 100%);
   color: var(--nu-ink);
+}
+
+/* WCAG AA: ~7.5:1 on white vs. default Bootstrap text-muted on light backgrounds */
+.nu-body .text-muted {
+  color: var(--nu-text-muted) !important;
+}
+
+.nu-skip-link {
+  z-index: 1080;
+}
+
+/* Keyboard focus: high-contrast ring (Teach Access / WCAG 2.4.7) */
+.nu-body a:focus-visible,
+.nu-body button:focus-visible,
+.nu-body .btn:focus-visible,
+.nu-body input:focus-visible,
+.nu-body select:focus-visible,
+.nu-body textarea:focus-visible {
+  outline: 3px solid var(--nu-focus-ring);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nu-body {
+    background: #ffffff;
+  }
 }
 
 .nu-navbar {

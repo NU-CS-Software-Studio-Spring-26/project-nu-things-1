@@ -73,7 +73,7 @@
           <h2 class="h6 text-muted text-uppercase">Contact</h2>
           <p class="mb-1"><strong><%= @lost_item.contact_name %></strong></p>
           <p class="mb-3"><%= mail_to @lost_item.contact_email, @lost_item.contact_email, class: "link-primary" %></p>
-          <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#contactModal">Send a message</button>
+          <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#contactModal" aria-haspopup="dialog" aria-controls="contactModal">Send a message</button>
         </div>
       </div>
     </div>
@@ -87,7 +87,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5 text-purple" id="contactModalLabel">Contact about "<%= @lost_item.title %>"</h1>
+        <h2 class="modal-title fs-5 text-purple" id="contactModalLabel">Contact about "<%= @lost_item.title %>"</h2>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <%= form_with url: create_lost_item_contact_path, method: :post, local: true, class: "needs-validation" do |f| %>

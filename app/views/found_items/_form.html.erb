@@ -1,4 +1,4 @@
-<%= form_with model: found_item, html: { multipart: true } do |f| %>
+<%= form_with model: found_item, html: { multipart: true }, class: "needs-validation" do |f| %>
   <div class="card nu-card nu-form-card">
     <div class="card-body">
       <%= render "shared/errors", object: found_item %>
