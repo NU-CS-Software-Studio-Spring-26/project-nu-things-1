@@ -15,8 +15,10 @@
   <div class="d-flex flex-wrap gap-2">
     <%= link_to_new_listing "Post lost item", new_lost_item_path, class: "btn btn-sm nu-pill-btn nu-report-lost" %>
     <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#reportListingModal">Report a problem</button>
-    <% if admin? %>
+    <% if can_edit_post?(@lost_item) %>
       <%= link_to "Edit", edit_lost_item_path(@lost_item), class: "btn btn-primary btn-sm" %>
+    <% end %>
+    <% if admin? %>
       <%= button_to "Delete", @lost_item, method: :delete, class: "btn btn-danger btn-sm", form: { data: { turbo_confirm: "Delete this lost item post?" } } %>
     <% end %>
   </div>
@@ -28,7 +30,7 @@
       <div class="card-body">
         <h2 class="h6 text-muted text-uppercase mb-3">Photo</h2>
         <% if @lost_item.listing_image_available? %>
-          <%= listing_image_tag @lost_item, alt: @lost_item.title, class: "nu-item-img d-block mx-auto", style: "max-height: 400px; object-fit: contain;" %>
+          <%= listing_image_tag @lost_item, alt: @lost_item.title, class: "nu-item-img d-block mx-auto" %>
         <% else %>
           <%= render "application/listing_image_placeholder", height: "300px", extra_classes: "rounded nu-listing-image-placeholder--in-body" %>
         <% end %>
@@ -38,7 +40,7 @@
     <div class="card nu-card">
       <div class="card-body">
         <h2 class="h6 text-muted text-uppercase">Description</h2>
-        <p class="mb-4"><%= simple_format(@lost_item.description) %></p>
+        <div class="mb-4 nu-prose"><%= simple_format(@lost_item.description) %></div>
 
         <dl class="row mb-0">
           <dt class="col-sm-4">Location lost</dt>
@@ -68,52 +70,64 @@
 
   <div class="col-lg-5">
     <div class="nu-listing-show-sidebar">
-      <div class="card nu-card mb-0">
-        <div class="card-body">
-          <h2 class="h6 text-muted text-uppercase">Contact</h2>
-          <p class="mb-1"><strong><%= @lost_item.contact_name %></strong></p>
-          <p class="mb-3"><%= mail_to @lost_item.contact_email, @lost_item.contact_email, class: "link-primary" %></p>
-          <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#contactModal">Send a message</button>
+      <% if signed_in? %>
+        <div class="card nu-card mb-0">
+          <div class="card-body">
+            <h2 class="h6 text-muted text-uppercase">Contact</h2>
+            <p class="mb-1"><strong><%= @lost_item.contact_name %></strong></p>
+            <p class="mb-3"><%= mail_to @lost_item.contact_email, @lost_item.contact_email, class: "link-primary" %></p>
+            <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#contactModal">Send a message</button>
+          </div>
         </div>
-      </div>
+      <% else %>
+        <div class="card nu-card mb-0">
+          <div class="card-body">
+            <h2 class="h6 text-muted text-uppercase">Contact</h2>
+            <p class="text-muted small mb-3">Sign in with your Northwestern email to view contact details and send a message.</p>
+            <%= link_to "Sign in", new_session_path, class: "btn btn-primary w-100" %>
+          </div>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>
 
 <%= render "shared/listing_report_modal", form_url: report_lost_item_path(@lost_item), listing_title: @lost_item.title %>
 
-<!-- Contact Modal -->
-<div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5 text-purple" id="contactModalLabel">Contact about "<%= @lost_item.title %>"</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<% if signed_in? %>
+  <!-- Contact Modal -->
+  <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title fs-5 text-purple" id="contactModalLabel">Contact about "<%= @lost_item.title %>"</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <%= form_with url: create_lost_item_contact_path, method: :post, local: true, class: "needs-validation" do |f| %>
+          <div class="modal-body">
+            <%= hidden_field_tag :lost_item_id, @lost_item.id %>
+            
+            <div class="mb-3">
+              <%= f.label :sender_name, "Your name", class: "form-label" %>
+              <%= f.text_field :sender_name, value: prefilled_sender_name_field, class: "form-control", required: true, placeholder: "Enter your name" %>
+            </div>
+
+            <div class="mb-3">
+              <%= f.label :sender_email, "Your email", class: "form-label" %>
+              <%= f.email_field :sender_email, value: prefilled_sender_email_field, class: "form-control", required: true, placeholder: "Enter your email" %>
+            </div>
+
+            <div class="mb-3">
+              <%= f.label :message, "Message", class: "form-label" %>
+              <%= f.text_area :message, class: "form-control", required: true, placeholder: "Enter your message", rows: 5 %>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+            <%= f.submit "Send message", class: "btn btn-primary" %>
+          </div>
+        <% end %>
       </div>
-      <%= form_with url: create_lost_item_contact_path, method: :post, local: true, class: "needs-validation" do |f| %>
-        <div class="modal-body">
-          <%= hidden_field_tag :lost_item_id, @lost_item.id %>
-          
-          <div class="mb-3">
-            <%= f.label :sender_name, "Your name", class: "form-label" %>
-            <%= f.text_field :sender_name, value: prefilled_sender_name_field, class: "form-control", required: true, placeholder: "Enter your name" %>
-          </div>
-
-          <div class="mb-3">
-            <%= f.label :sender_email, "Your email", class: "form-label" %>
-            <%= f.email_field :sender_email, value: prefilled_sender_email_field, class: "form-control", required: true, placeholder: "Enter your email" %>
-          </div>
-
-          <div class="mb-3">
-            <%= f.label :message, "Message", class: "form-label" %>
-            <%= f.text_area :message, class: "form-control", required: true, placeholder: "Enter your message", rows: 5 %>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-          <%= f.submit "Send message", class: "btn btn-primary" %>
-        </div>
-      <% end %>
     </div>
   </div>
-</div>
+<% end %>

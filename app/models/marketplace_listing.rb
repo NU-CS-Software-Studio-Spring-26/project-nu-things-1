@@ -1,11 +1,16 @@
 class MarketplaceListing < ApplicationRecord
   include ListingPhotoAttachment
   include ListingTextLimits
+  include ModeratedContent
+
+  belongs_to :user, optional: true
 
   LISTING_TYPES = %w[for_sale wanted].freeze
   CATEGORIES = ListingCategories::VALUES
   STATUSES = %w[active completed inactive].freeze
   CONDITIONS = [ "Like new", "Lightly used", "Good", "Fair", "Missing parts", "Poor" ].freeze
+
+  moderate_attributes :title, :description, :location, :condition, :custom_category
 
   validates :title, :description, :category, :location, :contact_name, :contact_email, :listing_type, presence: true
   validates :contact_email, format: { with: URI::MailTo::EMAIL_REGEXP }

@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
     /marketplace_listings/new
   ].freeze
 
-  helper_method :current_user, :signed_in?, :admin?
+  helper_method :current_user, :signed_in?, :admin?, :can_edit_post?
 
   # Strip query string and (for absolute URLs) take only the path segment.
   def self.strip_return_path(raw)
@@ -44,6 +44,26 @@ class ApplicationController < ActionController::Base
 
   def admin?
     current_user&.admin?
+  end
+
+  def can_edit_post?(record)
+    admin? || (signed_in? && record.user_id.present? && record.user_id == current_user.id)
+  end
+
+  def require_owner_or_admin(record)
+    unless signed_in?
+      store_return_to
+      redirect_to new_session_path, alert: "Please sign in with your Northwestern account to continue."
+      return
+    end
+    return if current_user.admin?
+    if record.user_id.blank?
+      redirect_back fallback_location: root_path, alert: "You don't have permission to do that."
+      return
+    end
+    return if record.user_id == current_user.id
+
+    redirect_back fallback_location: root_path, alert: "You don't have permission to do that."
   end
 
   def require_admin
@@ -146,6 +166,27 @@ class ApplicationController < ActionController::Base
       [ n.presence || u.email.to_s.split("@", 2).first.to_s, u.email ]
     else
       [ params[:reporter_name].to_s.strip, params[:reporter_email].to_s.strip.downcase ]
+    end
+  end
+
+  # Generic flash for non-attribute flows (contact forms, reports).
+  def profanity_blocked_alert
+    Rails.application.config.x.profanity_flash_alert
+  end
+
+  # Used by +rate_limit ... with: :notify_rate_limit+ (HTML UX instead of bare 429).
+  def notify_rate_limit
+    redirect_back fallback_location: root_path,
+                  alert: "Too many attempts in a short time. Please wait a few minutes before trying again."
+  end
+
+  # Shared keys for listing report throttles (signed-in vs guest buckets).
+  def report_rate_limit_key
+    if signed_in?
+      "report/user/#{current_user.id}"
+    else
+      digest = Digest::SHA256.hexdigest([ params[:reporter_email].to_s.downcase.strip, request.remote_ip ].join(":"))[0, 48]
+      "report/guest/#{digest}"
     end
   end
 end

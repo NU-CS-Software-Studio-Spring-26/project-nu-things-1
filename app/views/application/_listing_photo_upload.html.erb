@@ -11,12 +11,13 @@
   <div class="mt-2 d-none" data-photo-preview-target="wrap">
     <div class="small text-muted">Preview — save the form to upload this image.</div>
     <%= tag.img alt: "Selected photo preview",
-          class: "img-thumbnail mt-1 d-block",
-          style: "max-height: 180px; object-fit: contain;",
+          class: "img-thumbnail mt-1 d-block nu-photo-preview-preview",
           data: { photo_preview_target: "image" } %>
   </div>
   <% if record.photo.attached? %>
     <div class="mt-2 small text-muted">Current saved photo:</div>
-    <%= image_tag record.photo, class: "img-thumbnail mt-1", style: "max-height: 140px; object-fit: contain;" %>
+    <%= image_tag record.photo,
+          alt: "Current listing photo: #{record.title}",
+          class: "img-thumbnail mt-1 nu-photo-preview-current" %>
   <% end %>
 </div>

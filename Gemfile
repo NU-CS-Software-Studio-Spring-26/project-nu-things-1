@@ -2,6 +2,8 @@ source "https://rubygems.org"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.1.3"
+# Patched nokogiri (GHSA-c4rq-3m3g-8wgx, GHSA-v2fc-qm4h-8hqv); pulled in via Rails / Capybara
+gem "nokogiri", ">= 1.19.3"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
 # SQLite for local development and CI tests
@@ -41,7 +43,8 @@ gem "thruster", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 gem "image_processing", "~> 1.2"
 
-gem "nokogiri", ">= 1.19.3"
+# Block profanity in user-generated text (see config/initializers/profanity.rb)
+gem "moderate"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

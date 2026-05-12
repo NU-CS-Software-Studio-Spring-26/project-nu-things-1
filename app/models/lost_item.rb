@@ -1,9 +1,14 @@
 class LostItem < ApplicationRecord
   include ListingPhotoAttachment
   include ListingTextLimits
+  include ModeratedContent
 
   STATUSES = %w[open resolved].freeze
   CATEGORIES = ListingCategories::VALUES
+
+  belongs_to :user, optional: true
+
+  moderate_attributes :title, :description, :location_lost, :reward, :color, :brand
 
   validates :title, :description, :category, :location_lost, :date_lost,
             :contact_name, :contact_email, :status, presence: true

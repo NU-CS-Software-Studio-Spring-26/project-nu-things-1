@@ -1,9 +1,21 @@
 class ContactsController < ApplicationController
+  before_action :require_login
+
+  # One bucket for all outbound contact mailers (spam / mailbox flood).
+  rate_limit to: 24, within: 1.hour, scope: :listing_contact_posts,
+             by: -> { "contact/user/#{current_user.id}" }, with: :notify_rate_limit,
+             only: %i[
+               create_lost_item_contact create_found_item_contact create_rental_item_contact
+               create_marketplace_listing_contact
+             ]
+
   def create_lost_item_contact
     @lost_item = LostItem.find(params[:lost_item_id])
     sender_name = params[:sender_name]
     sender_email = params[:sender_email]
     message = params[:message]
+
+    return if redirect_if_profane_contact_message!(@lost_item, message)
 
     if sender_name.present? && sender_email.present? && message.present?
       ContactMailer.lost_item_contact(@lost_item, sender_name, sender_email, message).deliver_later
@@ -19,6 +31,8 @@ class ContactsController < ApplicationController
     sender_email = params[:sender_email]
     message = params[:message]
 
+    return if redirect_if_profane_contact_message!(@found_item, message)
+
     if sender_name.present? && sender_email.present? && message.present?
       ContactMailer.found_item_contact(@found_item, sender_name, sender_email, message).deliver_later
       redirect_to @found_item, notice: "Your message has been sent successfully!"
@@ -32,6 +46,8 @@ class ContactsController < ApplicationController
     sender_name = params[:sender_name]
     sender_email = params[:sender_email]
     message = params[:message]
+
+    return if redirect_if_profane_contact_message!(@rental_item, message)
 
     if sender_name.present? && sender_email.present? && message.present?
       ContactMailer.rental_item_contact(@rental_item, sender_name, sender_email, message).deliver_later
@@ -47,11 +63,24 @@ class ContactsController < ApplicationController
     sender_email = params[:sender_email]
     message = params[:message]
 
+    return if redirect_if_profane_contact_message!(@marketplace_listing, message)
+
     if sender_name.present? && sender_email.present? && message.present?
       ContactMailer.marketplace_listing_contact(@marketplace_listing, sender_name, sender_email, message).deliver_later
       redirect_to @marketplace_listing, notice: "Your message has been sent successfully!"
     else
       redirect_to @marketplace_listing, alert: "Please fill in all fields."
     end
+  end
+
+  private
+
+  def redirect_if_profane_contact_message!(target, message)
+    return false if message.blank?
+
+    return false unless Moderate::Text.bad_words?(message.to_s)
+
+    redirect_to target, alert: profanity_blocked_alert
+    true
   end
 end

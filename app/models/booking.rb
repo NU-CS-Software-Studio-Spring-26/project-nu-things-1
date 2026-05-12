@@ -1,7 +1,11 @@
 class Booking < ApplicationRecord
+  include ModeratedContent
+
   belongs_to :rental_item
 
   STATUSES = [ "pending", "confirmed", "cancelled" ].freeze
+
+  moderate_attributes :notes
 
   validates :start_date, :end_date, presence: true
   validates :status, inclusion: { in: STATUSES }

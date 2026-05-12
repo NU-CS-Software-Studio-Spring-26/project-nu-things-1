@@ -2,13 +2,66 @@
  * Northwestern Lost and Found Board — global styles (Propshaft serves this file as-is).
  */
 
+/* Skip to main content link - WCAG 2.1 Level AA accessible keyboard navigation */
+.skip-to-main-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  padding: 0.5rem 1rem;
+  transform: translateY(-100%);
+  transition: transform 0.3s ease-out;
+}
+
+/* Show skip link on focus (keyboard navigation) and focus-visible (modern browsers) */
+.skip-to-main-content:focus,
+.skip-to-main-content:focus-visible {
+  transform: translateY(0);
+  outline: 3px solid #000;
+  outline-offset: 2px;
+}
+
+/* IMPROVED: Enhanced form input accessibility and readability */
+input::placeholder,
+textarea::placeholder,
+select::placeholder {
+  color: #5a6170;
+  opacity: 1; 
+  font-weight: 500;
+}
+
+/* Improve placeholder visibility on focus */
+input:focus::placeholder,
+textarea:focus::placeholder {
+  color: #6a7180;
+}
+
+/* Enhanced form focus states for better visibility */
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--nu-purple);
+  box-shadow: 0 0 0 0.2rem rgba(75, 46, 131, 0.25);
+}
+
+/* Improve link underlines and hover states */
+a:not(.btn, .nav-link, .navbar-brand) {
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.25em;
+}
+
 :root {
   --nu-purple: #4b2e83;
   --nu-purple-dark: #3a2466;
+  /* Darker purple for text on soft lavender / hero (WCAG 4.5:1 vs palest hero stops) */
+  --nu-purple-hero-text: #291749;
   --nu-accent: #836fff;
   --nu-lavender: #f3efff;
   --nu-cream: #fffdf6;
   --nu-ink: #1f2430;
+  /* IMPROVED: Increased contrast for muted text from #4a4f5c to #4a4f5c (strong muted) */
+  /* Body/footer secondary text: ≥4.5:1 on #fff and typical cream (#fffdf7) */
+  --nu-text-muted: #3a3f4a;
+  --nu-text-muted-strong: #2a2f3a;
 }
 
 .nu-body {
@@ -17,10 +70,24 @@
     radial-gradient(circle at 15% 12%, rgba(255, 205, 112, 0.2), transparent 20%),
     linear-gradient(180deg, #f8f5ff 0%, #fffdf7 45%, #ffffff 100%);
   color: var(--nu-ink);
+  /* Comfortable default line height for low-vision zoom / text-only resize (Teach Access / WCAG-friendly) */
+  line-height: 1.5;
+}
+
+/* Long user-generated or marketing copy: limit line length for readability */
+.nu-prose {
+  max-width: 65ch;
 }
 
 .nu-navbar {
-  background: linear-gradient(105deg, #2f1f55, #4b2e83 58%, #6b4bb5);
+  background: linear-gradient(105deg, #1f1538, #3a2466 52%, #4b2e83);
+  padding: 0.5rem 0;
+}
+
+@media (min-width: 992px) {
+  .nu-navbar {
+    padding: 0.5rem 0;
+  }
 }
 
 .nu-shell {
@@ -33,39 +100,95 @@
 
 .nu-navbar-greeting {
   font-weight: 600;
-  opacity: 0.95;
+  color: #fff;
+}
+
+/* Navbar-dark defaults use translucent white on links — fails contrast on mid purple */
+.nu-navbar.navbar-dark .navbar-brand,
+.nu-navbar.navbar-dark .nav-link {
+  color: #ffffff !important;
+  font-weight: 600;
+  white-space: nowrap;
+  padding: 0.5rem 0.75rem;
+}
+
+.nu-navbar.navbar-dark .nav-link:hover,
+.nu-navbar.navbar-dark .nav-link:focus {
+  color: #f5f0ff !important;
+}
+
+.nu-navbar .btn-outline-light {
+  color: #ffffff;
+  border-color: #ffffff;
+  font-weight: 600;
+  border-width: 2px;
+}
+
+.nu-navbar .btn-outline-light:hover,
+.nu-navbar .btn-outline-light:focus {
+  background-color: #fff;
+  border-color: #fff;
+  color: var(--nu-purple-dark);
 }
 
 .nu-pill-btn {
   border-radius: 999px;
   font-weight: 600;
-  padding-inline: 0.95rem;
+  padding: 0.375rem 0.7rem;
+  white-space: nowrap;
+  font-size: 0.875rem;
 }
 
-.nu-cta-group .btn {
+.nu-navbar-right {
+  align-items: flex-start;
+}
+
+@media (min-width: 992px) {
+  .nu-navbar-right {
+    align-items: center;
+  }
+}
+
+.nu-auth-group .btn {
   width: 100%;
 }
 
 @media (min-width: 576px) {
-  .nu-cta-group .btn {
+  .nu-auth-group .btn {
     width: auto;
   }
 }
 
 .text-purple {
-  color: var(--nu-purple) !important;
+  color: #3a2466 !important;
+  font-weight: 600;
+}
+
+/* Hero + semi-transparent panels: brand purple on lavender can dip below 4.5:1 */
+.nu-hero .text-purple {
+  color: var(--nu-purple-hero-text) !important;
 }
 
 .nu-link-purple {
-  color: var(--nu-purple);
-  font-weight: 600;
+  color: #3a2466;
+  font-weight: 700;
   text-decoration: underline;
-  text-underline-offset: 0.15em;
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 2px;
 }
 
 .nu-link-purple:hover,
 .nu-link-purple:focus {
   color: var(--nu-purple-dark);
+}
+
+.nu-hero .nu-link-purple {
+  color: var(--nu-purple-hero-text);
+}
+
+.nu-hero .nu-link-purple:hover,
+.nu-hero .nu-link-purple:focus {
+  color: #1f0f38;
 }
 
 /* Override Bootstrap button colors to be purple */
@@ -120,12 +243,62 @@
   border: none;
   border-radius: 1rem;
   box-shadow: 0 0.5rem 1.35rem rgba(75, 46, 131, 0.1);
-  overflow: hidden;
+  /* Allow vertical growth at 200% text zoom; clip horizontal bleed only */
+  overflow-x: hidden;
+  overflow-y: visible;
+}
+
+/* Index listing cards: image area scales with zoom (no fixed px height) */
+.nu-listing-index-card-img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.nu-listing-image-placeholder.nu-listing-index-card-placeholder {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  min-height: 8rem;
+}
+
+/* Profile rows: thumbnail scales with root font size */
+.nu-profile-thumb {
+  width: 6rem;
+  height: 6rem;
+  max-width: 100%;
+  object-fit: cover;
+}
+
+.nu-listing-image-placeholder.nu-profile-placeholder {
+  width: 6rem;
+  height: 6rem;
+  max-width: 100%;
+  flex-shrink: 0;
+}
+
+.nu-profile-placeholder .nu-listing-image-placeholder__label {
+  /* ≥12px at default 16px root so label stays legible when zoomed */
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  padding: 0.25rem 0.5rem;
+}
+
+/* Profile list groups: do not clip enlarged text at high zoom */
+ul.list-group.nu-card.rounded {
+  overflow: visible;
+}
+
+.nu-card > .card-img-top:first-child,
+.nu-card > .nu-listing-image-placeholder:first-child {
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
 }
 
 .nu-hero {
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: visible;
   border-radius: 1rem;
   background:
     radial-gradient(circle at 92% 6%, rgba(131, 111, 255, 0.18), transparent 34%),
@@ -153,7 +326,8 @@
 
 .nu-home-actions {
   border: 1px solid rgba(75, 46, 131, 0.14);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(243, 239, 255, 0.72));
+  /* Opaque surface so text contrast is measured against solid white, not hero gradient */
+  background: linear-gradient(180deg, #ffffff 0%, #faf8ff 100%);
 }
 
 .nu-browse-card {
@@ -179,12 +353,13 @@
 }
 
 .nu-browse-found {
-  background: linear-gradient(160deg, #faf8ff, #f1ecff 58%, #ebe4ff);
+  /* Slightly deeper lavender floor so subtitle gray stays ≥4.5:1 */
+  background: linear-gradient(160deg, #faf8ff, #f1ecff 58%, #e4daf5);
 }
 
 .nu-browse-symbol {
   font-size: 1.45rem;
-  color: var(--nu-purple);
+  color: var(--nu-purple-hero-text);
   line-height: 1.2;
 }
 
@@ -196,16 +371,16 @@
 
 
 .nu-browse-title {
-  color: #2e1f4a;
-  font-weight: 800;
+  color: #0d0810;
+  font-weight: 900;
   font-size: 1.18rem;
   line-height: 1.2;
 }
 
 .nu-browse-subtitle {
-  color: #374151;
+  color: #1a1f2a;
   font-size: 0.89rem;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .nu-report-lost {
@@ -288,7 +463,12 @@
 }
 
 .nu-section-lead {
-  color: #5b6472;
+  color: #1a1f2a;
+  font-weight: 600;
+}
+
+.nu-hero .nu-section-lead {
+  color: #252b36;
 }
 
 /* Rental marketplace — Bootstrap primary/info default to blue; align with NU purple */
@@ -379,7 +559,7 @@
 }
 
 .nu-metadata {
-  color: #596170;
+  color: var(--nu-text-muted);
   font-size: 0.93rem;
 }
 
@@ -531,13 +711,17 @@
 }
 
 .nu-footer {
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(4px);
+  background: #fff;
+  color: var(--nu-text-muted-strong) !important;
+}
+
+.nu-footer.border-top {
+  border-color: rgba(75, 46, 131, 0.18) !important;
 }
 
 .nu-item-img {
   max-width: 100%;
-  max-height: 280px;
+  max-height: 25rem;
   object-fit: contain;
   border-radius: 0.5rem;
   border: 1px solid #e5e7eb;
@@ -556,7 +740,8 @@
 /* Artsy placeholder when a listing has no photo — horizontal waves, rings, corner hearts */
 .nu-listing-image-placeholder {
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: visible;
   width: 100%;
   box-sizing: border-box;
   display: flex;
@@ -583,21 +768,32 @@
 .nu-listing-image-placeholder__label {
   position: relative;
   z-index: 1;
-  font-size: 0.78rem;
+  font-size: 0.8125rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #5b4678;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.95);
+  color: var(--nu-purple-hero-text);
+  text-shadow: none;
   padding: 0.35rem 0.75rem;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.45);
-  border: 1px solid rgba(75, 46, 131, 0.12);
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(75, 46, 131, 0.18);
   backdrop-filter: blur(3px);
 }
 
 .nu-listing-image-placeholder.nu-listing-image-placeholder--in-body {
   border: 1px solid rgba(75, 46, 131, 0.12);
+}
+
+/* Form photo previews: rem scales with zoom vs fixed px */
+.nu-photo-preview-preview {
+  max-height: 11.25rem;
+  object-fit: contain;
+}
+
+.nu-photo-preview-current {
+  max-height: 8.75rem;
+  object-fit: contain;
 }
 
 .form-control,
@@ -607,8 +803,147 @@
 }
 
 .form-label {
-  color: #3b4150;
+  color: var(--nu-text-muted-strong);
   font-weight: 600;
+}
+
+/* Bootstrap .text-muted (~#6c757d) fails on cream / tinted panels */
+.nu-body main .text-muted,
+.nu-body main small.text-muted {
+  color: var(--nu-text-muted) !important;
+}
+
+.nu-soft-alert .text-muted {
+  color: var(--nu-text-muted-strong) !important;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Site-wide accessible text contrast (WCAG 2.1 AA: 4.5:1 normal body text)   */
+/* -------------------------------------------------------------------------- */
+
+/* Section / sidebar headings use Bootstrap "muted" gray — too light on cream */
+.nu-body main .text-muted.text-uppercase,
+.nu-body main h2.text-muted,
+.nu-body main h3.text-muted,
+.nu-body main .h5.text-muted,
+.nu-body main .h6.text-muted {
+  color: var(--nu-text-muted-strong) !important;
+}
+
+/* Neutral badges: default gray-on-gray fails on white cards */
+.nu-body .badge.text-bg-light {
+  color: var(--nu-ink) !important;
+  background-color: #e9ecef !important;
+  border-color: #adb5bd !important;
+}
+
+/* Secondary outline buttons (back links, cancel, report) on light backgrounds */
+.nu-body .btn-outline-secondary {
+  color: #343a40;
+  border-color: #495057;
+}
+
+.nu-body .btn-outline-secondary:hover,
+.nu-body .btn-outline-secondary:focus {
+  color: #fff;
+  background-color: #495057;
+  border-color: #495057;
+}
+
+/* Default Bootstrap info alerts (e.g. empty rental list) */
+.nu-body .alert-info {
+  color: #243040;
+  background-color: #e2eaf3;
+  border-color: #9eb4c8;
+}
+
+.nu-body .alert-info .alert-link {
+  color: var(--nu-purple-dark);
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.nu-body .alert-info .alert-link:hover,
+.nu-body .alert-info .alert-link:focus {
+  color: #1f0f38;
+}
+
+/* Lavender empty-state strip (not success green) */
+.nu-soft-alert {
+  color: var(--nu-text-muted-strong);
+}
+
+.nu-soft-alert .alert-link {
+  color: var(--nu-purple-dark);
+  font-weight: 700;
+}
+
+.nu-soft-alert .alert-link:hover,
+.nu-soft-alert .alert-link:focus {
+  color: #1f0f38;
+}
+
+.nu-body .alert.alert-success {
+  color: #0f2918;
+}
+
+.nu-body .alert.alert-danger {
+  color: #4a0f12;
+}
+
+.nu-body .alert.alert-danger .alert-link {
+  color: #350a0d;
+  font-weight: 700;
+}
+
+.nu-body .alert.alert-success .alert-link {
+  color: #0a2414;
+  font-weight: 700;
+}
+
+/* Form placeholders (best-effort; not always counted as "text" in audits) */
+.form-control::placeholder,
+.form-select::placeholder {
+  color: #5c6370;
+  opacity: 1;
+}
+
+/* Status / marketplace pills — darken text vs palest gradient stop */
+.nu-badge-lost-open {
+  color: #3d2e12;
+}
+
+.nu-badge-lost-default,
+.nu-badge-found-default {
+  color: #3f3648;
+}
+
+.nu-badge-found-claimed {
+  color: #4a3540;
+}
+
+.nu-mp-type-for-sale {
+  color: #2a1f3d;
+}
+
+.nu-mp-type-wanted {
+  color: #252f38;
+}
+
+.nu-mp-cat--electronics {
+  color: #4a3a10;
+}
+
+.nu-mp-cat--furniture {
+  color: #4a341f;
+}
+
+.nu-rental-market .alert-info {
+  color: #243040;
+}
+
+.nu-rental-market .alert-info .alert-link {
+  color: #1f0f38;
 }
 
 @media (max-width: 575.98px) {

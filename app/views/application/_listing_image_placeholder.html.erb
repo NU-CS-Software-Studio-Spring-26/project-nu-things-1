@@ -1,12 +1,17 @@
-<%# locals: height (String CSS height, e.g. "200px"), extra_classes (optional String, e.g. "card-img-top") %>
-<% height = local_assigns.fetch(:height, "200px") %>
+<%# locals: height (String CSS height, e.g. "200px"), extra_classes (optional String, e.g. "card-img-top"),
+    aspect_index_card: (true) full-width 4:3 box for index cards (no fixed px height),
+    profile_thumb: (true) square ~6rem box for profile rows (scales with text zoom) %>
+<% aspect_index_card = local_assigns[:aspect_index_card] %>
+<% profile_thumb = local_assigns[:profile_thumb] %>
+<% height = local_assigns.fetch(:height, "200px") unless aspect_index_card || profile_thumb %>
 <% extra = local_assigns[:extra_classes].presence %>
 <% ph_id = local_assigns[:placeholder_id] || SecureRandom.hex(4) %>
 <% g_main = "nu-ph-wave-#{ph_id}" %>
 <% g_soft = "nu-ph-wave-soft-#{ph_id}" %>
+<% placeholder_classes = [ "nu-listing-image-placeholder", extra, (aspect_index_card ? "nu-listing-index-card-placeholder" : nil), (profile_thumb ? "nu-profile-placeholder" : nil) ].compact.join(" ") %>
 <div
-  class="nu-listing-image-placeholder <%= extra %>"
-  style="height: <%= height %>;"
+  class="<%= placeholder_classes %>"
+  <% if !aspect_index_card && !profile_thumb %>style="height: <%= height %>;"<% end %>
   role="img"
   aria-label="No picture"
 >

@@ -1,6 +1,9 @@
 class RentalItem < ApplicationRecord
   include ListingPhotoAttachment
   include ListingTextLimits
+  include ModeratedContent
+
+  belongs_to :user, optional: true
 
   has_many :bookings, dependent: :destroy
 
@@ -12,6 +15,8 @@ class RentalItem < ApplicationRecord
   CONDITIONS = %w[ Like\ New Good Fair ].freeze
   RENTAL_PERIODS = %w[ per_day per_week per_month ].freeze
   STATUSES = %w[ available rented inactive ].freeze
+
+  moderate_attributes :title, :description, :location
 
   validates :title, :description, :category, :location, :owner_name, :owner_email, presence: true
   validates :rental_price, presence: true, numericality: { greater_than: 0 }

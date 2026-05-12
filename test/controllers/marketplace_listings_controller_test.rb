@@ -77,6 +77,7 @@ class MarketplaceListingsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to marketplace_listing_url(MarketplaceListing.last)
+    assert_equal users(:nu_student).id, MarketplaceListing.last.user_id
   end
 
   test "should show marketplace_listing" do
@@ -89,46 +90,53 @@ class MarketplaceListingsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_session_url
   end
 
-  test "should redirect edit when not admin" do
+  test "should redirect edit when signed in but not owner of legacy listing" do
     sign_in_as(users(:nu_student))
-    get edit_marketplace_listing_url(@listing)
+    get edit_marketplace_listing_url(marketplace_listings(:wanted_one))
     assert_redirected_to root_url
   end
 
-  test "should get edit when admin" do
-    sign_in_as(users(:admin))
+  test "should get edit when signed in as owner" do
+    sign_in_as(users(:nu_student))
     get edit_marketplace_listing_url(@listing)
     assert_response :success
   end
 
-  test "should redirect update when not admin" do
+  test "should get edit when admin" do
+    sign_in_as(users(:admin))
+    get edit_marketplace_listing_url(marketplace_listings(:wanted_one))
+    assert_response :success
+  end
+
+  test "should redirect update when not owner on legacy listing" do
     sign_in_as(users(:nu_student))
-    patch marketplace_listing_url(@listing), params: {
+    legacy = marketplace_listings(:wanted_one)
+    patch marketplace_listing_url(legacy), params: {
       marketplace_listing: {
-        title: @listing.title,
-        description: @listing.description,
-        category: @listing.category,
-        condition: @listing.condition,
-        image_url: @listing.image_url,
-        location: @listing.location,
-        listing_type: @listing.listing_type,
-        price: @listing.price,
-        contact_name: @listing.contact_name,
-        contact_email: @listing.contact_email,
-        contact_phone: @listing.contact_phone,
-        custom_category: @listing.custom_category,
-        status: @listing.status
+        title: legacy.title,
+        description: legacy.description,
+        category: legacy.category,
+        condition: legacy.condition,
+        image_url: legacy.image_url,
+        location: legacy.location,
+        listing_type: legacy.listing_type,
+        price: legacy.price,
+        contact_name: legacy.contact_name,
+        contact_email: legacy.contact_email,
+        contact_phone: legacy.contact_phone,
+        custom_category: legacy.custom_category,
+        status: legacy.status
       }
     }
     assert_redirected_to root_url
   end
 
-  test "should update marketplace_listing when admin" do
-    sign_in_as(users(:admin))
+  test "should update own marketplace_listing when signed in" do
+    sign_in_as(users(:nu_student))
     patch marketplace_listing_url(@listing), params: {
       marketplace_listing: {
         title: @listing.title,
-        description: "Updated by admin.",
+        description: "Updated by owner.",
         category: @listing.category,
         condition: @listing.condition,
         image_url: @listing.image_url,
@@ -143,7 +151,31 @@ class MarketplaceListingsControllerTest < ActionDispatch::IntegrationTest
       }
     }
     assert_redirected_to marketplace_listing_url(@listing)
-    assert_equal "Updated by admin.", @listing.reload.description
+    assert_equal "Updated by owner.", @listing.reload.description
+  end
+
+  test "should update marketplace_listing when admin" do
+    sign_in_as(users(:admin))
+    legacy = marketplace_listings(:wanted_one)
+    patch marketplace_listing_url(legacy), params: {
+      marketplace_listing: {
+        title: legacy.title,
+        description: "Updated by admin.",
+        category: legacy.category,
+        condition: legacy.condition,
+        image_url: legacy.image_url,
+        location: legacy.location,
+        listing_type: legacy.listing_type,
+        price: legacy.price,
+        contact_name: legacy.contact_name,
+        contact_email: legacy.contact_email,
+        contact_phone: legacy.contact_phone,
+        custom_category: legacy.custom_category,
+        status: legacy.status
+      }
+    }
+    assert_redirected_to marketplace_listing_url(legacy)
+    assert_equal "Updated by admin.", legacy.reload.description
   end
 
   test "should redirect destroy when not admin" do

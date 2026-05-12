@@ -1,6 +1,9 @@
 class SessionsController < ApplicationController
   before_action :require_login, only: :destroy
 
+  rate_limit to: 25, within: 15.minutes, only: :create, scope: :session_create_attempts,
+             by: -> { request.remote_ip }, with: :notify_rate_limit
+
   def new
     if params[:return_to].present?
       path = ApplicationController.normalize_post_form_return_path(params[:return_to])

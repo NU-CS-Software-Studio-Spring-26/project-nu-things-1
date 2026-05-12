@@ -35,6 +35,7 @@ class LostItemsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to lost_item_url(LostItem.last)
+    assert_equal users(:nu_student).id, LostItem.last.user_id
   end
 
   test "should show lost_item" do
@@ -47,30 +48,44 @@ class LostItemsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_session_url
   end
 
-  test "should redirect edit when signed in but not admin" do
+  test "should redirect edit when signed in but not owner of legacy post" do
     sign_in_as(users(:nu_student))
-    get edit_lost_item_url(@lost_item)
+    get edit_lost_item_url(lost_items(:two))
     assert_redirected_to root_url
     assert_match(/permission/i, flash[:alert].to_s)
   end
 
-  test "should get edit when admin" do
-    sign_in_as(users(:admin))
+  test "should get edit when signed in as owner" do
+    sign_in_as(users(:nu_student))
     get edit_lost_item_url(@lost_item)
     assert_response :success
   end
 
-  test "should redirect update when not admin" do
+  test "should get edit when admin" do
+    sign_in_as(users(:admin))
+    get edit_lost_item_url(lost_items(:two))
+    assert_response :success
+  end
+
+  test "should redirect update when not owner on legacy post" do
     sign_in_as(users(:nu_student))
-    patch lost_item_url(@lost_item), params: { lost_item: { brand: @lost_item.brand, category: @lost_item.category, color: @lost_item.color, contact_email: @lost_item.contact_email, contact_name: @lost_item.contact_name, date_lost: @lost_item.date_lost, description: @lost_item.description, image_url: @lost_item.image_url, location_lost: @lost_item.location_lost, reward: @lost_item.reward, status: @lost_item.status, title: @lost_item.title } }
+    patch lost_item_url(lost_items(:two)), params: { lost_item: { brand: @lost_item.brand, category: @lost_item.category, color: @lost_item.color, contact_email: @lost_item.contact_email, contact_name: @lost_item.contact_name, date_lost: @lost_item.date_lost, description: @lost_item.description, image_url: @lost_item.image_url, location_lost: @lost_item.location_lost, reward: @lost_item.reward, status: @lost_item.status, title: @lost_item.title } }
     assert_redirected_to root_url
+  end
+
+  test "should update own lost_item when signed in" do
+    sign_in_as(users(:nu_student))
+    patch lost_item_url(@lost_item), params: { lost_item: { brand: @lost_item.brand, category: @lost_item.category, color: @lost_item.color, contact_email: @lost_item.contact_email, contact_name: @lost_item.contact_name, date_lost: @lost_item.date_lost, description: "Updated by owner.", image_url: @lost_item.image_url, location_lost: @lost_item.location_lost, reward: @lost_item.reward, status: @lost_item.status, title: @lost_item.title } }
+    assert_redirected_to lost_item_url(@lost_item)
+    assert_equal "Updated by owner.", @lost_item.reload.description
   end
 
   test "should update lost_item when admin" do
     sign_in_as(users(:admin))
-    patch lost_item_url(@lost_item), params: { lost_item: { brand: @lost_item.brand, category: @lost_item.category, color: @lost_item.color, contact_email: @lost_item.contact_email, contact_name: @lost_item.contact_name, date_lost: @lost_item.date_lost, description: "Updated by admin.", image_url: @lost_item.image_url, location_lost: @lost_item.location_lost, reward: @lost_item.reward, status: @lost_item.status, title: @lost_item.title } }
-    assert_redirected_to lost_item_url(@lost_item)
-    assert_equal "Updated by admin.", @lost_item.reload.description
+    legacy = lost_items(:two)
+    patch lost_item_url(legacy), params: { lost_item: { brand: legacy.brand, category: legacy.category, color: legacy.color, contact_email: legacy.contact_email, contact_name: legacy.contact_name, date_lost: legacy.date_lost, description: "Updated by admin.", image_url: legacy.image_url, location_lost: legacy.location_lost, reward: legacy.reward, status: legacy.status, title: legacy.title } }
+    assert_redirected_to lost_item_url(legacy)
+    assert_equal "Updated by admin.", legacy.reload.description
   end
 
   test "should redirect destroy when not admin" do

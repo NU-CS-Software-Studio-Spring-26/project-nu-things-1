@@ -4,6 +4,10 @@ ENV["ADMIN_EMAIL"] = "admin@u.northwestern.edu" if ENV["ADMIN_EMAIL"].to_s.strip
 require_relative "../config/environment"
 require "rails/test_help"
 
+class ActionDispatch::IntegrationTest
+  include ActiveJob::TestHelper
+end
+
 module ActiveSupport
   class TestCase
     # Run tests in parallel with specified workers
