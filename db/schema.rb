@@ -71,6 +71,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_10_220000) do
     t.string "contact_email", null: false
     t.string "contact_name", null: false
     t.datetime "created_at", null: false
+    t.string "custom_category"
     t.date "date_found", null: false
     t.text "description", null: false
     t.string "image_url"
@@ -101,6 +102,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_10_220000) do
     t.string "contact_email", null: false
     t.string "contact_name", null: false
     t.datetime "created_at", null: false
+    t.string "custom_category"
     t.date "date_lost", null: false
     t.text "description", null: false
     t.string "image_url"

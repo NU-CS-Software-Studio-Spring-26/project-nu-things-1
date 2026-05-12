@@ -241,7 +241,21 @@ lost_seed = [
   }
 ]
 
-lost_seed.each { |attrs| LostItem.create!(attrs) }
+normalize_listing_seed_category = lambda do |attrs|
+  cat = attrs[:category].to_s
+  if !ListingCategories::VALUES.include?(cat)
+    attrs[:custom_category] = cat
+    attrs[:category] = "Other"
+  elsif cat == "Other" && attrs[:custom_category].blank?
+    attrs[:custom_category] = "Miscellaneous"
+  end
+end
+
+lost_seed.each do |attrs|
+  h = attrs.dup
+  normalize_listing_seed_category.call(h)
+  LostItem.create!(h)
+end
 
 found_seed = [
   {
@@ -478,7 +492,11 @@ found_seed = [
   }
 ]
 
-found_seed.each { |attrs| FoundItem.create!(attrs) }
+found_seed.each do |attrs|
+  h = attrs.dup
+  normalize_listing_seed_category.call(h)
+  FoundItem.create!(h)
+end
 
 Booking.destroy_all if ApplicationRecord.connection.table_exists?("bookings")
 RentalItem.destroy_all
@@ -537,7 +555,7 @@ rental_seed = [
   {
     title: "Textbook: Organic Chemistry (8th Edition)",
     description: "Brown & Iverson Organic Chemistry textbook. Hardcover, minimal highlighting. Also includes practice problem book.",
-    category: "Books",
+    category: "Book",
     rental_price: 8,
     rental_period: "per_week",
     condition: "Good",
@@ -652,7 +670,7 @@ marketplace_seed = [
   {
     title: "Wanted: Econ 310 intermediate micro reader (current edition)",
     description: "Missed the bookstore bundle deadline. Looking for a clean used copy or PDF access code transfer if allowed. Will pay cash or Venmo.",
-    category: "Books",
+    category: "Book",
     listing_type: "wanted",
     condition: "Good",
     location: "Campus — flexible meetup",
@@ -754,7 +772,7 @@ marketplace_seed = [
   {
     title: "Set of 6 McCormick FE / DTC course readers (bundle)",
     description: "From sophomore design sequence; spiral-bound readers with minimal highlighting. Selling as a set only.",
-    category: "Books",
+    category: "Book",
     listing_type: "for_sale",
     price: 45.00,
     condition: "Fair",

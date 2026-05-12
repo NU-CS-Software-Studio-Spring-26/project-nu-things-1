@@ -101,7 +101,7 @@ class FoundItemsControllerTest < ActionDispatch::IntegrationTest
     item = FoundItem.create!(
       title: "Delete me",
       description: "Temporary row for destroy test.",
-      category: "Test",
+      category: "Book",
       location_found: "Campus",
       date_found: Date.current,
       contact_name: "Admin",

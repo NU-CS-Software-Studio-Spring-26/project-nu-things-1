@@ -16,14 +16,16 @@
         <div class="card-body">
           <h5 class="card-title text-purple mb-4">Item Details</h5>
 
-          <div class="mb-3">
+          <div class="mb-3" data-controller="field-limit" data-field-limit-max-chars-value="<%= ListingTextLimits::TITLE_MAX_LENGTH %>">
             <%= form.label :title, class: "form-label" %>
-            <%= form.text_field :title, class: "form-control", required: true, placeholder: "e.g., Camping Tent 4-Person" %>
+            <%= form.text_field :title, class: "form-control", required: true, maxlength: ListingTextLimits::TITLE_MAX_LENGTH, placeholder: "e.g., Camping Tent 4-Person", data: { field_limit_target: "field", action: "input->field-limit#update" } %>
+            <small class="text-muted d-block mt-1" data-field-limit-target="count" aria-live="polite"></small>
           </div>
 
-          <div class="mb-3">
+          <div class="mb-3" data-controller="field-limit" data-field-limit-max-words-value="<%= ListingTextLimits::DESCRIPTION_MAX_WORDS %>">
             <%= form.label :description, class: "form-label" %>
-            <%= form.text_area :description, class: "form-control", required: true, placeholder: "Detailed description of the item, condition, what's included, etc.", rows: 5 %>
+            <%= form.text_area :description, class: "form-control", required: true, placeholder: "Detailed description of the item, condition, what's included, etc.", rows: 5, data: { field_limit_target: "field", action: "input->field-limit#update" } %>
+            <small class="text-muted d-block mt-1" data-field-limit-target="count" aria-live="polite"></small>
           </div>
 
           <div class="row">
@@ -64,9 +66,10 @@
             </div>
           </div>
 
-          <div class="mb-3">
+          <div class="mb-3" data-controller="field-limit" data-field-limit-max-words-value="<%= ListingTextLimits::LOCATION_MAX_WORDS %>">
             <%= form.label :location, class: "form-label" %>
-            <%= form.text_field :location, class: "form-control", required: true, placeholder: "e.g., Northwestern Campus, Tech Building, My home" %>
+            <%= form.text_field :location, class: "form-control", required: true, placeholder: "e.g., Northwestern Campus, Tech Building, My home", data: { field_limit_target: "field", action: "input->field-limit#update" } %>
+            <small class="text-muted d-block mt-1" data-field-limit-target="count" aria-live="polite"></small>
           </div>
         </div>
       </div>
@@ -107,9 +110,10 @@
         <div class="card-body">
           <h5 class="card-title text-purple mb-4">Contact Information</h5>
 
-          <div class="mb-3">
+          <div class="mb-3" data-controller="field-limit" data-field-limit-max-chars-value="<%= ListingTextLimits::NAME_MAX_LENGTH %>">
             <%= form.label :owner_name, "Your name", class: "form-label" %>
-            <%= form.text_field :owner_name, class: "form-control", required: true %>
+            <%= form.text_field :owner_name, class: "form-control", required: true, maxlength: ListingTextLimits::NAME_MAX_LENGTH, data: { field_limit_target: "field", action: "input->field-limit#update" } %>
+            <small class="text-muted d-block mt-1" data-field-limit-target="count" aria-live="polite"></small>
           </div>
 
           <div class="mb-3">

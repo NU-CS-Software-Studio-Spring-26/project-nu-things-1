@@ -155,7 +155,7 @@ class ApplicationController < ActionController::Base
   end
 
   def filter_category_options(model)
-    (model.distinct.pluck(:category).compact + [ "Other" ]).uniq.sort
+    (ListingCategories::VALUES + model.distinct.pluck(:category).compact).uniq.sort
   end
 
   # Name + email for lost/found listing report mailers (signed-in uses account; guests use form params).

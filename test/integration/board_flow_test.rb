@@ -26,7 +26,7 @@ class BoardFlowTest < ActionDispatch::IntegrationTest
         lost_item: {
           title: "Integration test keys",
           description: "Small ring with two keys.",
-          category: "Keys",
+          category: "Accessories",
           location_lost: "Norris ground floor",
           date_lost: Date.new(2026, 4, 20),
           contact_name: "Flow Tester",
@@ -46,7 +46,7 @@ class BoardFlowTest < ActionDispatch::IntegrationTest
       lost_item: {
         title: "Integration test keys (updated)",
         description: "Updated description.",
-        category: "Keys",
+        category: "Accessories",
         location_lost: "Norris ground floor",
         date_lost: Date.new(2026, 4, 20),
         contact_name: "Flow Tester",

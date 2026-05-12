@@ -1,12 +1,14 @@
 class MarketplaceListing < ApplicationRecord
   include ListingPhotoAttachment
+  include ListingTextLimits
   include ModeratedContent
 
   belongs_to :user, optional: true
 
   LISTING_TYPES = %w[for_sale wanted].freeze
-  CATEGORIES = %w[Camping\ Gear Electronics Tools Books Furniture Sports\ Equipment Other].freeze
+  CATEGORIES = ListingCategories::VALUES
   STATUSES = %w[active completed inactive].freeze
+  CONDITIONS = [ "Like new", "Lightly used", "Good", "Fair", "Missing parts", "Poor" ].freeze
 
   moderate_attributes :title, :description, :location, :condition, :custom_category
 
@@ -16,10 +18,13 @@ class MarketplaceListing < ApplicationRecord
   validates :listing_type, inclusion: { in: LISTING_TYPES }
   validates :category, inclusion: { in: CATEGORIES }
   validates :status, inclusion: { in: STATUSES }
+  validates :condition, inclusion: { in: CONDITIONS }, allow_blank: true
+  validates :custom_category, length: { maximum: ListingTextLimits::CUSTOM_CATEGORY_MAX_LENGTH }, allow_blank: true
 
   validates :price, numericality: { greater_than: 0 }, allow_nil: true
   validate :price_required_for_for_sale
   validate :custom_category_required_for_other
+  validate :validate_marketplace_location_words
 
   before_validation :assign_default_status, on: :create
 
@@ -46,5 +51,9 @@ class MarketplaceListing < ApplicationRecord
 
   def assign_default_status
     self.status = "active" if status.blank?
+  end
+
+  def validate_marketplace_location_words
+    validate_words(:location, ListingTextLimits::LOCATION_MAX_WORDS)
   end
 end

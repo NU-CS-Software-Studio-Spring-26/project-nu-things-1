@@ -2,7 +2,7 @@ one:
   user: nu_student
   title: "Fixture found item one"
   description: "Used by automated tests."
-  category: "Test"
+  category: "Book"
   location_found: "Technological Institute"
   date_found: <%= Date.new(2026, 4, 3) %>
   contact_name: "Finder One"
@@ -16,7 +16,7 @@ one:
 two:
   title: "Fixture found item two"
   description: "Also used by automated tests."
-  category: "Test"
+  category: "Book"
   location_found: "University Library"
   date_found: <%= Date.new(2026, 4, 4) %>
   contact_name: "Finder Two"

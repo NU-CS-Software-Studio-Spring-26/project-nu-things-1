@@ -87,7 +87,7 @@ class FoundItemsController < ApplicationController
   end
 
   def found_item_params
-    params.expect(found_item: [ :title, :description, :category, :location_found, :date_found,
+    params.expect(found_item: [ :title, :description, :category, :custom_category, :location_found, :date_found,
                                   :contact_name, :contact_email, :status, :image_url, :photo, :storage_location, :color, :brand ])
   end
 end

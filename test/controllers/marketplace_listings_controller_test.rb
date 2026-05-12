@@ -16,7 +16,7 @@ class MarketplaceListingsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "index filters by category" do
-    get marketplace_listings_url, params: { category: "Books" }
+    get marketplace_listings_url, params: { category: "Book" }
     assert_response :success
   end
 

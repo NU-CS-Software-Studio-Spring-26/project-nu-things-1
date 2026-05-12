@@ -14,7 +14,7 @@ for_sale_one:
 wanted_one:
   title: "Calculus Textbook"
   description: "Looking for Calculus: Early Transcendentals 8th edition."
-  category: "Books"
+  category: "Book"
   location: "Main Library"
   listing_type: "wanted"
   contact_name: "Test Buyer"

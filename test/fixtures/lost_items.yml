@@ -3,7 +3,7 @@ one:
   user: nu_student
   title: "Fixture lost item one"
   description: "Used by automated tests."
-  category: "Test"
+  category: "Book"
   location_lost: "Norris University Center"
   date_lost: <%= Date.new(2026, 4, 1) %>
   contact_name: "Test User One"
@@ -17,7 +17,7 @@ one:
 two:
   title: "Fixture lost item two"
   description: "Also used by automated tests."
-  category: "Test"
+  category: "Book"
   location_lost: "Main Library"
   date_lost: <%= Date.new(2026, 4, 2) %>
   contact_name: "Test User Two"
