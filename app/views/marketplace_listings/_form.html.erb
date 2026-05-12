@@ -69,9 +69,12 @@
           <div class="mb-3">
             <%= render "application/listing_photo_upload", form: form, record: marketplace_listing %>
           </div>
-          <div class="mb-3">
+          <div class="mb-3" data-controller="url-preview">
             <%= form.label :image_url, "Or photo URL (optional)", class: "form-label" %>
-            <%= form.text_field :image_url, class: "form-control", placeholder: "https://example.com/image.jpg" %>
+            <%= form.text_field :image_url, class: "form-control", placeholder: "https://example.com/image.jpg", data: { url_preview_target: "field", action: "input->url-preview#update paste->url-preview#update" } %>
+            <div class="mt-2 d-none" data-url-preview-target="wrap">
+              <img class="img-thumbnail" style="max-height: 150px;" data-url-preview-target="image" data-action="error->url-preview#handleError">
+            </div>
           </div>
 
           <div class="mb-3" data-controller="field-limit" data-field-limit-max-words-value="<%= ListingTextLimits::LOCATION_MAX_WORDS %>">
