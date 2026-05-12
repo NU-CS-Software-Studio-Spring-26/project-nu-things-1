@@ -61,7 +61,7 @@ class LostItemTest < ActiveSupport::TestCase
     assert item.errors[:contact_name].any?
 
     item.contact_name = "ok"
-    item.description = (["word"] * (ListingTextLimits::DESCRIPTION_MAX_WORDS + 1)).join(" ")
+    item.description = ([ "word" ] * (ListingTextLimits::DESCRIPTION_MAX_WORDS + 1)).join(" ")
     assert_not item.valid?
     assert item.errors[:description].any?
   end

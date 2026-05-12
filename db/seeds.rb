@@ -243,7 +243,7 @@ lost_seed = [
 
 normalize_listing_seed_category = lambda do |attrs|
   cat = attrs[:category].to_s
-  unless ListingCategories::VALUES.include?(cat)
+  if !ListingCategories::VALUES.include?(cat)
     attrs[:custom_category] = cat
     attrs[:category] = "Other"
   elsif cat == "Other" && attrs[:custom_category].blank?
