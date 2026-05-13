@@ -797,10 +797,9 @@ marketplace_seed = [
 
 marketplace_seed.each { |attrs| MarketplaceListing.create!(attrs) }
 
-# Sign-in accounts (User.destroy_all above removed any existing rows). Without this, /session sign-in always fails.
-# Digests are forced to PBKDF2 so bcrypt-unfriendly web servers can still verify passwords.
+# Sign-in accounts (User.destroy_all above removed any existing rows). Used for local demo logins via Google
+# (same emails as seed users; sign in through the app after configuring Google OAuth — see README).
 User.ensure_seed_accounts!
 
-seed_password = ENV.fetch("SEED_USER_PASSWORD", "password")
 puts "Seeded #{LostItem.count} lost items, #{FoundItem.count} found items, #{RentalItem.count} rental items, and #{MarketplaceListing.count} marketplace listings."
-puts "Users: #{User.count} (sign in with Northwestern email; default password is #{seed_password.inspect} unless SEED_USER_PASSWORD is set)."
+puts "Users: #{User.count} (use Google sign-in with a matching @northwestern.edu / @u.northwestern.edu account; see README for OAuth setup)."

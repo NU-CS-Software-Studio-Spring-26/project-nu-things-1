@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_10_220000) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_13_120000) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -94,20 +94,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_10_220000) do
   end
 
   create_table "marketplace_listings", force: :cascade do |t|
-    t.string "category", null: false
+    t.string "category"
     t.string "condition"
-    t.string "contact_email", null: false
-    t.string "contact_name", null: false
+    t.string "contact_email"
+    t.string "contact_name"
     t.string "contact_phone"
     t.datetime "created_at", null: false
     t.string "custom_category"
-    t.text "description", null: false
+    t.text "description"
     t.string "image_url"
-    t.string "listing_type", null: false
-    t.string "location", null: false
+    t.string "listing_type"
+    t.string "location"
     t.decimal "price"
-    t.string "status", default: "active", null: false
-    t.string "title", null: false
+    t.string "status"
+    t.string "title"
     t.datetime "updated_at", null: false
     t.integer "user_id"
     t.index ["user_id"], name: "index_marketplace_listings_on_user_id"
@@ -281,9 +281,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_10_220000) do
     t.datetime "created_at", null: false
     t.string "email", null: false
     t.string "first_name"
-    t.string "password_digest", null: false
+    t.string "password_digest"
+    t.string "provider"
+    t.string "uid"
     t.datetime "updated_at", null: false
     t.index "lower(email)", name: "index_users_on_lower_email", unique: true
+    t.index ["provider", "uid"], name: "index_users_on_provider_and_uid", unique: true, where: "provider IS NOT NULL AND uid IS NOT NULL"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

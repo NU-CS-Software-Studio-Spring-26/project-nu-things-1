@@ -29,4 +29,17 @@ class UserTest < ActiveSupport::TestCase
     assert_not other.valid?
     assert_includes other.errors[:email], "has already been taken"
   end
+
+  test "creates user from google without password when provider and uid set" do
+    auth = OmniAuth::AuthHash.new(
+      "provider" => "google_oauth2",
+      "uid" => "google-uid-new-user-test",
+      "info" => { "email" => "new-oauth-user@u.northwestern.edu", "first_name" => "Casey" }
+    )
+    user = User.from_omniauth(auth)
+    assert user.persisted?
+    assert_equal "new-oauth-user@u.northwestern.edu", user.email
+    assert_equal "Casey", user.first_name
+    assert user.password_digest.blank?
+  end
 end
