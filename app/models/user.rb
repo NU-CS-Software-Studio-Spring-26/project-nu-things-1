@@ -65,7 +65,7 @@ class User < ApplicationRecord
       fn = first_name_from_omniauth(info, email)
       updates = { provider: provider, uid: uid }
       updates[:first_name] = fn if user.first_name.blank? && fn.present?
-      user.update_columns(updates)
+      user.update!(updates) unless updates.empty?
       user
     else
       create!(
