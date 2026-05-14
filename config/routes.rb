@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   root "home#index"
 
   get "/auth/failure", to: "omniauth_callbacks#failure"
-  match "/auth/:provider/callback", to: "omniauth_callbacks#create", via: %i[get post]
+  get "/auth/:provider/callback", to: "omniauth_callbacks#create"
 
   resource :session, only: %i[new destroy]
 
