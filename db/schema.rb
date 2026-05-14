@@ -94,20 +94,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_13_120000) do
   end
 
   create_table "marketplace_listings", force: :cascade do |t|
-    t.string "category"
+    t.string "category", null: false
     t.string "condition"
-    t.string "contact_email"
-    t.string "contact_name"
+    t.string "contact_email", null: false
+    t.string "contact_name", null: false
     t.string "contact_phone"
     t.datetime "created_at", null: false
     t.string "custom_category"
-    t.text "description"
+    t.text "description", null: false
     t.string "image_url"
-    t.string "listing_type"
-    t.string "location"
+    t.string "listing_type", null: false
+    t.string "location", null: false
     t.decimal "price"
-    t.string "status"
-    t.string "title"
+    t.string "status", default: "active", null: false
+    t.string "title", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
     t.index ["user_id"], name: "index_marketplace_listings_on_user_id"
