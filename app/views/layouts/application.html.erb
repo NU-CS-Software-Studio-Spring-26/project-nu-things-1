@@ -51,7 +51,6 @@
               <% if signed_in? %>
                 <%= button_to "Sign Out", session_path, method: :delete, class: "btn btn-outline-light btn-sm nu-pill-btn", form: { class: "d-inline" } %>
               <% else %>
-                <%= link_to "Sign up", new_registration_path, class: "btn btn-outline-light btn-sm nu-pill-btn" %>
                 <%= link_to "Sign in", new_session_path, class: "btn btn-outline-light btn-sm nu-pill-btn" %>
               <% end %>
             </div>

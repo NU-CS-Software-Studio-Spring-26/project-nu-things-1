@@ -20,7 +20,7 @@ class User < ApplicationRecord
   validates :first_name, length: { maximum: 80 }, allow_blank: true
   validates :email, uniqueness: { case_sensitive: false }
   validates :email, format: { with: NORTHWESTERN_EMAIL }
-  validates :password, presence: true, on: :create
+  validates :password, presence: true, on: :create, unless: :omniauth_identity?
   validates :password, length: { minimum: 8 }, allow_blank: true
   validates :password, confirmation: true, allow_blank: true
 
@@ -44,23 +44,60 @@ class User < ApplicationRecord
 
   alias authenticate_password authenticate
 
-  # Always stores PBKDF2 digests so sign-in works when the web server cannot load bcrypt.
+  # Returns a user or nil (nil when email is missing, not Northwestern, or Google email is unverified).
+  def self.from_omniauth(auth)
+    return nil unless auth
+
+    info = auth.info
+    return nil if auth.dig(:extra, :raw_info, :email_verified) == false
+
+    email = normalize_email(info.email)
+    return nil if email.blank? || !email.match?(NORTHWESTERN_EMAIL)
+
+    provider = auth.provider.to_s
+    uid = auth.uid.to_s
+    return nil if provider.blank? || uid.blank?
+
+    user = find_by(provider: provider, uid: uid)
+    user ||= find_by(email: email)
+
+    if user
+      fn = first_name_from_omniauth(info, email)
+      updates = { provider: provider, uid: uid }
+      updates[:first_name] = fn if user.first_name.blank? && fn.present?
+      user.update!(updates) unless updates.empty?
+      user
+    else
+      create!(
+        email: email,
+        first_name: first_name_from_omniauth(info, email),
+        provider: provider,
+        uid: uid
+      )
+    end
+  rescue ActiveRecord::RecordNotUnique
+    find_by(provider: provider, uid: uid) || find_by(email: email)
+  end
+
+  def self.first_name_from_omniauth(info, normalized_email)
+    raw = info.first_name.presence || info.name.to_s.split(/\s+/, 2).first.presence
+    raw = normalized_email.to_s.split("@", 2).first.to_s.tr("._", " ").titleize if raw.blank?
+    raw.to_s.strip[0, 80].presence
+  end
+
   def self.ensure_seed_accounts!
-    PasswordDigest.with_pbkdf2_passwords! do
-      seed_password = ENV.fetch("SEED_USER_PASSWORD", "password")
-      admin_email = ENV.fetch("ADMIN_EMAIL", "admin@u.northwestern.edu").to_s.strip.downcase
-      admin_email = "admin@u.northwestern.edu" unless admin_email.match?(NORTHWESTERN_EMAIL)
+    admin_email = ENV.fetch("ADMIN_EMAIL", "admin@u.northwestern.edu").to_s.strip.downcase
+    admin_email = "admin@u.northwestern.edu" unless admin_email.match?(NORTHWESTERN_EMAIL)
 
-      [ admin_email, "student@u.northwestern.edu" ].uniq.each do |email|
-        next unless email.match?(NORTHWESTERN_EMAIL)
+    [ admin_email, "student@u.northwestern.edu" ].uniq.each do |email|
+      next unless email.match?(NORTHWESTERN_EMAIL)
 
-        user = find_or_initialize_by(email: normalize_email(email))
-        local = user.email.to_s.split("@", 2).first.to_s
-        user.first_name = local.tr("._", " ").titleize[0, 80].presence || "Member"
-        user.password = seed_password
-        user.password_confirmation = seed_password
-        user.save!
-      end
+      user = find_or_initialize_by(email: normalize_email(email))
+      local = user.email.to_s.split("@", 2).first.to_s
+      user.first_name = local.tr("._", " ").titleize[0, 80].presence || "Member"
+      user.provider = "google_oauth2"
+      user.uid = "dev-seed-#{Digest::SHA256.hexdigest(user.email)[0, 32]}"
+      user.save!
     end
   end
 
@@ -74,6 +111,10 @@ class User < ApplicationRecord
   end
 
   private
+
+  def omniauth_identity?
+    provider.to_s.present? && uid.to_s.present?
+  end
 
   def normalize_email
     self.email = self.class.normalize_email(email)

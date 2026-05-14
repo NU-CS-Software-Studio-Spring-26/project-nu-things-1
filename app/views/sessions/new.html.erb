@@ -6,36 +6,24 @@
       <div class="card-body">
         <h1 class="h4 text-purple mb-2">Sign in</h1>
         <p class="text-muted mb-4">
-          Use your <strong>@u.northwestern.edu</strong> or <strong>@northwestern.edu</strong> email and password.
-          Need an account? <%= link_to "Sign up", new_registration_path, class: "nu-link-purple" %>.
+          Use your <strong>@u.northwestern.edu</strong> or <strong>@northwestern.edu</strong> Google account.
+          First-time visitors are registered automatically when they sign in.
         </p>
 
-        <%= form_with url: session_path, method: :post do |f| %>
-          <% if @return_to.present? %>
-            <%= hidden_field_tag :return_to, @return_to %>
-          <% end %>
-
-          <div class="mb-3">
-            <%= label_tag :first_name, "First name (optional)", class: "form-label" %>
-            <%= text_field_tag :first_name, params[:first_name].presence || current_user&.first_name, class: "form-control", autocomplete: "given-name", maxlength: 80, placeholder: "How we should greet you" %>
-            <div class="form-text">If you haven’t set this on your account yet, enter it here and we’ll save it when you sign in.</div>
-          </div>
-
-          <div class="mb-3">
-            <%= label_tag :email, "Email", class: "form-label" %>
-            <%= email_field_tag :email, params[:email], class: "form-control", required: true, autocomplete: "username", placeholder: "you@u.northwestern.edu" %>
-          </div>
-
-          <div class="mb-3">
-            <%= label_tag :password, "Password", class: "form-label" %>
-            <%= password_field_tag :password, nil, class: "form-control", required: true, autocomplete: "current-password" %>
-          </div>
-
-          <div class="d-flex flex-wrap gap-2">
-            <%= f.submit "Sign in", class: "btn btn-primary nu-pill-btn" %>
-            <%= link_to "Cancel", root_path, class: "btn btn-outline-secondary nu-pill-btn" %>
-          </div>
+        <% if @return_to.present? %>
+          <p class="small text-muted mb-3">After signing in, you’ll return to finish what you started.</p>
         <% end %>
+
+        <%= button_to "/auth/google_oauth2",
+                      method: :post,
+                      class: "btn btn-primary nu-pill-btn w-100 mb-3",
+                      form: { data: { turbo: false } } do %>
+          Continue with Google
+        <% end %>
+
+        <div class="d-flex flex-wrap gap-2">
+          <%= link_to "Cancel", root_path, class: "btn btn-outline-secondary nu-pill-btn" %>
+        </div>
       </div>
     </div>
   </div>

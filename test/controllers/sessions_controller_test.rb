@@ -19,24 +19,27 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_nil session[:return_to]
   end
 
-  test "create redirects to return_to from posted hidden field" do
-    post session_url, params: {
-      email: users(:nu_student).email,
-      password: "password",
-      return_to: "/rental_items/new"
-    }
+  test "google oauth callback redirects to return_to from session" do
+    get new_session_url, params: { return_to: "/rental_items/new" }
+    OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new(
+      "provider" => "google_oauth2",
+      "uid" => "oauth-return-to-test",
+      "info" => { "email" => users(:nu_student).email, "first_name" => "Jordan" }
+    )
+    get "/auth/google_oauth2/callback"
     assert_redirected_to new_rental_item_url
   end
 
-  test "create saves optional first name on sign in" do
+  test "google oauth callback saves first name when blank" do
     user = users(:nu_student)
     user.update_column(:first_name, nil)
 
-    post session_url, params: {
-      email: user.email,
-      password: "password",
-      first_name: "Jordan"
-    }
+    OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new(
+      "provider" => "google_oauth2",
+      "uid" => "oauth-fn-test",
+      "info" => { "email" => user.email, "first_name" => "Jordan" }
+    )
+    get "/auth/google_oauth2/callback"
     assert_redirected_to root_url
     assert_equal "Jordan", user.reload.first_name
   end
