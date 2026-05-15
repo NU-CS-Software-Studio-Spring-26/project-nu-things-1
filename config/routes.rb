@@ -1,8 +1,14 @@
 Rails.application.routes.draw do
   root "home#index"
 
-  resource :registration, only: %i[new create]
-  resource :session, only: %i[new create destroy]
+  get "about", to: "pages#about", as: :about
+  get "privacy", to: "pages#privacy", as: :privacy
+  get "terms", to: "pages#terms", as: :terms
+
+  get "/auth/failure", to: "omniauth_callbacks#failure"
+  get "/auth/:provider/callback", to: "omniauth_callbacks#create"
+
+  resource :session, only: %i[new destroy]
 
   resources :users, only: %i[show]
 

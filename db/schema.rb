@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_10_220000) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_13_120000) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -51,6 +51,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_10_220000) do
     t.index ["rental_item_id"], name: "index_bookings_on_rental_item_id"
   end
 
+  create_table "claims", force: :cascade do |t|
+    t.bigint "claimable_id", null: false
+    t.string "claimable_type", null: false
+    t.datetime "created_at", null: false
+    t.string "status", default: "requested", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["claimable_type", "claimable_id"], name: "index_claims_on_claimable_type_and_claimable_id"
+    t.index ["user_id", "claimable_type", "claimable_id"], name: "index_claims_on_user_and_claimable", unique: true
+    t.index ["user_id"], name: "index_claims_on_user_id"
+  end
+
   create_table "found_items", force: :cascade do |t|
     t.string "brand"
     t.string "category", null: false
@@ -71,6 +83,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_10_220000) do
     t.integer "user_id"
     t.index ["claimed_by_user_id"], name: "index_found_items_on_claimed_by_user_id"
     t.index ["user_id"], name: "index_found_items_on_user_id"
+  end
+
+  create_table "login_tokens", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "expires_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "used_at"
+    t.integer "user_id", null: false
+    t.index ["expires_at"], name: "index_login_tokens_on_expires_at"
+    t.index ["user_id"], name: "index_login_tokens_on_user_id"
   end
 
   create_table "lost_items", force: :cascade do |t|
@@ -281,16 +303,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_10_220000) do
     t.datetime "created_at", null: false
     t.string "email", null: false
     t.string "first_name"
-    t.string "password_digest", null: false
+    t.string "password_digest"
+    t.string "provider"
+    t.string "uid"
     t.datetime "updated_at", null: false
     t.index "lower(email)", name: "index_users_on_lower_email", unique: true
+    t.index ["provider", "uid"], name: "index_users_on_provider_and_uid", unique: true, where: "provider IS NOT NULL AND uid IS NOT NULL"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "bookings", "rental_items"
+  add_foreign_key "claims", "users"
   add_foreign_key "found_items", "users"
   add_foreign_key "found_items", "users", column: "claimed_by_user_id"
+  add_foreign_key "login_tokens", "users"
   add_foreign_key "lost_items", "users"
   add_foreign_key "marketplace_listings", "users"
   add_foreign_key "rental_items", "users"

@@ -31,6 +31,19 @@ bin/rails server
 
 Open `http://localhost:3000`. Use the navbar to browse **Lost Items** and **Found Items**, or start a new report from **Report Lost Item** / **Report Found Item**.
 
+## Google sign-in
+
+Posting and claiming require signing in with a **Northwestern Google account** (`@u.northwestern.edu` or `@northwestern.edu`).
+
+1. In the [Google Cloud Console](https://console.cloud.google.com/), create or select a project and add **OAuth consent screen** + **OAuth 2.0 Client ID** credentials with type **Web application**.
+2. Under **Authorized redirect URIs**, add `http://localhost:3000/auth/google_oauth2/callback` for local development and `https://YOUR_DOMAIN/auth/google_oauth2/callback` for production (for example your Heroku URL).
+3. Set **`GOOGLE_CLIENT_ID`** and **`GOOGLE_CLIENT_SECRET`** in the environment, or store them in encrypted credentials under `google:` (`client_id` / `client_secret`) via `bin/rails credentials:edit`. Production boot fails fast if neither source provides both values.
+
+## Optional site URLs
+
+- **`APP_SOURCE_CODE_URL`**: Public GitHub (or other) repository URL. When set, the home page and footer show a **GitHub** link next to About / Privacy / Terms.
+- **`PRIVACY_CONTACT_EMAIL`**: Address shown on the Privacy page for data deletion or correction requests. If unset, the app falls back to **`ADMIN_EMAIL`** when that is configured.
+
 ## Database
 
 ### Run migrations
@@ -86,6 +99,7 @@ GitHub Actions runs the same checks on push and pull requests (see [`.github/wor
 5. `heroku run rails db:migrate`
 6. Optional: `heroku run rails db:seed` for demo data (only if you want seeded data in production).
 7. Set **`RAILS_MASTER_KEY`** on Heroku to the value in `config/master.key` (share securely with teammates; do **not** commit `master.key` to a public repoâ€”this project lists it in `.gitignore`).
+8. Set **`GOOGLE_CLIENT_ID`** and **`GOOGLE_CLIENT_SECRET`** on Heroku (from your Google Cloud OAuth client; production requires both at boot).
 
 Solid Cache, Solid Queue, and Solid Cable are configured to use the **same** Postgres database as the primary app in production so the app does not rely on SQLite files on Herokuâ€™s ephemeral filesystem.
 

@@ -1,0 +1,13 @@
+<%# locals: extra_class (optional String) %>
+<nav class="site-meta-links small <%= local_assigns[:extra_class] %>" aria-label="Site information">
+  <ul class="list-inline mb-0">
+    <li class="list-inline-item"><%= link_to "About", about_path, class: "site-meta-link" %></li>
+    <li class="list-inline-item"><%= link_to "Privacy", privacy_path, class: "site-meta-link" %></li>
+    <li class="list-inline-item"><%= link_to "Terms", terms_path, class: "site-meta-link" %></li>
+    <% if app_source_code_url? %>
+      <li class="list-inline-item">
+        <%= link_to "GitHub", app_source_code_url, class: "site-meta-link", target: "_blank", rel: "noopener noreferrer" %>
+      </li>
+    <% end %>
+  </ul>
+</nav>

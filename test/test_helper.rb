@@ -4,6 +4,8 @@ ENV["ADMIN_EMAIL"] = "admin@u.northwestern.edu" if ENV["ADMIN_EMAIL"].to_s.strip
 require_relative "../config/environment"
 require "rails/test_help"
 
+OmniAuth.config.test_mode = true
+
 class ActionDispatch::IntegrationTest
   include ActiveJob::TestHelper
 end
@@ -18,7 +20,15 @@ module ActiveSupport
 
     # Add more helper methods to be used by all tests here...
     def sign_in_as(user)
-      post session_url, params: { email: user.email, password: "password" }
+      OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new(
+        "provider" => "google_oauth2",
+        "uid" => "test-google-uid-#{user.id}",
+        "info" => {
+          "email" => user.email,
+          "first_name" => user.first_name
+        }
+      )
+      get "/auth/google_oauth2/callback"
     end
   end
 end
