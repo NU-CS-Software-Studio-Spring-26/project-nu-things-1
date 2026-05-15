@@ -5,9 +5,21 @@ class LostItemsControllerTest < ActionDispatch::IntegrationTest
     @lost_item = lost_items(:one)
   end
 
-  test "should get index" do
+  # ============================================================================
+  # Email Verification Tests — Only Northwestern Users Can Post
+  # ============================================================================
+
+  test "should get index without authentication" do
     get lost_items_url
     assert_response :success
+  end
+
+  test "index displays lost items from all verified users" do
+    get lost_items_url
+    assert_response :success
+    assert_select "h1", /Lost Items/i
+    # Should show lost items
+    assert_select "[class~=card]"
   end
 
   test "should redirect new when not signed in" do
@@ -113,5 +125,113 @@ class LostItemsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to lost_items_url
+  end
+
+  # ============================================================================
+  # Extended Email Verification Tests — Ensuring Only NU Users Can Post
+  # ============================================================================
+
+  test "lost item model validates northwestern email format" do
+    user = users(:nu_student)
+    item = LostItem.new(
+      title: "Test item",
+      description: "Test description",
+      category: "Keys",
+      location_lost: "Library",
+      date_lost: Date.current,
+      contact_name: "Test",
+      contact_email: "invalid@gmail.com",  # Invalid domain
+      user: user,
+      status: "open"
+    )
+    
+    assert_not item.valid?
+    assert item.errors[:contact_email].any?
+  end
+
+  test "lost item accepts u.northwestern.edu emails" do
+    user = users(:nu_student)
+    item = LostItem.new(
+      title: "Test item",
+      description: "Test",
+      category: "Keys",
+      location_lost: "Library",
+      date_lost: Date.current,
+      contact_name: "Test",
+      contact_email: "test@u.northwestern.edu",
+      user: user,
+      status: "open"
+    )
+    assert item.valid?, "Should accept u.northwestern.edu email"
+  end
+
+  test "lost item accepts northwestern.edu emails" do
+    user = users(:nu_student)
+    item = LostItem.new(
+      title: "Test item",
+      description: "Test",
+      category: "Keys",
+      location_lost: "Library",
+      date_lost: Date.current,
+      contact_name: "Test",
+      contact_email: "test@northwestern.edu",
+      user: user,
+      status: "open"
+    )
+    assert item.valid?, "Should accept northwestern.edu email"
+  end
+
+  test "lost item rejects gmail addresses" do
+    user = users(:nu_student)
+    item = LostItem.new(
+      title: "Test item",
+      description: "Test",
+      category: "Keys",
+      location_lost: "Library",
+      date_lost: Date.current,
+      contact_name: "Test",
+      contact_email: "test@gmail.com",
+      user: user,
+      status: "open"
+    )
+    
+    assert_not item.valid?
+    assert item.errors[:contact_email].any?
+  end
+
+  test "lost item rejects yahoo addresses" do
+    user = users(:nu_student)
+    item = LostItem.new(
+      title: "Test item",
+      description: "Test",
+      category: "Keys",
+      location_lost: "Library",
+      date_lost: Date.current,
+      contact_name: "Test",
+      contact_email: "test@yahoo.com",
+      user: user,
+      status: "open"
+    )
+    
+    assert_not item.valid?
+    assert item.errors[:contact_email].any?
+  end
+
+  test "lost item rejects arbitrary domains" do
+    user = users(:nu_student)
+    item = LostItem.new(
+      title: "Hacker attempt",
+      description: "Trying to use non-NU email",
+      category: "Keys",
+      location_lost: "Campus",
+      date_lost: Date.current,
+      contact_name: "Hacker",
+      contact_email: "hacker@example.com",
+      user: user,
+      status: "open"
+    )
+
+    assert_not item.valid?
+    assert item.errors[:contact_email].any?
   end
 end

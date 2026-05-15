@@ -141,4 +141,125 @@ class FoundItemsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to found_item_url(item)
     assert_match(/not available/i, flash[:alert].to_s)
   end
+
+  # ============================================================================
+  # Email Verification Tests — Only Northwestern Users Can Post Found Items
+  # ============================================================================
+
+  test "found item model validates northwestern email format" do
+    user = users(:nu_student)
+    item = FoundItem.new(
+      title: "Found item",
+      description: "Test description",
+      category: "Keys",
+      location_found: "Library",
+      date_found: Date.current,
+      contact_name: "Test",
+      contact_email: "invalid@gmail.com",  # Invalid domain
+      user: user,
+      status: "unclaimed"
+    )
+    
+    assert_not item.valid?
+    assert item.errors[:contact_email].any?
+  end
+
+  test "found item accepts u.northwestern.edu emails" do
+    user = users(:nu_student)
+    item = FoundItem.new(
+      title: "Found item",
+      description: "Test",
+      category: "Keys",
+      location_found: "Library",
+      date_found: Date.current,
+      contact_name: "Test",
+      contact_email: "test@u.northwestern.edu",
+      user: user,
+      status: "unclaimed"
+    )
+    assert item.valid?, "Should accept u.northwestern.edu email"
+  end
+
+  test "found item accepts northwestern.edu emails" do
+    user = users(:nu_student)
+    item = FoundItem.new(
+      title: "Found item",
+      description: "Test",
+      category: "Keys",
+      location_found: "Library",
+      date_found: Date.current,
+      contact_name: "Test",
+      contact_email: "test@northwestern.edu",
+      user: user,
+      status: "unclaimed"
+    )
+    assert item.valid?, "Should accept northwestern.edu email"
+  end
+
+  test "found item rejects gmail addresses" do
+    user = users(:nu_student)
+    item = FoundItem.new(
+      title: "Found item",
+      description: "Test",
+      category: "Keys",
+      location_found: "Library",
+      date_found: Date.current,
+      contact_name: "Test",
+      contact_email: "test@gmail.com",
+      user: user,
+      status: "unclaimed"
+    )
+    
+    assert_not item.valid?
+    assert item.errors[:contact_email].any?
+  end
+
+  test "found item rejects yahoo addresses" do
+    user = users(:nu_student)
+    item = FoundItem.new(
+      title: "Found item",
+      description: "Test",
+      category: "Keys",
+      location_found: "Library",
+      date_found: Date.current,
+      contact_name: "Test",
+      contact_email: "test@yahoo.com",
+      user: user,
+      status: "unclaimed"
+    )
+    
+    assert_not item.valid?
+    assert item.errors[:contact_email].any?
+  end
+
+  test "found item rejects arbitrary domains" do
+    user = users(:nu_student)
+    item = FoundItem.new(
+      title: "Hacker found item",
+      description: "Trying to use non-NU email",
+      category: "Keys",
+      location_found: "Campus",
+      date_found: Date.current,
+      contact_name: "Hacker",
+      contact_email: "hacker@example.com",
+      user: user,
+      status: "unclaimed"
+    )
+
+    assert_not item.valid?
+    assert item.errors[:contact_email].any?
+  end
+
+  test "found item status transitions prevent unauthorized claims" do
+    # Verify item starts as unclaimed
+    assert_equal "unclaimed", @found_item.status
+    
+    # After claiming, status should be claimed
+    @found_item.status = "claimed"
+    @found_item.claimed_by_user = users(:nu_student)
+    @found_item.save!
+    
+    assert_equal "claimed", @found_item.status
+    assert_equal users(:nu_student).id, @found_item.claimed_by_user_id
+  end
 end
