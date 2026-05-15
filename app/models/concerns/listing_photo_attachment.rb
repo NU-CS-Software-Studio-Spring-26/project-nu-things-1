@@ -35,5 +35,3 @@ module ListingPhotoAttachment
     end
   end
 end
-
-end
