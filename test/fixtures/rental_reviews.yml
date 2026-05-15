@@ -1,0 +1,11 @@
+one_review:
+  rental_item: one
+  rating: 5
+  reviewer_name: Jamie R.
+  body: Great tent, easy setup.
+
+two_review:
+  rental_item: one
+  rating: 3
+  reviewer_name: Chris M.
+  body: Solid rental experience.

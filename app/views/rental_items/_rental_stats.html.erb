@@ -1,0 +1,9 @@
+<%# locals: item (RentalItem) %>
+<div class="nu-rental-stats text-body" aria-label="Ratings and rental history">
+  <p class="mb-1 d-flex align-items-center gap-2 flex-wrap">
+    <span class="nu-rental-stats__stars text-purple" aria-hidden="true"><%= rental_rating_stars(item) %></span>
+    <span class="fw-semibold mb-0"><%= rental_rating_summary(item) %></span>
+  </p>
+  <p class="text-muted small mb-1"><%= rental_reviews_summary(item) %></p>
+  <p class="text-muted small mb-0"><%= rental_past_users_summary(item) %></p>
+</div>

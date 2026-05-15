@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_13_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_15_180000) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -133,6 +133,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_13_120000) do
     t.datetime "updated_at", null: false
     t.integer "user_id"
     t.index ["user_id"], name: "index_rental_items_on_user_id"
+  end
+
+  create_table "rental_reviews", force: :cascade do |t|
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.integer "rating", null: false
+    t.integer "rental_item_id", null: false
+    t.string "reviewer_name"
+    t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.index ["rental_item_id", "user_id"], name: "index_rental_reviews_on_rental_item_id_and_user_id", unique: true, where: "user_id IS NOT NULL"
+    t.index ["rental_item_id"], name: "index_rental_reviews_on_rental_item_id"
+    t.index ["user_id"], name: "index_rental_reviews_on_user_id"
   end
 
   create_table "solid_cable_messages", force: :cascade do |t|
@@ -297,6 +310,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_13_120000) do
   add_foreign_key "lost_items", "users"
   add_foreign_key "marketplace_listings", "users"
   add_foreign_key "rental_items", "users"
+  add_foreign_key "rental_reviews", "rental_items"
+  add_foreign_key "rental_reviews", "users"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_claimed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_failed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade

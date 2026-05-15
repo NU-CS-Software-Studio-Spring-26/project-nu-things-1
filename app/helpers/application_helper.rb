@@ -101,6 +101,32 @@ module ApplicationHelper
     "$#{number_with_precision(record.rental_price, precision: 2)}/#{period}"
   end
 
+  def rental_rating_summary(item)
+    if item.reviews_count.positive?
+      "#{number_with_precision(item.average_rating, precision: 1)} / 5"
+    else
+      "No ratings"
+    end
+  end
+
+  def rental_reviews_summary(item)
+    item.reviews_count.positive? ? pluralize(item.reviews_count, "review") : "No reviews"
+  end
+
+  def rental_past_users_summary(item)
+    count = item.past_renters_count
+    pluralize(count, "person", "people") + " used this item in the past"
+  end
+
+  def rental_rating_stars(item, max: 5)
+    if item.reviews_count.positive?
+      filled = item.average_rating.round.clamp(0, max)
+      ("★" * filled) + ("☆" * (max - filled))
+    else
+      "☆" * max
+    end
+  end
+
   def marketplace_category_slug(category)
     category.to_s.parameterize.presence || "other"
   end

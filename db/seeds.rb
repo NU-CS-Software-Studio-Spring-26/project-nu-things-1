@@ -499,6 +499,7 @@ found_seed.each do |attrs|
 end
 
 Booking.destroy_all if ApplicationRecord.connection.table_exists?("bookings")
+RentalReview.destroy_all if ApplicationRecord.connection.table_exists?("rental_reviews")
 RentalItem.destroy_all
 
 rental_seed = [
@@ -635,6 +636,20 @@ rental_seed = [
 ]
 
 rental_seed.each { |attrs| RentalItem.create!(attrs) }
+
+tent = RentalItem.find_by!(title: "4-Person Camping Tent")
+tent.rental_reviews.create!([
+  { rating: 5, reviewer_name: "Jamie R.", body: "Tent was clean and easy to set up. Perfect for a weekend trip." },
+  { rating: 4, reviewer_name: "Chris M.", body: "Worked great. Pickup was smooth." }
+])
+tent.bookings.create!(start_date: Date.new(2026, 3, 10), end_date: Date.new(2026, 3, 12), status: "confirmed")
+tent.bookings.create!(start_date: Date.new(2026, 4, 1), end_date: Date.new(2026, 4, 3), status: "confirmed")
+
+bike = RentalItem.find_by!(title: "Mountain Bike - Trek Marlin")
+bike.rental_reviews.create!([
+  { rating: 5, reviewer_name: "Sam K.", body: "Bike rode well and was ready on time." }
+])
+bike.bookings.create!(start_date: Date.new(2026, 2, 15), end_date: Date.new(2026, 2, 17), status: "confirmed")
 
 MarketplaceListing.destroy_all
 
