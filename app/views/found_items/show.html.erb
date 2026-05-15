@@ -106,7 +106,7 @@
             <h2 class="h6 text-muted text-uppercase">Contact</h2>
             <p class="mb-1"><strong><%= @found_item.contact_name %></strong></p>
             <p class="mb-3"><%= mail_to @found_item.contact_email, @found_item.contact_email, class: "link-primary" %></p>
-            <button class="btn btn-info text-dark w-100" type="button" data-bs-toggle="modal" data-bs-target="#contactModal">Send a message</button>
+            <button class="btn btn-primary w-100" type="button" data-bs-toggle="modal" data-bs-target="#contactModal">Send a message</button>
           </div>
         </div>
       <% else %>
@@ -114,7 +114,7 @@
           <div class="card-body">
             <h2 class="h6 text-muted text-uppercase">Contact</h2>
             <p class="text-muted small mb-3">Sign in with your Northwestern email to view contact details and send a message.</p>
-            <%= link_to "Sign in", new_session_path, class: "btn btn-info text-dark w-100" %>
+            <%= link_to "Sign in", new_session_path, class: "btn btn-primary w-100" %>
           </div>
         </div>
       <% end %>
@@ -154,7 +154,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-            <%= f.submit "Send message", class: "btn btn-info text-dark" %>
+            <%= f.submit "Send message", class: "btn btn-primary" %>
           </div>
         <% end %>
       </div>

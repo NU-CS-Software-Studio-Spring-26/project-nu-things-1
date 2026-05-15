@@ -43,10 +43,30 @@ textarea:focus::placeholder {
   box-shadow: 0 0 0 0.2rem rgba(75, 46, 131, 0.25);
 }
 
-/* Improve link underlines and hover states */
-a:not(.btn, .nav-link, .navbar-brand) {
+/* Improve link underlines, color, and hover states */
+a:not(.btn, .nav-link, .navbar-brand, .nu-clickable-card, .nu-browse-card, .skip-to-main-content) {
+  color: var(--nu-link);
+  text-decoration-color: var(--nu-link);
   text-decoration-thickness: 2px;
   text-underline-offset: 0.25em;
+}
+
+a:not(.btn, .nav-link, .navbar-brand, .nu-clickable-card, .nu-browse-card, .skip-to-main-content):hover,
+a:not(.btn, .nav-link, .navbar-brand, .nu-clickable-card, .nu-browse-card, .skip-to-main-content):focus {
+  color: var(--nu-link-hover);
+  text-decoration-color: var(--nu-link-hover);
+}
+
+/* Bootstrap .link-primary sets text-decoration-color from --bs-primary (blue) */
+.link-primary {
+  color: var(--nu-link) !important;
+  text-decoration-color: var(--nu-link) !important;
+}
+
+.link-primary:hover,
+.link-primary:focus {
+  color: var(--nu-link-hover) !important;
+  text-decoration-color: var(--nu-link-hover) !important;
 }
 
 :root {
@@ -62,6 +82,13 @@ a:not(.btn, .nav-link, .navbar-brand) {
   /* Body/footer secondary text: ≥4.5:1 on #fff and typical cream (#fffdf7) */
   --nu-text-muted: #3a3f4a;
   --nu-text-muted-strong: #2a2f3a;
+  /* In-content links: dark purple on cream/white (WCAG-friendly vs Bootstrap blue) */
+  --nu-link: var(--nu-purple-dark);
+  --nu-link-hover: var(--nu-purple-hero-text);
+  --bs-link-color: var(--nu-link);
+  --bs-link-hover-color: var(--nu-link-hover);
+  --bs-link-color-rgb: 58, 36, 102;
+  --bs-link-hover-color-rgb: 41, 23, 73;
 }
 
 .nu-body {
@@ -170,7 +197,8 @@ a:not(.btn, .nav-link, .navbar-brand) {
 }
 
 .nu-link-purple {
-  color: #3a2466;
+  color: var(--nu-link);
+  text-decoration-color: var(--nu-link);
   font-weight: 700;
   text-decoration: underline;
   text-underline-offset: 0.2em;
@@ -179,7 +207,8 @@ a:not(.btn, .nav-link, .navbar-brand) {
 
 .nu-link-purple:hover,
 .nu-link-purple:focus {
-  color: var(--nu-purple-dark);
+  color: var(--nu-link-hover);
+  text-decoration-color: var(--nu-link-hover);
 }
 
 .nu-hero .nu-link-purple {
@@ -513,12 +542,14 @@ ul.list-group.nu-card.rounded {
 }
 
 .nu-rental-market .link-primary {
-  color: var(--nu-purple) !important;
+  color: var(--nu-link) !important;
+  text-decoration-color: var(--nu-link) !important;
 }
 
 .nu-rental-market .link-primary:hover,
 .nu-rental-market .link-primary:focus {
-  color: var(--nu-purple-dark) !important;
+  color: var(--nu-link-hover) !important;
+  text-decoration-color: var(--nu-link-hover) !important;
 }
 
 .nu-rental-market .alert-info {
@@ -529,11 +560,13 @@ ul.list-group.nu-card.rounded {
 
 .nu-rental-market .alert-info .alert-link {
   color: var(--nu-purple-dark);
+  text-decoration-color: var(--nu-purple-dark);
   font-weight: 600;
 }
 
 .nu-rental-market .alert-info .alert-link:hover {
   color: var(--nu-purple);
+  text-decoration-color: var(--nu-purple);
 }
 
 .nu-rental-market h5.card-title a:not(.btn) {
@@ -725,12 +758,14 @@ ul.list-group.nu-card.rounded {
 }
 
 .nu-marketplace .link-primary {
-  color: var(--nu-purple) !important;
+  color: var(--nu-link) !important;
+  text-decoration-color: var(--nu-link) !important;
 }
 
 .nu-marketplace .link-primary:hover,
 .nu-marketplace .link-primary:focus {
-  color: var(--nu-purple-dark) !important;
+  color: var(--nu-link-hover) !important;
+  text-decoration-color: var(--nu-link-hover) !important;
 }
 
 .nu-marketplace h5.card-title a:not(.btn) {
@@ -922,6 +957,7 @@ ul.list-group.nu-card.rounded {
 
 .nu-body .alert-info .alert-link {
   color: var(--nu-purple-dark);
+  text-decoration-color: var(--nu-purple-dark);
   font-weight: 700;
   text-decoration: underline;
 }
@@ -929,6 +965,7 @@ ul.list-group.nu-card.rounded {
 .nu-body .alert-info .alert-link:hover,
 .nu-body .alert-info .alert-link:focus {
   color: #1f0f38;
+  text-decoration-color: #1f0f38;
 }
 
 /* Lavender empty-state strip (not success green) */
@@ -938,12 +975,14 @@ ul.list-group.nu-card.rounded {
 
 .nu-soft-alert .alert-link {
   color: var(--nu-purple-dark);
+  text-decoration-color: var(--nu-purple-dark);
   font-weight: 700;
 }
 
 .nu-soft-alert .alert-link:hover,
 .nu-soft-alert .alert-link:focus {
   color: #1f0f38;
+  text-decoration-color: #1f0f38;
 }
 
 .nu-body .alert.alert-success {
@@ -1007,6 +1046,7 @@ ul.list-group.nu-card.rounded {
 
 .nu-rental-market .alert-info .alert-link {
   color: #1f0f38;
+  text-decoration-color: #1f0f38;
 }
 
 @media (max-width: 575.98px) {
@@ -1070,6 +1110,12 @@ html[data-bs-theme="dark"] {
   --nu-ink: #ece8f4;
   --nu-text-muted: #b0a8c4;
   --nu-text-muted-strong: #d0c8e0;
+  --nu-link: #c9b8f0;
+  --nu-link-hover: #e4daf8;
+  --bs-link-color: var(--nu-link);
+  --bs-link-hover-color: var(--nu-link-hover);
+  --bs-link-color-rgb: 201, 184, 240;
+  --bs-link-hover-color-rgb: 228, 218, 248;
 }
 
 .nu-theme-toggle {
