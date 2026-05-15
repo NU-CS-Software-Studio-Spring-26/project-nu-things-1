@@ -4,6 +4,8 @@ source "https://rubygems.org"
 gem "rails", "~> 8.1.3"
 # Patched nokogiri (GHSA-c4rq-3m3g-8wgx, GHSA-v2fc-qm4h-8hqv); pulled in via Rails / Capybara
 gem "nokogiri", ">= 1.19.3"
+# Patched net-imap (CVE-2026-42245–42258); pulled in via mail / Action Mailbox
+gem "net-imap", ">= 0.6.4"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
 # SQLite for local development and CI tests
