@@ -1,6 +1,7 @@
 <%# locals: (form:, record:) %>
 <div data-controller="photo-preview">
   <%= form.label :photo, "Upload photo (optional)", class: "form-label" %>
+  <small class="text-muted d-block mb-2">Max file size: 5 MB. Supported formats: JPEG, PNG, GIF, WebP</small>
   <%= form.file_field :photo,
       accept: "image/png,image/jpeg,image/gif,image/webp",
       class: "form-control",
