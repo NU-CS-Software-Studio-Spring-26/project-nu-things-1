@@ -36,7 +36,7 @@
   <div class="row g-4">
     <% @marketplace_listings.each do |item| %>
       <div class="col-md-6 col-lg-4">
-        <div class="card nu-card h-100">
+        <%= link_to item, class: "card nu-card nu-clickable-card h-100" do %>
           <% if item.listing_image_available? %>
             <%= listing_image_tag item, alt: item.title, class: "card-img-top nu-listing-index-card-img" %>
           <% else %>
@@ -45,7 +45,7 @@
 
           <div class="card-body">
             <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
-              <h5 class="card-title mb-0"><%= link_to item.title, item, class: "text-decoration-none" %></h5>
+              <h5 class="card-title mb-0 nu-item-title"><%= item.title %></h5>
               <span class="badge <%= marketplace_listing_type_badge_class(item.listing_type) %>"><%= item.listing_type == "wanted" ? "Wanted" : "For sale" %></span>
             </div>
 
@@ -68,10 +68,10 @@
             </div>
 
             <div class="d-grid gap-2">
-              <%= link_to "View details", item, class: "btn btn-sm btn-primary" %>
+              <span class="btn btn-sm btn-primary nu-card-cta">View details</span>
             </div>
           </div>
-        </div>
+        <% end %>
       </div>
     <% end %>
   </div>
