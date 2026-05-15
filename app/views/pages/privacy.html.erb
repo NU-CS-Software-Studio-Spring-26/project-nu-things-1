@@ -27,16 +27,17 @@
     </p>
 
     <h2 class="h5 mt-4">How to request deletion or changes</h2>
-    <% if privacy_contact_email.present? %>
-      <p class="mb-0">
-        Email <strong><%= mail_to privacy_contact_email, privacy_contact_email, class: "link-primary" %></strong> from your Northwestern account.
-        Describe what you want removed or updated (for example your account, a specific listing, or a photo). We will handle reasonable requests in line with how the project is operated.
-      </p>
-    <% else %>
-      <p class="mb-0">
-        Configure <code>PRIVACY_CONTACT_EMAIL</code> or <code>ADMIN_EMAIL</code> on the server so users can reach an operator for deletion or correction requests.
-      </p>
-    <% end %>
+    <p class="mb-2">
+      <% if privacy_contact_email.present? %>
+        Email <%= mail_to privacy_contact_email, privacy_contact_email, class: "link-primary" %> from your Northwestern account.
+      <% else %>
+        Email the NU Things team from your Northwestern account (see <%= link_to "About", about_path, class: "link-primary" %> for who runs the project).
+      <% end %>
+      Describe what you want removed or updated—for example your account, a specific listing, or a photo. We will handle reasonable requests in line with how the project is operated.
+    </p>
+    <p class="mb-0 text-muted small">
+      If you posted a listing, you may be able to edit or delete it yourself while signed in, depending on the listing type.
+    </p>
 
     <p class="mt-4 mb-0">
       <%= link_to "Terms & disclaimer", terms_path, class: "link-primary" %>
