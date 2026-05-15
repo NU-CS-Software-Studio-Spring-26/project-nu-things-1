@@ -6,6 +6,25 @@ class RentalItem < ApplicationRecord
   belongs_to :user, optional: true
 
   has_many :bookings, dependent: :destroy
+  has_many :rental_reviews, dependent: :destroy
+
+  def reviews_count
+    rental_reviews.loaded? ? rental_reviews.size : rental_reviews.count
+  end
+
+  def average_rating
+    if rental_reviews.loaded?
+      return nil if rental_reviews.empty?
+
+      rental_reviews.sum(&:rating).to_f / rental_reviews.size
+    else
+      rental_reviews.average(:rating)&.to_f
+    end
+  end
+
+  def past_renters_count
+    bookings.completed_past.count
+  end
 
   def self.listing_name_attribute
     :owner_name

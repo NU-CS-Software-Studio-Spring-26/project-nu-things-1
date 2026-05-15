@@ -45,8 +45,9 @@
             </div>
 
             <div class="mb-3">
-              <p class="h5 text-primary mb-1"><%= format_rental_rate(item) %></p>
-              <p class="text-muted small mb-0"><%= item.location %></p>
+              <p class="h5 text-primary mb-2"><%= format_rental_rate(item) %></p>
+              <%= render "rental_stats", item: item %>
+              <p class="text-muted small mb-0 mt-2"><%= item.location %></p>
             </div>
 
             <div class="d-grid gap-2">

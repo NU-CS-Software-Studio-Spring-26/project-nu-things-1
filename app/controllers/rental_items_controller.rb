@@ -4,7 +4,10 @@ class RentalItemsController < ApplicationController
   before_action :require_admin, only: %i[destroy]
 
   def index
-    @rental_items = RentalItem.with_attached_photo.where(status: "available").order(created_at: :desc)
+    @rental_items = RentalItem.with_attached_photo
+      .includes(:rental_reviews)
+      .where(status: "available")
+      .order(created_at: :desc)
     @categories = filter_category_options(RentalItem)
     @rental_items = filter_where_in(@rental_items, :category, params[:category], @categories)
   end
@@ -48,7 +51,7 @@ class RentalItemsController < ApplicationController
   private
 
   def set_rental_item
-    @rental_item = RentalItem.with_attached_photo.find(params.expect(:id))
+    @rental_item = RentalItem.with_attached_photo.includes(:rental_reviews, :bookings).find(params.expect(:id))
   end
 
   def rental_item_params

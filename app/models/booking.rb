@@ -18,6 +18,10 @@ class Booking < ApplicationRecord
 
   scope :active, -> { where.not(status: "cancelled") }
 
+  scope :completed_past, -> {
+    where(status: "confirmed").where(end_date: ...Date.current)
+  }
+
   private
 
   def end_date_after_start_date

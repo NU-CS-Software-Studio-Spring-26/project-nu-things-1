@@ -1,0 +1,11 @@
+past_confirmed:
+  rental_item: one
+  start_date: 2026-03-01
+  end_date: 2026-03-05
+  status: confirmed
+
+future_pending:
+  rental_item: one
+  start_date: 2026-06-01
+  end_date: 2026-06-03
+  status: pending

@@ -532,6 +532,12 @@ ul.list-group.nu-card.rounded {
 }
 
 /* Rental marketplace — Bootstrap primary/info default to blue; align with NU purple */
+.nu-rental-stats__stars {
+  letter-spacing: 0.08em;
+  font-size: 1rem;
+  line-height: 1;
+}
+
 .nu-rental-market .text-primary {
   color: var(--nu-purple) !important;
 }
