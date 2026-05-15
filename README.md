@@ -39,6 +39,11 @@ Posting and claiming require signing in with a **Northwestern Google account** (
 2. Under **Authorized redirect URIs**, add `http://localhost:3000/auth/google_oauth2/callback` for local development and `https://YOUR_DOMAIN/auth/google_oauth2/callback` for production (for example your Heroku URL).
 3. Set **`GOOGLE_CLIENT_ID`** and **`GOOGLE_CLIENT_SECRET`** in the environment, or store them in encrypted credentials under `google:` (`client_id` / `client_secret`) via `bin/rails credentials:edit`. Production boot fails fast if neither source provides both values.
 
+## Optional site URLs
+
+- **`APP_SOURCE_CODE_URL`**: Public GitHub (or other) repository URL. When set, the home page and footer show a **GitHub** link next to About / Privacy / Terms.
+- **`PRIVACY_CONTACT_EMAIL`**: Address shown on the Privacy page for data deletion or correction requests. If unset, the app falls back to **`ADMIN_EMAIL`** when that is configured.
+
 ## Database
 
 ### Run migrations

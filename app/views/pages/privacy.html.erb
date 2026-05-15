@@ -1,0 +1,45 @@
+<% content_for :title, "Privacy — NU Things" %>
+
+<div class="card nu-card border-0 shadow-sm">
+  <div class="card-body nu-prose mx-auto py-4 px-3 px-md-4" style="max-width: 48rem;">
+    <h1 class="h3 text-purple mb-3">Privacy</h1>
+    <p class="text-muted small mb-4">Last updated: <%= Time.zone.today.strftime("%B #{Time.zone.today.day}, %Y") %>. This is a plain-language summary for a class project; it is not legal advice.</p>
+
+    <h2 class="h5 mt-4">What we collect</h2>
+    <ul>
+      <li><strong>Account.</strong> If you sign in, we store your Northwestern email, optional first name, and sign-in identifiers from Google (and a password hash only if you use password sign-in where enabled).</li>
+      <li><strong>Listings.</strong> What you enter on forms is saved with your post: titles, descriptions, categories, locations, dates, contact name and email (and phone when you provide it), optional reward text, rental or booking notes, and similar fields needed to run the board.</li>
+      <li><strong>Photos.</strong> If you upload an image, it is stored with your listing using the application’s file storage.</li>
+      <li><strong>Messages you send through the site.</strong> When you use “contact” or “report” forms, we use what you type to send email to listing owners or moderators. That content may also exist for a short time in the application’s background job or mail systems while the message is delivered.</li>
+      <li><strong>Technical data.</strong> Like most websites, the server and hosting environment may log requests (for example IP address and browser type) for security and reliability.</li>
+    </ul>
+
+    <h2 class="h5 mt-4">How we use it</h2>
+    <ul>
+      <li>To show listings to visitors and signed-in users.</li>
+      <li>To send the emails you trigger (for example contacting a poster or reporting a post to moderators).</li>
+      <li>To operate sign-in, prevent abuse, and keep the service running.</li>
+    </ul>
+
+    <h2 class="h5 mt-4">Sharing</h2>
+    <p>
+      Listing details you choose to publish are visible to others on the site. We use Google for sign-in and a hosting provider to run the app; their terms apply to those parts of the service.
+    </p>
+
+    <h2 class="h5 mt-4">How to request deletion or changes</h2>
+    <% if privacy_contact_email.present? %>
+      <p class="mb-0">
+        Email <strong><%= mail_to privacy_contact_email, privacy_contact_email, class: "link-primary" %></strong> from your Northwestern account.
+        Describe what you want removed or updated (for example your account, a specific listing, or a photo). We will handle reasonable requests in line with how the project is operated.
+      </p>
+    <% else %>
+      <p class="mb-0">
+        Configure <code>PRIVACY_CONTACT_EMAIL</code> or <code>ADMIN_EMAIL</code> on the server so users can reach an operator for deletion or correction requests.
+      </p>
+    <% end %>
+
+    <p class="mt-4 mb-0">
+      <%= link_to "Terms & disclaimer", terms_path, class: "link-primary" %>
+    </p>
+  </div>
+</div>

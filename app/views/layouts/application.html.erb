@@ -102,9 +102,12 @@
     </main>
 
     <footer class="border-top mt-auto py-3 small text-muted nu-footer">
-      <div class="container nu-shell d-flex flex-column flex-md-row justify-content-between gap-2">
-        <span>Northwestern Lost and Found Board</span>
-        <span>For the Northwestern community. Not affiliated with the University.</span>
+      <div class="container nu-shell d-flex flex-column gap-2">
+        <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
+          <span>Northwestern Lost and Found Board</span>
+          <span>For the Northwestern community. Not affiliated with the University.</span>
+        </div>
+        <%= render "shared/site_meta_links", extra_class: "nu-footer-meta" %>
       </div>
     </footer>
 

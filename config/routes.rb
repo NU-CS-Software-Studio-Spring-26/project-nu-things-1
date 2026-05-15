@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   root "home#index"
 
+  get "about", to: "pages#about", as: :about
+  get "privacy", to: "pages#privacy", as: :privacy
+  get "terms", to: "pages#terms", as: :terms
+
   get "/auth/failure", to: "omniauth_callbacks#failure"
   get "/auth/:provider/callback", to: "omniauth_callbacks#create"
 
