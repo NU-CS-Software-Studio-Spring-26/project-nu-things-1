@@ -144,7 +144,7 @@ class LostItemsControllerTest < ActionDispatch::IntegrationTest
       user: user,
       status: "open"
     )
-    
+
     assert_not item.valid?
     assert item.errors[:contact_email].any?
   end
@@ -154,7 +154,7 @@ class LostItemsControllerTest < ActionDispatch::IntegrationTest
     item = LostItem.new(
       title: "Test item",
       description: "Test",
-      category: "Keys",
+      category: "Accessories",
       location_lost: "Library",
       date_lost: Date.current,
       contact_name: "Test",
@@ -170,7 +170,7 @@ class LostItemsControllerTest < ActionDispatch::IntegrationTest
     item = LostItem.new(
       title: "Test item",
       description: "Test",
-      category: "Keys",
+      category: "Accessories",
       location_lost: "Library",
       date_lost: Date.current,
       contact_name: "Test",
@@ -186,7 +186,7 @@ class LostItemsControllerTest < ActionDispatch::IntegrationTest
     item = LostItem.new(
       title: "Test item",
       description: "Test",
-      category: "Keys",
+      category: "Accessories",
       location_lost: "Library",
       date_lost: Date.current,
       contact_name: "Test",
@@ -194,7 +194,7 @@ class LostItemsControllerTest < ActionDispatch::IntegrationTest
       user: user,
       status: "open"
     )
-    
+
     assert_not item.valid?
     assert item.errors[:contact_email].any?
   end
@@ -204,7 +204,7 @@ class LostItemsControllerTest < ActionDispatch::IntegrationTest
     item = LostItem.new(
       title: "Test item",
       description: "Test",
-      category: "Keys",
+      category: "Accessories",
       location_lost: "Library",
       date_lost: Date.current,
       contact_name: "Test",
@@ -212,7 +212,7 @@ class LostItemsControllerTest < ActionDispatch::IntegrationTest
       user: user,
       status: "open"
     )
-    
+
     assert_not item.valid?
     assert item.errors[:contact_email].any?
   end
@@ -222,7 +222,7 @@ class LostItemsControllerTest < ActionDispatch::IntegrationTest
     item = LostItem.new(
       title: "Hacker attempt",
       description: "Trying to use non-NU email",
-      category: "Keys",
+      category: "Accessories",
       location_lost: "Campus",
       date_lost: Date.current,
       contact_name: "Hacker",

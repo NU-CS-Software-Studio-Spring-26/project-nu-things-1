@@ -13,7 +13,7 @@ class MarketplaceListing < ApplicationRecord
   moderate_attributes :title, :description, :location, :condition, :custom_category
 
   validates :title, :description, :category, :location, :contact_name, :contact_email, :listing_type, presence: true
-  validates :contact_email, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates :contact_email, format: { with: User::NORTHWESTERN_EMAIL, message: "must be a Northwestern email (@u.northwestern.edu or @northwestern.edu)" }
 
   validates :listing_type, inclusion: { in: LISTING_TYPES }
   validates :category, inclusion: { in: CATEGORIES }

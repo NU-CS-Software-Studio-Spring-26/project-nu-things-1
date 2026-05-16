@@ -151,7 +151,7 @@ class FoundItemsControllerTest < ActionDispatch::IntegrationTest
     item = FoundItem.new(
       title: "Found item",
       description: "Test description",
-      category: "Keys",
+      category: "Accessories",
       location_found: "Library",
       date_found: Date.current,
       contact_name: "Test",
@@ -159,7 +159,7 @@ class FoundItemsControllerTest < ActionDispatch::IntegrationTest
       user: user,
       status: "unclaimed"
     )
-    
+
     assert_not item.valid?
     assert item.errors[:contact_email].any?
   end
@@ -169,7 +169,7 @@ class FoundItemsControllerTest < ActionDispatch::IntegrationTest
     item = FoundItem.new(
       title: "Found item",
       description: "Test",
-      category: "Keys",
+      category: "Accessories",
       location_found: "Library",
       date_found: Date.current,
       contact_name: "Test",
@@ -185,7 +185,7 @@ class FoundItemsControllerTest < ActionDispatch::IntegrationTest
     item = FoundItem.new(
       title: "Found item",
       description: "Test",
-      category: "Keys",
+      category: "Accessories",
       location_found: "Library",
       date_found: Date.current,
       contact_name: "Test",
@@ -201,7 +201,7 @@ class FoundItemsControllerTest < ActionDispatch::IntegrationTest
     item = FoundItem.new(
       title: "Found item",
       description: "Test",
-      category: "Keys",
+      category: "Accessories",
       location_found: "Library",
       date_found: Date.current,
       contact_name: "Test",
@@ -209,7 +209,7 @@ class FoundItemsControllerTest < ActionDispatch::IntegrationTest
       user: user,
       status: "unclaimed"
     )
-    
+
     assert_not item.valid?
     assert item.errors[:contact_email].any?
   end
@@ -219,7 +219,7 @@ class FoundItemsControllerTest < ActionDispatch::IntegrationTest
     item = FoundItem.new(
       title: "Found item",
       description: "Test",
-      category: "Keys",
+      category: "Accessories",
       location_found: "Library",
       date_found: Date.current,
       contact_name: "Test",
@@ -227,7 +227,7 @@ class FoundItemsControllerTest < ActionDispatch::IntegrationTest
       user: user,
       status: "unclaimed"
     )
-    
+
     assert_not item.valid?
     assert item.errors[:contact_email].any?
   end
@@ -237,7 +237,7 @@ class FoundItemsControllerTest < ActionDispatch::IntegrationTest
     item = FoundItem.new(
       title: "Hacker found item",
       description: "Trying to use non-NU email",
-      category: "Keys",
+      category: "Accessories",
       location_found: "Campus",
       date_found: Date.current,
       contact_name: "Hacker",
@@ -253,12 +253,12 @@ class FoundItemsControllerTest < ActionDispatch::IntegrationTest
   test "found item status transitions prevent unauthorized claims" do
     # Verify item starts as unclaimed
     assert_equal "unclaimed", @found_item.status
-    
+
     # After claiming, status should be claimed
     @found_item.status = "claimed"
     @found_item.claimed_by_user = users(:nu_student)
     @found_item.save!
-    
+
     assert_equal "claimed", @found_item.status
     assert_equal users(:nu_student).id, @found_item.claimed_by_user_id
   end
