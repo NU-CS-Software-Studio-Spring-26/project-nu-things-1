@@ -49,6 +49,32 @@ class LostItemTest < ActiveSupport::TestCase
     assert item.errors.of_kind?(:contact_email, :invalid)
   end
 
+  test "accepts @u.northwestern.edu email" do
+    item = lost_items(:one)
+    item.contact_email = "student@u.northwestern.edu"
+    assert item.valid?, "should accept @u.northwestern.edu email"
+  end
+
+  test "accepts @northwestern.edu email" do
+    item = lost_items(:one)
+    item.contact_email = "staff@northwestern.edu"
+    assert item.valid?, "should accept @northwestern.edu email"
+  end
+
+  test "rejects non-Northwestern email" do
+    item = lost_items(:one)
+    item.contact_email = "user@gmail.com"
+    assert_not item.valid?
+    assert item.errors.of_kind?(:contact_email, :invalid)
+  end
+
+  test "rejects non-Northwestern email with similar domain" do
+    item = lost_items(:one)
+    item.contact_email = "user@fake-northwestern.edu"
+    assert_not item.valid?
+    assert item.errors.of_kind?(:contact_email, :invalid)
+  end
+
   test "enforces title, name, and description limits" do
     item = lost_items(:one)
     item.title = "x" * (ListingTextLimits::TITLE_MAX_LENGTH + 1)

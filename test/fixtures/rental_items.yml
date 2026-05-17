@@ -12,7 +12,7 @@ one:
   available_to: 2026-05-01
   image_url: MyString
   owner_name: MyString
-  owner_email: MyString
+  owner_email: owner@u.northwestern.edu
   owner_phone: MyString
   deposit_required: 9.99
   status: MyString
@@ -29,7 +29,7 @@ two:
   available_to: 2026-05-01
   image_url: MyString
   owner_name: MyString
-  owner_email: MyString
+  owner_email: owner2@northwestern.edu
   owner_phone: MyString
   deposit_required: 9.99
   status: MyString
