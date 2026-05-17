@@ -1159,7 +1159,7 @@ html[data-bs-theme="dark"] {
   justify-content: center;
 }
 
-.nu-theme-toggle__icon svg {
+.nu-theme-toggle__svg {
   display: block;
 }
 
