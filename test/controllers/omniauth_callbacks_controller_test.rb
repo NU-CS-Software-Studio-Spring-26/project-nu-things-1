@@ -176,8 +176,4 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_session_path
     assert_includes flash[:alert], "Google sign-in did not complete"
   end
-
-  teardown do
-    OmniAuth.config.test_mode = false
-  end
 end
