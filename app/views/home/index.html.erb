@@ -7,8 +7,12 @@
     <div class="col-lg-7">
       <h1 class="display-6 fw-bold text-purple mb-3">NU Things</h1>
       <p class="lead nu-section-lead mb-0 nu-prose">
-        You need a Northwestern account to post a listing or claim a found item.
-        <%= link_to "Sign in with Google", new_session_path, class: "nu-link-purple" %>.
+        <% if signed_in? %>
+          Post a listing, claim a found item, or browse what others have shared on campus.
+        <% else %>
+          You need a Northwestern account to post a listing or claim a found item.
+          <%= link_to "Sign in with Google", new_session_path, class: "nu-link-purple" %>.
+        <% end %>
       </p>
       <%= render "shared/site_meta_links", extra_class: "mt-3 nu-hero-meta" %>
     </div>
