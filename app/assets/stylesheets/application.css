@@ -397,6 +397,20 @@ ul.list-group.nu-card.rounded {
   z-index: 1;
 }
 
+.nu-hero__intro {
+  max-width: 32rem;
+}
+
+/* Large screens: sit intro a little above vertical center of the actions card */
+@media (min-width: 992px) {
+  .nu-hero__intro-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-bottom: 2.75rem;
+  }
+}
+
 .nu-home-actions {
   border: 1px solid rgba(75, 46, 131, 0.14);
   /* Opaque surface so text contrast is measured against solid white, not hero gradient */
@@ -454,6 +468,10 @@ ul.list-group.nu-card.rounded {
   color: #1a1f2a;
   font-size: 0.89rem;
   font-weight: 600;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
 }
 
 .nu-report-lost {
