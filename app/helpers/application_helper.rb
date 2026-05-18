@@ -1,10 +1,10 @@
 module ApplicationHelper
   def brand_name
-    Rails.application.config.lofonu_brand_name
+    Lofonu::BRAND_NAME
   end
 
   def brand_color
-    Rails.application.config.lofonu_brand_color
+    Lofonu::BRAND_COLOR
   end
 
   def page_title(page_name = nil)
