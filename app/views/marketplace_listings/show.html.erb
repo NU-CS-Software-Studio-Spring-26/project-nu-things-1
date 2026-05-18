@@ -3,7 +3,7 @@
 <div class="nu-marketplace">
 <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 mb-3">
   <div>
-    <h1 class="h2 mb-2 text-purple"><%= @marketplace_listing.title %></h1>
+    <h2 class="h2 mb-2 text-purple"><%= @marketplace_listing.title %></h2>
     <span class="badge <%= marketplace_listing_type_badge_class(@marketplace_listing.listing_type) %>">
       <%= @marketplace_listing.listing_type == "wanted" ? "Wanted" : "For sale" %>
     </span>

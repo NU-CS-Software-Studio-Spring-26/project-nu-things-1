@@ -42,9 +42,12 @@
       Skip to main content
     </a>
 
-    <nav class="navbar navbar-expand-lg navbar-dark nu-navbar shadow-sm mb-4">
+    <header>
+    <nav class="navbar navbar-expand-lg navbar-dark nu-navbar shadow-sm mb-4" aria-label="Primary">
       <div class="container nu-shell">
-        <%= link_to "NU Things", root_path, class: "navbar-brand fw-semibold nu-brand" %>
+        <h1 class="nu-site-title mb-0">
+          <%= link_to "NU Things", root_path, class: "navbar-brand fw-semibold nu-brand" %>
+        </h1>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -95,6 +98,7 @@
         </div>
       </div>
     </nav>
+    </header>
 
     <main id="main-content" role="main" class="container nu-shell flex-grow-1 pb-5">
       <%= render "shared/flash" %>
