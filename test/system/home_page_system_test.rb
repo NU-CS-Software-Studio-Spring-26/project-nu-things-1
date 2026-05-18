@@ -5,6 +5,8 @@ class HomePageSystemTest < ApplicationSystemTestCase
     visit root_url
 
     assert_selector "h1", text: "Purple Post"
+    assert_selector ".nu-hero__intro"
+    assert_selector ".nu-home-actions"
     assert_selector "a", text: "Lost"
     assert_selector "a", text: "Found"
     assert_selector "a", text: "Post lost item"
