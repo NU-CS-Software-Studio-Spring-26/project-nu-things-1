@@ -4,7 +4,7 @@ class HomePageSystemTest < ApplicationSystemTestCase
   test "home page loads with title and navigation" do
     visit root_url
 
-    assert_selector "h1", text: "LoFoNU"
+    assert_selector "h1", text: "Purple Post"
     assert_selector "a", text: "Lost"
     assert_selector "a", text: "Found"
     assert_selector "a", text: "Post lost item"

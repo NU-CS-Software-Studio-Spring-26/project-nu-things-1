@@ -106,7 +106,7 @@ class User < ApplicationRecord
   end
 
   def admin?
-    Lofonu::ADMIN_EMAIL.present? && email == Lofonu::ADMIN_EMAIL
+    PurplePost::ADMIN_EMAIL.present? && email == PurplePost::ADMIN_EMAIL
   end
 
   private

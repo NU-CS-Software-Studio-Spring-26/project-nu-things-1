@@ -46,7 +46,7 @@ class ContactMailer < ApplicationMailer
     mail(
       to: listing_moderation_to,
       reply_to: reporter_email,
-      subject: "[#{Lofonu::BRAND_NAME}] Reported lost item ##{lost_item.id}: #{lost_item.title}"
+      subject: "[#{PurplePost::BRAND_NAME}] Reported lost item ##{lost_item.id}: #{lost_item.title}"
     )
   end
 
@@ -59,13 +59,13 @@ class ContactMailer < ApplicationMailer
     mail(
       to: listing_moderation_to,
       reply_to: reporter_email,
-      subject: "[#{Lofonu::BRAND_NAME}] Reported found item ##{found_item.id}: #{found_item.title}"
+      subject: "[#{PurplePost::BRAND_NAME}] Reported found item ##{found_item.id}: #{found_item.title}"
     )
   end
 
   private
 
   def listing_moderation_to
-    Lofonu::ADMIN_EMAIL.presence || "admin@u.northwestern.edu"
+    PurplePost::ADMIN_EMAIL.presence || "admin@u.northwestern.edu"
   end
 end
