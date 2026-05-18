@@ -87,7 +87,9 @@ class FoundItemsController < ApplicationController
   end
 
   def found_item_params
-    params.expect(found_item: [ :title, :description, :category, :custom_category, :location_found, :date_found,
-                                  :contact_name, :contact_email, :status, :image_url, :photo, :storage_location, :color, :brand ])
+    attrs = [ :title, :description, :category, :custom_category, :location_found, :date_found,
+              :contact_name, :contact_email, :image_url, :photo, :storage_location, :color, :brand ]
+    attrs << :status if action_name == "create"
+    params.expect(found_item: attrs)
   end
 end

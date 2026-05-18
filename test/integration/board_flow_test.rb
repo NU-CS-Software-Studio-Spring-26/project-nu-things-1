@@ -103,13 +103,15 @@ class BoardFlowTest < ActionDispatch::IntegrationTest
         date_found: Date.new(2026, 4, 20),
         contact_name: "Finder Flow",
         contact_email: "finder.flow@u.northwestern.edu",
-        status: "claimed",
         image_url: "",
         storage_location: "Returned to owner",
         color: "Black",
         brand: ""
       }
     }
+    assert_redirected_to found_item_path(new_item)
+
+    post claim_found_item_path(new_item)
     assert_redirected_to found_item_path(new_item)
     assert_equal "claimed", new_item.reload.status
 

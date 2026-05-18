@@ -66,6 +66,6 @@ class ContactMailer < ApplicationMailer
   private
 
   def listing_moderation_to
-    Rails.application.config.x.admin_email.presence || "admin@u.northwestern.edu"
+    Lofonu::ADMIN_EMAIL.presence || "admin@u.northwestern.edu"
   end
 end

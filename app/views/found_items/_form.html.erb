@@ -45,10 +45,12 @@
           <%= f.email_field :contact_email, class: "form-control", required: true %>
         </div>
 
+        <% if found_item.new_record? %>
         <div class="col-md-4">
           <%= f.label :status, "Status *", class: "form-label" %>
           <%= f.select :status, FoundItem::STATUSES.map { |s| [s.titleize, s] }, {}, class: "form-select" %>
         </div>
+        <% end %>
         <div class="col-12">
           <%= render "application/listing_photo_upload", form: f, record: found_item %>
         </div>

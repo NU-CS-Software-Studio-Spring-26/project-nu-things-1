@@ -1,4 +1,5 @@
 class MarketplaceListing < ApplicationRecord
+  include ListingAuthorizable
   include ListingPhotoAttachment
   include ListingTextLimits
   include ModeratedContent

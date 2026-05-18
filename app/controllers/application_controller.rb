@@ -47,7 +47,7 @@ class ApplicationController < ActionController::Base
   end
 
   def can_edit_post?(record)
-    admin? || (signed_in? && record.user_id.present? && record.user_id == current_user.id)
+    signed_in? && record.respond_to?(:editable_by?) && record.editable_by?(current_user)
   end
 
   def require_owner_or_admin(record)
@@ -56,12 +56,7 @@ class ApplicationController < ActionController::Base
       redirect_to new_session_path, alert: "Please sign in with your Northwestern account to continue."
       return
     end
-    return if current_user.admin?
-    if record.user_id.blank?
-      redirect_back fallback_location: root_path, alert: "You don't have permission to do that."
-      return
-    end
-    return if record.user_id == current_user.id
+    return if record.respond_to?(:editable_by?) && record.editable_by?(current_user)
 
     redirect_back fallback_location: root_path, alert: "You don't have permission to do that."
   end
