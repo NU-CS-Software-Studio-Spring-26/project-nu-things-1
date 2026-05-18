@@ -7,7 +7,6 @@ This project is for a class milestone: **no authentication**, messaging, payment
 ## Team members
 
 - Rimen Jenhani
-- Shayan Shabani
 - Abem Girmai
 - Gwendolyn Slaughter
 - Nasser Issa
@@ -88,7 +87,7 @@ GitHub Actions runs the same checks on push and pull requests (see [`.github/wor
 
 ### Live app URL
 
-**https://shielded-woodland-42404-a6be1ad4a07b.herokuapp.com**
+**https://purple-post-e83ffbf122e1.herokuapp.com/**
 
 ### Deploy checklist
 
