@@ -2,9 +2,41 @@
 <% content_for :title, page_title("#{display} — Profile") %>
 
 <h1 class="h2 mb-1 text-purple"><%= display %></h1>
+<<<<<<< Updated upstream
 <p class="text-muted small mb-4">Profile — posts on <%= brand_name %>.</p>
+=======
+<p class="text-muted small mb-2">Profile — posts on NU Things.</p>
+
+<% if @reviews_count.positive? %>
+  <p class="mb-4">
+    <span class="badge text-bg-primary fs-6"><%= @reviews_average %>/5 average</span>
+    <span class="text-muted small ms-2">from <%= @reviews_count %> <%= @reviews_count == 1 ? "rental review" : "rental reviews" %></span>
+  </p>
+<% else %>
+  <p class="text-muted small mb-4">No rental reviews yet.</p>
+<% end %>
+>>>>>>> Stashed changes
 
 <div class="d-flex flex-column gap-5">
+
+  <% if @received_reviews.any? %>
+    <section>
+      <h2 class="h5 text-muted text-uppercase mb-3">Rental reviews</h2>
+      <ul class="list-group nu-card rounded">
+        <% @received_reviews.each do |rev| %>
+          <li class="list-group-item">
+            <div class="d-flex flex-wrap justify-content-between gap-2 mb-1">
+              <span class="fw-semibold text-purple"><%= rev.rating %>/5</span>
+              <span class="small text-muted"><%= rev.created_at.strftime("%b %-d, %Y") %> · from <%= display_user_name(rev.reviewer) %></span>
+            </div>
+            <% if rev.body.present? %>
+              <p class="mb-0 small nu-prose"><%= simple_format(rev.body) %></p>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </section>
+  <% end %>
 
   <%# Lost items (authored) %>
   <section>

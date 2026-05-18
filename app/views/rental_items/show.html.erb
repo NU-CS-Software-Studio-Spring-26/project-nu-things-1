@@ -66,27 +66,57 @@
 
     <div class="card nu-card mb-3">
       <div class="card-body">
-        <h2 class="h6 text-muted text-uppercase mb-3">Request Booking</h2>
-        <%= form_with url: rental_item_bookings_path(@rental_item), method: :post, local: true, class: "needs-validation" do |f| %>
-          <div class="mb-3">
-            <%= f.label :start_date, "Start date", class: "form-label" %>
-            <%= f.date_field :start_date, class: "form-control", required: true, min: @rental_item.available_from, max: @rental_item.available_to %>
-          </div>
+        <h2 class="h6 text-muted text-uppercase mb-3">Request booking</h2>
+        <% if signed_in? %>
+          <%= form_with model: [ @rental_item, Booking.new ], local: true, class: "needs-validation" do |f| %>
+            <div class="mb-3">
+              <%= f.label :start_date, "Start date", class: "form-label" %>
+              <%= f.date_field :start_date, class: "form-control", required: true, min: @rental_item.available_from, max: @rental_item.available_to %>
+            </div>
 
-          <div class="mb-3">
-            <%= f.label :end_date, "End date", class: "form-label" %>
-            <%= f.date_field :end_date, class: "form-control", required: true, min: @rental_item.available_from, max: @rental_item.available_to %>
-          </div>
+            <div class="mb-3">
+              <%= f.label :end_date, "End date", class: "form-label" %>
+              <%= f.date_field :end_date, class: "form-control", required: true, min: @rental_item.available_from, max: @rental_item.available_to %>
+            </div>
 
-          <div class="mb-3">
-            <%= f.label :notes, "Additional notes (optional)", class: "form-label" %>
-            <%= f.text_area :notes, class: "form-control", rows: 3, placeholder: "Ask about specific dates, ask any questions, etc." %>
-          </div>
+            <div class="mb-3">
+              <%= f.label :notes, "Additional notes (optional)", class: "form-label" %>
+              <%= f.text_area :notes, class: "form-control", rows: 3, placeholder: "Ask about specific dates, ask any questions, etc." %>
+            </div>
 
-          <%= f.submit "Request booking", class: "btn btn-primary w-100" %>
+            <%= f.submit "Request booking", class: "btn btn-primary w-100" %>
+          <% end %>
+        <% else %>
+          <p class="text-muted small mb-3">Sign in with your Northwestern Google account to request dates.</p>
+          <%= link_to "Sign in", new_session_path, class: "btn btn-primary w-100" %>
         <% end %>
       </div>
     </div>
+
+    <% if signed_in? && @my_bookings_on_item.present? %>
+      <div class="card nu-card mb-3">
+        <div class="card-body">
+          <h2 class="h6 text-muted text-uppercase mb-3">Your booking requests</h2>
+          <ul class="list-group list-group-flush">
+            <% @my_bookings_on_item.each do |b| %>
+              <li class="list-group-item px-0 d-flex flex-column gap-2">
+                <div>
+                  <span class="fw-semibold"><%= b.start_date.strftime("%b %-d") %> – <%= b.end_date.strftime("%b %-d, %Y") %></span>
+                  <span class="badge text-bg-light border ms-2"><%= b.status.titleize %></span>
+                </div>
+                <% if b.renter_can_leave_review? && b.renter_review.blank? && b.rental_item.user_id.present? %>
+                  <%= link_to "Rate this rental", new_rental_item_booking_review_path(@rental_item, b), class: "btn btn-sm btn-outline-primary nu-pill-btn align-self-start" %>
+                <% elsif b.renter_review.present? %>
+                  <span class="small text-muted">You rated this rental (<%= b.renter_review.rating %>/5).</span>
+                <% elsif b.status != "cancelled" && b.end_date >= Date.current %>
+                  <span class="small text-muted">You can leave a review after the rental end date.</span>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    <% end %>
 
     <% if signed_in? %>
       <div class="card nu-card mb-3">

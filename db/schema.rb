@@ -10,7 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< Updated upstream
 ActiveRecord::Schema[8.1].define(version: 2026_05_15_180000) do
+=======
+ActiveRecord::Schema[8.1].define(version: 2026_05_15_120001) do
+>>>>>>> Stashed changes
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -44,11 +48,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_15_180000) do
     t.date "end_date", null: false
     t.text "notes"
     t.integer "rental_item_id", null: false
+    t.integer "renter_id"
     t.date "start_date", null: false
     t.string "status", default: "pending", null: false
     t.datetime "updated_at", null: false
     t.index ["rental_item_id", "start_date", "end_date"], name: "index_bookings_on_rental_item_id_and_start_date_and_end_date"
     t.index ["rental_item_id"], name: "index_bookings_on_rental_item_id"
+    t.index ["renter_id"], name: "index_bookings_on_renter_id"
   end
 
   create_table "claims", force: :cascade do |t|
@@ -116,20 +122,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_15_180000) do
   end
 
   create_table "marketplace_listings", force: :cascade do |t|
-    t.string "category", null: false
+    t.string "category"
     t.string "condition"
-    t.string "contact_email", null: false
-    t.string "contact_name", null: false
+    t.string "contact_email"
+    t.string "contact_name"
     t.string "contact_phone"
     t.datetime "created_at", null: false
     t.string "custom_category"
-    t.text "description", null: false
+    t.text "description"
     t.string "image_url"
-    t.string "listing_type", null: false
-    t.string "location", null: false
+    t.string "listing_type"
+    t.string "location"
     t.decimal "price"
-    t.string "status", default: "active", null: false
-    t.string "title", null: false
+    t.string "status"
+    t.string "title"
     t.datetime "updated_at", null: false
     t.integer "user_id"
     t.index ["user_id"], name: "index_marketplace_listings_on_user_id"
@@ -157,6 +163,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_15_180000) do
     t.index ["user_id"], name: "index_rental_items_on_user_id"
   end
 
+<<<<<<< Updated upstream
   create_table "rental_reviews", force: :cascade do |t|
     t.text "body"
     t.datetime "created_at", null: false
@@ -168,6 +175,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_15_180000) do
     t.index ["rental_item_id", "user_id"], name: "index_rental_reviews_on_rental_item_id_and_user_id", unique: true, where: "user_id IS NOT NULL"
     t.index ["rental_item_id"], name: "index_rental_reviews_on_rental_item_id"
     t.index ["user_id"], name: "index_rental_reviews_on_user_id"
+=======
+  create_table "reviews", force: :cascade do |t|
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.integer "rating", null: false
+    t.integer "reviewee_id", null: false
+    t.integer "reviewer_id", null: false
+    t.integer "subject_id", null: false
+    t.string "subject_type", null: false
+    t.datetime "updated_at", null: false
+    t.index ["reviewee_id"], name: "index_reviews_on_reviewee_id"
+    t.index ["reviewer_id", "subject_type", "subject_id"], name: "index_reviews_one_per_subject_per_reviewer", unique: true
+    t.index ["reviewer_id"], name: "index_reviews_on_reviewer_id"
+    t.index ["subject_type", "subject_id"], name: "index_reviews_on_subject"
+>>>>>>> Stashed changes
   end
 
   create_table "solid_cable_messages", force: :cascade do |t|
@@ -327,15 +349,24 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_15_180000) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "bookings", "rental_items"
+<<<<<<< Updated upstream
   add_foreign_key "claims", "users"
+=======
+  add_foreign_key "bookings", "users", column: "renter_id", on_delete: :nullify
+>>>>>>> Stashed changes
   add_foreign_key "found_items", "users"
   add_foreign_key "found_items", "users", column: "claimed_by_user_id"
   add_foreign_key "login_tokens", "users"
   add_foreign_key "lost_items", "users"
   add_foreign_key "marketplace_listings", "users"
   add_foreign_key "rental_items", "users"
+<<<<<<< Updated upstream
   add_foreign_key "rental_reviews", "rental_items"
   add_foreign_key "rental_reviews", "users"
+=======
+  add_foreign_key "reviews", "users", column: "reviewee_id"
+  add_foreign_key "reviews", "users", column: "reviewer_id"
+>>>>>>> Stashed changes
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_claimed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_failed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade

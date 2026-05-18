@@ -13,6 +13,9 @@ class RentalItemsController < ApplicationController
   end
 
   def show
+    if signed_in?
+      @my_bookings_on_item = @rental_item.bookings.where(renter_id: current_user.id).order(created_at: :desc).limit(25)
+    end
   end
 
   def new

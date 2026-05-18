@@ -24,7 +24,8 @@ Rails.application.routes.draw do
     end
   end
   resources :rental_items do
-    resources :bookings, only: [ :create ] do
+    resources :bookings, only: %i[create show] do
+      resource :review, only: %i[new create]
       member do
         patch :cancel
       end

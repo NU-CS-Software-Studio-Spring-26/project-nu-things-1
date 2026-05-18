@@ -9,6 +9,8 @@ class User < ApplicationRecord
   has_many :found_items, inverse_of: :user, dependent: :nullify
   has_many :marketplace_listings, inverse_of: :user, dependent: :nullify
   has_many :rental_items, inverse_of: :user, dependent: :nullify
+  has_many :reviews_received, class_name: "Review", foreign_key: :reviewee_id, inverse_of: :reviewee, dependent: :destroy
+  has_many :reviews_written, class_name: "Review", foreign_key: :reviewer_id, inverse_of: :reviewer, dependent: :destroy
 
   attr_reader :password, :password_confirmation
   attr_writer :password_confirmation
@@ -107,6 +109,10 @@ class User < ApplicationRecord
 
   def admin?
     PurplePost::ADMIN_EMAIL.present? && email == PurplePost::ADMIN_EMAIL
+  end
+
+  def average_received_rating
+    reviews_received.average(:rating)&.to_f&.round(2)
   end
 
   private

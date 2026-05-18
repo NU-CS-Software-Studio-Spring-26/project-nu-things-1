@@ -13,5 +13,9 @@ class UsersController < ApplicationController
 
     @claimed_found_items = scope.call(FoundItem.where(claimed_by_user_id: @user.id))
       .order(date_found: :desc, updated_at: :desc)
+
+    @received_reviews = @user.reviews_received.includes(:reviewer, :subject).order(created_at: :desc).limit(100)
+    @reviews_count = @user.reviews_received.count
+    @reviews_average = @user.average_received_rating
   end
 end

@@ -1,0 +1,45 @@
+<% content_for :title, "Review rental — NU Things" %>
+
+<div class="row justify-content-center">
+  <div class="col-lg-7">
+    <div class="card nu-card">
+      <div class="card-body">
+        <h1 class="h4 text-purple mb-2">Rate your rental</h1>
+        <p class="text-muted mb-4">
+          <% owner_user = @booking.rental_item.user %>
+          <% owner_label = owner_user ? display_user_name(owner_user) : @booking.rental_item.owner_name %>
+          You’re reviewing <strong><%= owner_label %></strong>
+          for <strong><%= link_to @booking.rental_item.title, rental_item_path(@rental_item), class: "nu-link-purple" %></strong>
+          (<%= @booking.start_date.strftime("%b %-d") %> – <%= @booking.end_date.strftime("%b %-d, %Y") %>).
+        </p>
+
+        <%= form_with model: @review, url: rental_item_booking_review_path(@rental_item, @booking), method: :post, local: true do |f| %>
+          <% if @review.errors.any? %>
+            <div class="alert alert-danger" role="alert">
+              <ul class="mb-0 ps-3">
+                <% @review.errors.full_messages.each do |msg| %>
+                  <li><%= msg %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+
+          <div class="mb-3">
+            <%= f.label :rating, "Rating", class: "form-label" %>
+            <%= f.select :rating, (1..5).map { |n| [ "#{n} — #{n == 5 ? 'Excellent' : n >= 4 ? 'Good' : 'Fair'}", n ] }, {}, class: "form-select" %>
+          </div>
+
+          <div class="mb-3">
+            <%= f.label :body, "Comments (optional)", class: "form-label" %>
+            <%= f.text_area :body, class: "form-control", rows: 4, maxlength: 2000, placeholder: "How was communication, pickup, and the item?" %>
+          </div>
+
+          <div class="d-flex flex-wrap gap-2">
+            <%= f.submit "Submit review", class: "btn btn-primary nu-pill-btn" %>
+            <%= link_to "Cancel", rental_item_path(@rental_item), class: "btn btn-outline-secondary nu-pill-btn" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
