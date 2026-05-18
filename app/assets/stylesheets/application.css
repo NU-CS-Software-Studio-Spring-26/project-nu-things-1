@@ -1,5 +1,5 @@
 /*
- * Northwestern Lost and Found Board — global styles (Propshaft serves this file as-is).
+ * LoFoNU — global styles (Propshaft serves this file as-is).
  */
 
 /* Skip to main content link - WCAG 2.1 Level AA accessible keyboard navigation */
@@ -70,7 +70,7 @@ a:not(.btn, .nav-link, .navbar-brand, .nu-clickable-card, .nu-browse-card, .skip
 }
 
 :root {
-  --nu-purple: #4b2e83;
+  --nu-purple: #4e2a84;
   --nu-purple-dark: #3a2466;
   /* Darker purple for text on soft lavender / hero (WCAG 4.5:1 vs palest hero stops) */
   --nu-purple-hero-text: #291749;
@@ -107,7 +107,7 @@ a:not(.btn, .nav-link, .navbar-brand, .nu-clickable-card, .nu-browse-card, .skip
 }
 
 .nu-navbar {
-  background: linear-gradient(105deg, #1f1538, #3a2466 52%, #4b2e83);
+  background: linear-gradient(105deg, #1f1538, #3a2466 52%, #4e2a84);
   padding: 0.5rem 0;
 }
 
@@ -123,6 +123,19 @@ a:not(.btn, .nav-link, .navbar-brand, .nu-clickable-card, .nu-browse-card, .skip
 
 .nu-brand {
   letter-spacing: 0.02em;
+}
+
+.nu-navbar-logo {
+  height: 2.75rem;
+  width: auto;
+  display: block;
+  flex-shrink: 0;
+}
+
+@media (min-width: 992px) {
+  .nu-navbar-logo {
+    height: 3.25rem;
+  }
 }
 
 .nu-navbar-greeting {

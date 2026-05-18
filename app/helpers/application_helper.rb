@@ -1,4 +1,20 @@
 module ApplicationHelper
+  def brand_name
+    Lofonu::BRAND_NAME
+  end
+
+  def brand_color
+    Lofonu::BRAND_COLOR
+  end
+
+  def page_title(page_name = nil)
+    if page_name.present?
+      "#{page_name} — #{brand_name}"
+    else
+      brand_name
+    end
+  end
+
   def app_source_code_url
     Rails.application.config.x.source_code_url.to_s
   end

@@ -1,4 +1,4 @@
-# Northwestern Lost and Found Board — wiki
+# LoFoNU — wiki
 
 ## Problem we are solving
 

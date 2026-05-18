@@ -12,20 +12,20 @@
         }
       })();
     </script>
-    <title><%= content_for(:title) || "Northwestern Lost and Found Board" %></title>
+    <title><%= content_for(:title) || brand_name %></title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="icon" href="/appicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/applogo.png">
     <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#4b2e83">
-    <meta name="description" content="Northwestern Lost and Found Board - Find and post lost or found items">
+    <meta name="theme-color" content="<%= brand_color %>">
+    <meta name="description" content="LoFoNU — find and post lost or found items at Northwestern">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="NU Things">
+    <meta name="apple-mobile-web-app-title" content="<%= brand_name %>">
 
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -44,7 +44,10 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark nu-navbar shadow-sm mb-4">
       <div class="container nu-shell">
-        <%= link_to "NU Things", root_path, class: "navbar-brand fw-semibold nu-brand" %>
+        <%= link_to root_path, class: "navbar-brand d-flex align-items-center gap-2 fw-semibold nu-brand" do %>
+          <%= image_tag "/applogo.png", alt: "", class: "nu-navbar-logo", aria: { hidden: true } %>
+          <span><%= brand_name %></span>
+        <% end %>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -107,7 +110,7 @@
     <footer class="border-top mt-auto py-3 small text-muted nu-footer">
       <div class="container nu-shell d-flex flex-column gap-2">
         <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
-          <span>Northwestern Lost and Found Board</span>
+          <span><%= brand_name %></span>
           <span>For the Northwestern community. Not affiliated with the University.</span>
         </div>
         <%= render "shared/site_meta_links", extra_class: "nu-footer-meta" %>
