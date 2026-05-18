@@ -55,6 +55,20 @@ class FoundItemsControllerTest < ActionDispatch::IntegrationTest
     assert_match(/permission/i, flash[:alert].to_s)
   end
 
+  test "should redirect edit when signed in but not owner of another users post" do
+    sign_in_as(users(:nu_student))
+    get edit_found_item_url(found_items(:admin_owned))
+    assert_redirected_to root_url
+    assert_match(/permission/i, flash[:alert].to_s)
+  end
+
+  test "show hides edit for non-owner" do
+    sign_in_as(users(:nu_student))
+    get found_item_url(found_items(:admin_owned))
+    assert_response :success
+    assert_select "a", { text: "Edit", count: 0 }
+  end
+
   test "should get edit when signed in as owner" do
     sign_in_as(users(:nu_student))
     get edit_found_item_url(@found_item)
@@ -71,6 +85,14 @@ class FoundItemsControllerTest < ActionDispatch::IntegrationTest
     sign_in_as(users(:nu_student))
     patch found_item_url(found_items(:two)), params: { found_item: { brand: @found_item.brand, category: @found_item.category, color: @found_item.color, contact_email: @found_item.contact_email, contact_name: @found_item.contact_name, date_found: @found_item.date_found, description: @found_item.description, image_url: @found_item.image_url, location_found: @found_item.location_found, status: @found_item.status, storage_location: @found_item.storage_location, title: @found_item.title } }
     assert_redirected_to root_url
+  end
+
+  test "should redirect update when not owner of another users post" do
+    sign_in_as(users(:nu_student))
+    other = found_items(:admin_owned)
+    patch found_item_url(other), params: { found_item: { brand: other.brand, category: other.category, color: other.color, contact_email: other.contact_email, contact_name: other.contact_name, date_found: other.date_found, description: "Hijack attempt.", image_url: other.image_url, location_found: other.location_found, storage_location: other.storage_location, title: other.title } }
+    assert_redirected_to root_url
+    assert_not_equal "Hijack attempt.", other.reload.description
   end
 
   test "should update own found_item when signed in" do

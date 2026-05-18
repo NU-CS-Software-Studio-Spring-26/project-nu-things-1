@@ -67,6 +67,21 @@ class LostItemsControllerTest < ActionDispatch::IntegrationTest
     assert_match(/permission/i, flash[:alert].to_s)
   end
 
+  test "should redirect edit when signed in but not owner of another users post" do
+    sign_in_as(users(:nu_student))
+    get edit_lost_item_url(lost_items(:admin_owned))
+    assert_redirected_to root_url
+    assert_match(/permission/i, flash[:alert].to_s)
+  end
+
+  test "show hides edit for non-owner" do
+    sign_in_as(users(:nu_student))
+    get lost_item_url(lost_items(:admin_owned))
+    assert_response :success
+    assert_select "a", { text: "Edit", count: 0 }
+    assert_select "button", { text: "Delete", count: 0 }
+  end
+
   test "should get edit when signed in as owner" do
     sign_in_as(users(:nu_student))
     get edit_lost_item_url(@lost_item)
@@ -83,6 +98,14 @@ class LostItemsControllerTest < ActionDispatch::IntegrationTest
     sign_in_as(users(:nu_student))
     patch lost_item_url(lost_items(:two)), params: { lost_item: { brand: @lost_item.brand, category: @lost_item.category, color: @lost_item.color, contact_email: @lost_item.contact_email, contact_name: @lost_item.contact_name, date_lost: @lost_item.date_lost, description: @lost_item.description, image_url: @lost_item.image_url, location_lost: @lost_item.location_lost, reward: @lost_item.reward, status: @lost_item.status, title: @lost_item.title } }
     assert_redirected_to root_url
+  end
+
+  test "should redirect update when not owner of another users post" do
+    sign_in_as(users(:nu_student))
+    other = lost_items(:admin_owned)
+    patch lost_item_url(other), params: { lost_item: { brand: other.brand, category: other.category, color: other.color, contact_email: other.contact_email, contact_name: other.contact_name, date_lost: other.date_lost, description: "Hijack attempt.", image_url: other.image_url, location_lost: other.location_lost, reward: other.reward, status: other.status, title: other.title } }
+    assert_redirected_to root_url
+    assert_not_equal "Hijack attempt.", other.reload.description
   end
 
   test "should update own lost_item when signed in" do

@@ -14,6 +14,21 @@ one:
   color: Black
   brand:
 
+admin_owned:
+  user: admin
+  title: "Fixture lost item admin owned"
+  description: "Owned by admin for cross-user auth tests."
+  category: "Book"
+  location_lost: "South Campus"
+  date_lost: <%= Date.new(2026, 4, 5) %>
+  contact_name: "Admin User"
+  contact_email: "admin@u.northwestern.edu"
+  status: open
+  image_url:
+  reward:
+  color:
+  brand:
+
 two:
   title: "Fixture lost item two"
   description: "Also used by automated tests."

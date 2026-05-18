@@ -106,8 +106,7 @@ class User < ApplicationRecord
   end
 
   def admin?
-    ae = Rails.application.config.x.admin_email
-    ae.present? && email == ae
+    Lofonu::ADMIN_EMAIL.present? && email == Lofonu::ADMIN_EMAIL
   end
 
   private

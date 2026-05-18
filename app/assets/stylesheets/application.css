@@ -1009,12 +1009,24 @@ ul.list-group.nu-card.rounded {
 }
 
 .nu-body .alert.alert-danger {
-  color: #4a0f12;
+  color: #b91c1c;
+  background-color: #fde8e8;
+  border-color: #f5b5b5;
 }
 
 .nu-body .alert.alert-danger .alert-link {
-  color: #350a0d;
+  color: #991b1b;
   font-weight: 700;
+}
+
+html[data-bs-theme="dark"] .nu-body .alert.alert-danger {
+  color: #ff8a8a;
+  background-color: #3a1a22;
+  border-color: #8b3a45;
+}
+
+html[data-bs-theme="dark"] .nu-body .alert.alert-danger .alert-link {
+  color: #ffb4b4;
 }
 
 .nu-body .alert.alert-success .alert-link {
