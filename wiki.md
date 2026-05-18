@@ -1,4 +1,4 @@
-# LoFoNU — wiki
+# Purple Post — wiki
 
 ## Problem we are solving
 

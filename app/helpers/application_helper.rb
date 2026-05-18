@@ -1,10 +1,10 @@
 module ApplicationHelper
   def brand_name
-    Lofonu::BRAND_NAME
+    PurplePost::BRAND_NAME
   end
 
   def brand_color
-    Lofonu::BRAND_COLOR
+    PurplePost::BRAND_COLOR
   end
 
   def page_title(page_name = nil)
@@ -26,7 +26,7 @@ module ApplicationHelper
   # For privacy / deletion requests: PRIVACY_CONTACT_EMAIL, then ADMIN_EMAIL.
   def privacy_contact_email
     Rails.application.config.x.privacy_contact_email.presence ||
-      Lofonu::ADMIN_EMAIL.presence ||
+      PurplePost::ADMIN_EMAIL.presence ||
       ENV["PRIVACY_CONTACT_EMAIL"].to_s.strip.downcase.presence
   end
 

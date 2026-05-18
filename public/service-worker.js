@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lofonu-v4';
+const CACHE_NAME = 'purple-post-v1';
 const ASSETS_TO_CACHE = [
   '/',
   '/manifest.json',
