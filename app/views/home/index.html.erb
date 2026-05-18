@@ -1,11 +1,11 @@
-<% content_for :title, "Home — NU Things" %>
+<% content_for :title, page_title("Home") %>
 
 <div class="nu-hero p-4 p-md-5 mb-4">
   <%= render "application/home_hero_paper" %>
   <div class="nu-hero__inner">
   <div class="row align-items-center g-4">
     <div class="col-lg-7">
-      <h1 class="display-6 fw-bold text-purple mb-3">NU Things</h1>
+      <h1 class="display-6 fw-bold text-purple mb-3"><%= brand_name %></h1>
       <p class="lead nu-section-lead mb-0 nu-prose">
         <% if signed_in? %>
           Post a listing, claim a found item, or browse what others have shared on campus.

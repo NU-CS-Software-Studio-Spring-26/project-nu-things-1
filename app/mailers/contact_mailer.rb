@@ -46,7 +46,7 @@ class ContactMailer < ApplicationMailer
     mail(
       to: listing_moderation_to,
       reply_to: reporter_email,
-      subject: "[NU Things] Reported lost item ##{lost_item.id}: #{lost_item.title}"
+      subject: "[#{Rails.application.config.x.brand_name}] Reported lost item ##{lost_item.id}: #{lost_item.title}"
     )
   end
 
@@ -59,7 +59,7 @@ class ContactMailer < ApplicationMailer
     mail(
       to: listing_moderation_to,
       reply_to: reporter_email,
-      subject: "[NU Things] Reported found item ##{found_item.id}: #{found_item.title}"
+      subject: "[#{Rails.application.config.x.brand_name}] Reported found item ##{found_item.id}: #{found_item.title}"
     )
   end
 
