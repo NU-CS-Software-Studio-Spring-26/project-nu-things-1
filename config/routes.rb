@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   get "privacy", to: "pages#privacy", as: :privacy
   get "terms", to: "pages#terms", as: :terms
 
-  get "/auth/failure", to: "omniauth_callbacks#failure"
+  match "/auth/failure", to: "omniauth_callbacks#failure", via: %i[get post]
   get "/auth/:provider/callback", to: "omniauth_callbacks#create"
 
   resource :session, only: %i[new destroy]
