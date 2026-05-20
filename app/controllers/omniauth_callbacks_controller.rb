@@ -19,6 +19,12 @@ class OmniauthCallbacksController < ApplicationController
   end
 
   def failure
-    redirect_to new_session_path, alert: "Google sign-in did not complete. Please try again."
+    message = request.env["omniauth.error.type"] || params[:message]
+    alert = if message.to_s.include?("InvalidAuthenticityToken")
+      "Sign-in expired or was opened in an unsafe way. Return to the sign-in page and try again."
+    else
+      "Google sign-in did not complete. Please try again."
+    end
+    redirect_to new_session_path, alert: alert
   end
 end

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "omniauth/rails_csrf_protection"
+
 Rails.application.config.middleware.use OmniAuth::Builder do
   client_id = ENV["GOOGLE_CLIENT_ID"].presence || Rails.application.credentials.dig(:google, :client_id)
   client_secret = ENV["GOOGLE_CLIENT_SECRET"].presence || Rails.application.credentials.dig(:google, :client_secret)
@@ -34,4 +36,6 @@ Rails.application.config.middleware.use OmniAuth::Builder do
            }
 end
 
-OmniAuth.config.allowed_request_methods = [ :get, :post ]
+# Request phase must be POST (button_to + CSRF). Do not allow GET — breaks omniauth-rails_csrf_protection.
+OmniAuth.config.allowed_request_methods = [ :post ]
+OmniAuth.config.silence_get_warning = true
