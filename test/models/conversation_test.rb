@@ -17,8 +17,9 @@ class ConversationTest < ActiveSupport::TestCase
   end
 
   test "poster_account resolves by contact email when user_id blank" do
-    item = lost_items(:admin_owned)
-    item.update!(user_id: nil)
+    item = lost_items(:messaging_target)
+
+    assert_nil item.user_id
     assert_equal users(:admin), item.poster_account
   end
 end
