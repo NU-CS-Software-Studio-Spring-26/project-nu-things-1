@@ -58,6 +58,17 @@
             <li class="nav-item"><%= link_to "Found", found_items_path, class: "nav-link" %></li>
             <li class="nav-item"><%= link_to "Rentals", rental_items_path, class: "nav-link" %></li>
             <li class="nav-item"><%= link_to "Marketplace", marketplace_listings_path, class: "nav-link" %></li>
+            <% if signed_in? %>
+              <li class="nav-item">
+                <%= link_to conversations_path, class: "nav-link d-inline-flex align-items-center gap-1" do %>
+                  Messages
+                  <% unread = unread_conversations_count %>
+                  <% if unread.positive? %>
+                    <span class="badge rounded-pill bg-warning text-dark"><%= unread %></span>
+                  <% end %>
+                <% end %>
+              </li>
+            <% end %>
           </ul>
           <div class="d-flex flex-column flex-lg-row align-items-lg-center gap-2 ms-lg-auto nu-navbar-right">
             <div class="d-flex align-items-center">

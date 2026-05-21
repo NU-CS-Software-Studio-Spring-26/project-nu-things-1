@@ -75,7 +75,13 @@
           <% if @marketplace_listing.contact_phone.present? %>
             <p class="mb-3"><%= @marketplace_listing.contact_phone %></p>
           <% end %>
-          <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#contactModal">Send a message</button>
+          <% if @marketplace_listing.poster_account && current_user != @marketplace_listing.poster_account %>
+            <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#contactModal">Send a message</button>
+          <% elsif current_user == @marketplace_listing.poster_account %>
+            <p class="text-muted small mb-0">This is your listing. Check <%= link_to "Messages", conversations_path, class: "link-primary" %> for replies.</p>
+          <% else %>
+            <p class="text-muted small mb-0">On-site messaging is unavailable until the poster links a Northwestern account.</p>
+          <% end %>
         </div>
       </div>
     <% else %>
@@ -97,41 +103,8 @@
   </div>
 </div>
 
-<% if signed_in? %>
-  <!-- Contact Modal -->
-  <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2 class="modal-title fs-5 text-purple" id="contactModalLabel">Message about "<%= @marketplace_listing.title %>"</h2>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <%= form_with url: create_marketplace_listing_contact_path, method: :post, local: true, class: "needs-validation" do |f| %>
-          <div class="modal-body">
-            <%= hidden_field_tag :marketplace_listing_id, @marketplace_listing.id %>
-
-            <div class="mb-3">
-              <%= f.label :sender_name, "Your name", class: "form-label" %>
-              <%= f.text_field :sender_name, value: prefilled_sender_name_field, class: "form-control", required: true, placeholder: "Enter your name" %>
-            </div>
-
-            <div class="mb-3">
-              <%= f.label :sender_email, "Your email", class: "form-label" %>
-              <%= f.email_field :sender_email, value: prefilled_sender_email_field, class: "form-control", required: true, placeholder: "Enter your email" %>
-            </div>
-
-            <div class="mb-3">
-              <%= f.label :message, "Message", class: "form-label" %>
-              <%= f.text_area :message, class: "form-control", required: true, placeholder: "Ask about condition, price, availability, pickup, etc.", rows: 5 %>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-            <%= f.submit "Send message", class: "btn btn-primary" %>
-          </div>
-        <% end %>
-      </div>
-    </div>
-  </div>
+<% if signed_in? && @marketplace_listing.poster_account && current_user != @marketplace_listing.poster_account %>
+  <%= render "shared/listing_message_modal",
+             listing_title: @marketplace_listing.title,
+             form_url: marketplace_listing_conversation_path(@marketplace_listing) %>
 <% end %>
-</div>

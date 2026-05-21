@@ -1,0 +1,9 @@
+student_on_admin_lost:
+  conversation: student_to_admin_lost
+  user: nu_student
+  last_read_at: <%= Time.utc(2026, 5, 1, 14, 0, 0) %>
+
+admin_on_student_lost:
+  conversation: student_to_admin_lost
+  user: admin
+  last_read_at:

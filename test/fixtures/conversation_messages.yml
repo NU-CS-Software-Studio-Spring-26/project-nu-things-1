@@ -1,0 +1,5 @@
+student_first:
+  conversation: student_to_admin_lost
+  sender: nu_student
+  body: "Is this item still available?"
+  created_at: <%= Time.utc(2026, 5, 1, 14, 0, 0) %>

@@ -2,6 +2,7 @@ class LostItem < ApplicationRecord
   include ListingAuthorizable
   include ListingPhotoAttachment
   include ListingTextLimits
+  include ListableMessaging
   include ModeratedContent
 
   STATUSES = %w[open resolved].freeze

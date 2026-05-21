@@ -2,6 +2,7 @@ class MarketplaceListing < ApplicationRecord
   include ListingAuthorizable
   include ListingPhotoAttachment
   include ListingTextLimits
+  include ListableMessaging
   include ModeratedContent
 
   belongs_to :user, optional: true

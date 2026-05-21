@@ -17,10 +17,24 @@ one:
 admin_owned:
   user: admin
   title: "Fixture lost item admin owned"
-  description: "Owned by admin for cross-user auth tests."
+  description: "Owned by admin for cross-user auth and messaging tests."
   category: "Book"
   location_lost: "South Campus"
   date_lost: <%= Date.new(2026, 4, 5) %>
+  contact_name: "Admin User"
+  contact_email: "admin@u.northwestern.edu"
+  status: open
+  image_url:
+  reward:
+  color:
+  brand:
+
+messaging_target:
+  title: "Fixture lost item for new conversations"
+  description: "No existing thread; poster resolved via contact email."
+  category: "Book"
+  location_lost: "Tech"
+  date_lost: <%= Date.new(2026, 4, 10) %>
   contact_name: "Admin User"
   contact_email: "admin@u.northwestern.edu"
   status: open

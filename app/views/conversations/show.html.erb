@@ -1,0 +1,65 @@
+<% content_for :title, "#{@conversation.subject} — Messages" %>
+
+<div class="mb-3">
+  <%= link_to "← Back to messages", conversations_path, class: "link-primary small" %>
+</div>
+
+<div class="card nu-card mb-4">
+  <div class="card-body">
+    <h1 class="h4 text-purple mb-1"><%= @conversation.subject %></h1>
+    <% listable = @conversation.listable %>
+    <p class="text-muted small mb-2">
+      <%= conversation_listable_type_label(listable) %>
+      <% if listable %>
+        · <%= link_to "View listing", conversation_listable_path(listable), class: "link-primary" %>
+      <% end %>
+    </p>
+    <% other = @conversation.other_participant(current_user) %>
+    <% if other %>
+      <p class="small mb-0">Conversation with <strong><%= conversation_participant_name(other) %></strong></p>
+    <% end %>
+  </div>
+</div>
+
+<div class="card nu-card mb-4">
+  <div class="card-body d-flex flex-column gap-3" role="log" aria-live="polite" aria-relevant="additions">
+    <% @messages.each do |message| %>
+      <% mine = message.sender_id == current_user.id %>
+      <div class="d-flex <%= mine ? 'justify-content-end' : 'justify-content-start' %>">
+        <div class="nu-message-bubble <%= mine ? 'nu-message-bubble--mine' : 'nu-message-bubble--theirs' %> rounded-3 px-3 py-2" style="max-width: 85%;">
+          <p class="small fw-semibold mb-1 <%= mine ? 'text-white-50' : 'text-muted' %>">
+            <%= conversation_participant_name(message.sender) %>
+          </p>
+          <p class="mb-1 <%= mine ? 'text-white' : '' %>" style="white-space: pre-wrap;"><%= message.body %></p>
+          <time class="small <%= mine ? 'text-white-50' : 'text-muted' %>" datetime="<%= message.created_at.iso8601 %>">
+            <%= message.created_at.strftime("%-l:%M %p") %>
+          </time>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="card nu-card">
+  <div class="card-body">
+    <h2 class="h6 text-purple mb-3">Reply</h2>
+    <%= form_with model: @new_message,
+                  url: conversation_messages_path(@conversation),
+                  local: true,
+                  class: "needs-validation" do |f| %>
+      <div class="mb-3">
+        <%= f.label :body, "Your message", class: "form-label" %>
+        <%= f.text_area :body,
+                        class: "form-control #{'is-invalid' if @new_message.errors[:body].any?}",
+                        required: true,
+                        rows: 4,
+                        maxlength: ConversationMessage::BODY_MAX_LENGTH,
+                        placeholder: "Type your reply..." %>
+        <% @new_message.errors.full_messages_for(:body).each do |error| %>
+          <div class="invalid-feedback d-block"><%= error %></div>
+        <% end %>
+      </div>
+      <%= f.submit "Send reply", class: "btn btn-primary nu-pill-btn" %>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,5 @@
+student_to_admin_lost:
+  listable: admin_owned (LostItem)
+  starter: nu_student
+  subject: "Fixture lost item admin owned"
+  last_message_at: <%= Time.utc(2026, 5, 1, 14, 0, 0) %>
