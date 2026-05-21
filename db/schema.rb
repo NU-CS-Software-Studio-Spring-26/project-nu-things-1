@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_15_180000) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_20_120000) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -61,6 +61,41 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_15_180000) do
     t.index ["claimable_type", "claimable_id"], name: "index_claims_on_claimable_type_and_claimable_id"
     t.index ["user_id", "claimable_type", "claimable_id"], name: "index_claims_on_user_and_claimable", unique: true
     t.index ["user_id"], name: "index_claims_on_user_id"
+  end
+
+  create_table "conversation_messages", force: :cascade do |t|
+    t.text "body", null: false
+    t.integer "conversation_id", null: false
+    t.datetime "created_at", null: false
+    t.integer "sender_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["conversation_id", "created_at"], name: "index_conversation_messages_on_conversation_id_and_created_at"
+    t.index ["conversation_id"], name: "index_conversation_messages_on_conversation_id"
+    t.index ["sender_id"], name: "index_conversation_messages_on_sender_id"
+  end
+
+  create_table "conversation_participants", force: :cascade do |t|
+    t.integer "conversation_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "last_read_at"
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["conversation_id", "user_id"], name: "index_conversation_participants_on_conversation_and_user", unique: true
+    t.index ["conversation_id"], name: "index_conversation_participants_on_conversation_id"
+    t.index ["user_id"], name: "index_conversation_participants_on_user_id"
+  end
+
+  create_table "conversations", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "last_message_at", null: false
+    t.integer "listable_id", null: false
+    t.string "listable_type", null: false
+    t.integer "starter_id", null: false
+    t.string "subject", null: false
+    t.datetime "updated_at", null: false
+    t.index ["listable_type", "listable_id", "starter_id"], name: "index_conversations_on_listable_and_starter", unique: true
+    t.index ["listable_type", "listable_id"], name: "index_conversations_on_listable"
+    t.index ["starter_id"], name: "index_conversations_on_starter_id"
   end
 
   create_table "found_items", force: :cascade do |t|
@@ -328,6 +363,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_15_180000) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "bookings", "rental_items"
   add_foreign_key "claims", "users"
+  add_foreign_key "conversation_messages", "conversations"
+  add_foreign_key "conversation_messages", "users", column: "sender_id"
+  add_foreign_key "conversation_participants", "conversations"
+  add_foreign_key "conversation_participants", "users"
+  add_foreign_key "conversations", "users", column: "starter_id"
   add_foreign_key "found_items", "users"
   add_foreign_key "found_items", "users", column: "claimed_by_user_id"
   add_foreign_key "login_tokens", "users"

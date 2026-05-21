@@ -12,6 +12,16 @@ Rails.application.routes.draw do
 
   resources :users, only: %i[show]
 
+  resources :conversations, only: %i[index show] do
+    resources :messages, only: %i[create], controller: "conversation_messages"
+  end
+
+  post "lost_items/:lost_item_id/conversation", to: "listing_conversations#create", as: :lost_item_conversation
+  post "found_items/:found_item_id/conversation", to: "listing_conversations#create", as: :found_item_conversation
+  post "rental_items/:rental_item_id/conversation", to: "listing_conversations#create", as: :rental_item_conversation
+  post "marketplace_listings/:marketplace_listing_id/conversation",
+       to: "listing_conversations#create", as: :marketplace_listing_conversation
+
   resources :lost_items do
     member do
       post :report

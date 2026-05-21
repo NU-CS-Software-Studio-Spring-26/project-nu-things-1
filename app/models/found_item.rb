@@ -2,6 +2,7 @@ class FoundItem < ApplicationRecord
   include ListingAuthorizable
   include ListingPhotoAttachment
   include ListingTextLimits
+  include ListableMessaging
   include ModeratedContent
 
   STATUSES = %w[unclaimed claimed].freeze

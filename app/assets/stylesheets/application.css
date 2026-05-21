@@ -1412,3 +1412,17 @@ html[data-bs-theme="dark"] .fc .fc-toolbar-title,
 html[data-bs-theme="dark"] .fc .fc-col-header-cell-cushion {
   color: var(--nu-ink);
 }
+
+.nu-message-bubble--mine {
+  background-color: var(--nu-purple);
+}
+
+.nu-message-bubble--theirs {
+  background-color: var(--bs-secondary-bg, #f3f0f8);
+  border: 1px solid var(--bs-border-color, #e8e4ef);
+}
+
+html[data-bs-theme="dark"] .nu-message-bubble--theirs {
+  background-color: #1e1a26;
+  border-color: #3d3548;
+}

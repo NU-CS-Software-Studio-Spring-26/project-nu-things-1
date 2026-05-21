@@ -17,7 +17,15 @@ class ApplicationController < ActionController::Base
     /marketplace_listings/new
   ].freeze
 
-  helper_method :current_user, :signed_in?, :admin?, :can_edit_post?
+  helper_method :current_user, :signed_in?, :admin?, :can_edit_post?, :unread_conversations_count
+
+  def unread_conversations_count
+    return 0 unless signed_in?
+
+    Conversation.for_user(current_user).includes(:conversation_participants).count do |conversation|
+      conversation.unread_for?(current_user)
+    end
+  end
 
   # Strip query string and (for absolute URLs) take only the path segment.
   def self.strip_return_path(raw)
