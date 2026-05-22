@@ -66,6 +66,6 @@ class ContactMailer < ApplicationMailer
   private
 
   def listing_moderation_to
-    PurplePost::ADMIN_EMAIL.presence || "admin@u.northwestern.edu"
+    PurplePost.admin_email.presence || "admin@u.northwestern.edu"
   end
 end

@@ -111,7 +111,8 @@ class User < ApplicationRecord
   end
 
   def admin?
-    PurplePost::ADMIN_EMAIL.present? && email == PurplePost::ADMIN_EMAIL
+    ae = PurplePost.admin_email
+    ae.present? && email == ae
   end
 
   private

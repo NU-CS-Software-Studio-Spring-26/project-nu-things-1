@@ -17,7 +17,7 @@ class LostItemsControllerTest < ActionDispatch::IntegrationTest
   test "index displays lost items from all verified users" do
     get lost_items_url
     assert_response :success
-    assert_select "h1", /Lost Items/i
+    assert_select "h2", /Lost items/i
     # Should show lost items
     assert_select "[class~=card]"
   end

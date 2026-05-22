@@ -25,15 +25,15 @@
 input::placeholder,
 textarea::placeholder,
 select::placeholder {
-  color: #5a6170;
-  opacity: 1; 
+  color: var(--nu-placeholder, #454c59);
+  opacity: 1;
   font-weight: 500;
 }
 
-/* Improve placeholder visibility on focus */
+/* Keep placeholders readable on focus (do not lighten) */
 input:focus::placeholder,
 textarea:focus::placeholder {
-  color: #6a7180;
+  color: var(--nu-placeholder, #454c59);
 }
 
 /* Enhanced form focus states for better visibility */
@@ -71,18 +71,21 @@ a:not(.btn, .nav-link, .navbar-brand, .nu-clickable-card, .nu-browse-card, .skip
 
 :root {
   --nu-purple: #4e2a84;
-  --nu-purple-dark: #3a2466;
-  /* Darker purple for text on soft lavender / hero (WCAG 4.5:1 vs palest hero stops) */
-  --nu-purple-hero-text: #291749;
+  --nu-purple-dark: #352364;
+  /* Text on soft lavender / hero panels (≥4.5:1 on #faf7f2–#ebe3f7) */
+  --nu-purple-hero-text: #23143f;
   --nu-accent: #836fff;
   --nu-lavender: #f3efff;
   --nu-cream: #fffdf6;
-  --nu-ink: #1f2430;
-  /* IMPROVED: Increased contrast for muted text from #4a4f5c to #4a4f5c (strong muted) */
-  /* Body/footer secondary text: ≥4.5:1 on #fff and typical cream (#fffdf7) */
-  --nu-text-muted: #3a3f4a;
-  --nu-text-muted-strong: #2a2f3a;
-  /* In-content links: dark purple on cream/white (WCAG-friendly vs Bootstrap blue) */
+  --nu-surface: #ffffff;
+  --nu-surface-muted: #fffdf7;
+  /* Body copy: ≥4.5:1 on white and cream */
+  --nu-ink: #1a1d24;
+  --nu-text-muted: #2c313c;
+  --nu-text-muted-strong: #1a1d24;
+  --nu-placeholder: #454c59;
+  --nu-border-strong: #5a616e;
+  /* Links: ≥4.5:1 on light surfaces; ≥3:1 for large/bold UI text */
   --nu-link: var(--nu-purple-dark);
   --nu-link-hover: var(--nu-purple-hero-text);
   --bs-link-color: var(--nu-link);
@@ -123,6 +126,17 @@ a:not(.btn, .nav-link, .navbar-brand, .nu-clickable-card, .nu-browse-card, .skip
 
 .nu-brand {
   letter-spacing: 0.02em;
+}
+
+/* Site h1 in navbar (before #main-content) — reset heading box so brand layout is unchanged */
+.nu-site-title {
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+
+.nu-site-title .navbar-brand {
+  margin-right: 0;
 }
 
 .nu-navbar-logo {
@@ -200,7 +214,7 @@ a:not(.btn, .nav-link, .navbar-brand, .nu-clickable-card, .nu-browse-card, .skip
 }
 
 .text-purple {
-  color: #3a2466 !important;
+  color: var(--nu-purple-dark) !important;
   font-weight: 600;
 }
 
@@ -271,13 +285,13 @@ a:not(.btn, .nav-link, .navbar-brand, .nu-clickable-card, .nu-browse-card, .skip
 }
 
 .btn-outline-primary {
-  color: var(--nu-purple) !important;
-  border-color: var(--nu-purple) !important;
+  color: var(--nu-purple-dark) !important;
+  border-color: var(--nu-purple-dark) !important;
 }
 
 .btn-outline-primary:hover {
-  background-color: var(--nu-purple) !important;
-  border-color: var(--nu-purple) !important;
+  background-color: var(--nu-purple-dark) !important;
+  border-color: var(--nu-purple-dark) !important;
   color: #fff !important;
 }
 
@@ -489,15 +503,15 @@ ul.list-group.nu-card.rounded {
 
 .nu-report-found {
   background: #fff;
-  border: 1px solid var(--nu-purple);
-  color: var(--nu-purple);
+  border: 1px solid var(--nu-purple-dark);
+  color: var(--nu-purple-dark);
 }
 
 .nu-report-found:hover,
 .nu-report-found:focus {
   background: #f6f1ff;
-  border-color: var(--nu-purple-dark);
-  color: var(--nu-purple-dark);
+  border-color: var(--nu-purple-hero-text);
+  color: var(--nu-purple-hero-text);
 }
 
 .nu-rentals {
@@ -516,15 +530,15 @@ ul.list-group.nu-card.rounded {
 /* Marketplace post CTA — outline style (distinct from solid lost/rental) */
 .nu-marketplace-post {
   background: #fff;
-  border: 1px solid var(--nu-purple);
-  color: var(--nu-purple);
+  border: 1px solid var(--nu-purple-dark);
+  color: var(--nu-purple-dark);
 }
 
 .nu-marketplace-post:hover,
 .nu-marketplace-post:focus {
   background: #f6f1ff;
-  border-color: var(--nu-purple-dark);
-  color: var(--nu-purple-dark);
+  border-color: var(--nu-purple-hero-text);
+  color: var(--nu-purple-hero-text);
 }
 
 .nu-btn-primary {
@@ -542,15 +556,15 @@ ul.list-group.nu-card.rounded {
 
 .nu-btn-outline {
   background: #fff;
-  border: 1px solid var(--nu-purple);
-  color: var(--nu-purple);
+  border: 1px solid var(--nu-purple-dark);
+  color: var(--nu-purple-dark);
 }
 
 .nu-btn-outline:hover,
 .nu-btn-outline:focus {
   background: #f6f1ff;
-  border-color: var(--nu-purple-dark);
-  color: var(--nu-purple-dark);
+  border-color: var(--nu-purple-hero-text);
+  color: var(--nu-purple-hero-text);
 }
 
 .nu-section-lead {
@@ -570,7 +584,7 @@ ul.list-group.nu-card.rounded {
 }
 
 .nu-rental-market .text-primary {
-  color: var(--nu-purple) !important;
+  color: var(--nu-purple-dark) !important;
 }
 
 .nu-rental-market .text-bg-primary {
@@ -615,14 +629,14 @@ ul.list-group.nu-card.rounded {
 }
 
 .nu-rental-item-form .card-title {
-  color: var(--nu-purple) !important;
+  color: var(--nu-purple-dark) !important;
 }
 
 /* Category filter: "Other" stays outline (white fill, purple border/text), even when selected */
 .nu-filter-other {
   background-color: #fff !important;
-  color: var(--nu-purple) !important;
-  border-color: var(--nu-purple) !important;
+  color: var(--nu-purple-dark) !important;
+  border-color: var(--nu-purple-dark) !important;
 }
 
 .nu-filter-other:hover,
@@ -665,7 +679,7 @@ ul.list-group.nu-card.rounded {
 }
 
 .nu-metadata strong {
-  color: #2d3442;
+  color: var(--nu-text-muted-strong);
 }
 
 .nu-form-card {
@@ -742,7 +756,7 @@ ul.list-group.nu-card.rounded {
 }
 
 .nu-mp-price {
-  color: var(--nu-purple);
+  color: var(--nu-purple-dark);
   font-weight: 700;
 }
 
@@ -935,6 +949,9 @@ ul.list-group.nu-card.rounded {
 .form-select {
   border-radius: 0.75rem;
   padding: 0.62rem 0.78rem;
+  color: var(--nu-ink);
+  border-color: var(--nu-border-strong);
+  background-color: var(--nu-surface);
 }
 
 .form-label {
@@ -953,8 +970,42 @@ ul.list-group.nu-card.rounded {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Site-wide accessible text contrast (WCAG 2.1 AA: 4.5:1 normal body text)   */
+/* Site-wide accessible text contrast (WCAG 2.1 AA)                           */
+/* Normal text: ≥4.5:1 on light surfaces. Large text / UI components: ≥3:1.   */
 /* -------------------------------------------------------------------------- */
+
+.nu-body main,
+.nu-body main .card,
+.nu-body main .modal-content {
+  color: var(--nu-ink);
+}
+
+/* Bootstrap .text-primary is mid-purple — darken for body copy on cream/white */
+.nu-body main .text-primary:not(.btn):not(.badge):not(.nav-link) {
+  color: var(--nu-purple-dark) !important;
+}
+
+.nu-body main .text-secondary {
+  color: var(--nu-text-muted) !important;
+}
+
+.nu-body main .lead.text-muted,
+.nu-body main p.text-muted,
+.nu-body main .card-text.text-muted,
+.nu-body main small.text-muted,
+.nu-body main .form-text {
+  color: var(--nu-text-muted) !important;
+}
+
+.nu-hero .text-muted,
+.nu-hero p.text-muted,
+.nu-hero .lead.text-muted {
+  color: #252b36 !important;
+}
+
+.nu-home-actions .text-muted {
+  color: var(--nu-text-muted) !important;
+}
 
 /* Section / sidebar headings use Bootstrap "muted" gray — too light on cream */
 .nu-body main .text-muted.text-uppercase,
@@ -963,6 +1014,19 @@ ul.list-group.nu-card.rounded {
 .nu-body main .h5.text-muted,
 .nu-body main .h6.text-muted {
   color: var(--nu-text-muted-strong) !important;
+}
+
+/* Purple outline controls: darker text/border for 3:1+ on white and lavender */
+.nu-body .btn-outline-primary {
+  color: var(--nu-purple-dark) !important;
+  border-color: var(--nu-purple-dark) !important;
+}
+
+.nu-body .btn-outline-primary:hover,
+.nu-body .btn-outline-primary:focus {
+  color: #fff !important;
+  background-color: var(--nu-purple-dark) !important;
+  border-color: var(--nu-purple-dark) !important;
 }
 
 /* Neutral badges: default gray-on-gray fails on white cards */
@@ -1052,10 +1116,10 @@ html[data-bs-theme="dark"] .nu-body .alert.alert-danger .alert-link {
   font-weight: 700;
 }
 
-/* Form placeholders (best-effort; not always counted as "text" in audits) */
+/* Form placeholders (≥4.5:1 on white field backgrounds where audited) */
 .form-control::placeholder,
 .form-select::placeholder {
-  color: #5c6370;
+  color: var(--nu-placeholder);
   opacity: 1;
 }
 
@@ -1151,16 +1215,20 @@ html[data-bs-theme="dark"] .nu-body .alert.alert-danger .alert-link {
 html[data-bs-theme="dark"] {
   color-scheme: dark;
   --nu-purple: #b49df0;
-  --nu-purple-dark: #9d84e0;
-  --nu-purple-hero-text: #e8dff8;
+  --nu-purple-dark: #c9b8f0;
+  --nu-purple-hero-text: #ece4fa;
   --nu-accent: #a894ff;
   --nu-lavender: #2a2438;
   --nu-cream: #16121c;
-  --nu-ink: #ece8f4;
-  --nu-text-muted: #b0a8c4;
-  --nu-text-muted-strong: #d0c8e0;
-  --nu-link: #c9b8f0;
-  --nu-link-hover: #e4daf8;
+  --nu-surface: #1e1a26;
+  --nu-surface-muted: #16121c;
+  --nu-ink: #f0ecf8;
+  --nu-text-muted: #c8c0d8;
+  --nu-text-muted-strong: #e4dcf4;
+  --nu-placeholder: #a8a0b8;
+  --nu-border-strong: #8a8298;
+  --nu-link: #d4c4f8;
+  --nu-link-hover: #f0e8ff;
   --bs-link-color: var(--nu-link);
   --bs-link-hover-color: var(--nu-link-hover);
   --bs-link-color-rgb: 201, 184, 240;
@@ -1222,7 +1290,30 @@ html[data-bs-theme="dark"] .nu-body {
 html[data-bs-theme="dark"] input::placeholder,
 html[data-bs-theme="dark"] textarea::placeholder,
 html[data-bs-theme="dark"] select::placeholder {
-  color: #8a8298;
+  color: var(--nu-placeholder);
+}
+
+html[data-bs-theme="dark"] .form-control,
+html[data-bs-theme="dark"] .form-select {
+  color: var(--nu-ink);
+  background-color: var(--nu-surface);
+  border-color: var(--nu-border-strong);
+}
+
+html[data-bs-theme="dark"] .nu-body main .text-primary:not(.btn):not(.badge):not(.nav-link) {
+  color: var(--nu-purple-dark) !important;
+}
+
+html[data-bs-theme="dark"] .nu-body main .text-muted,
+html[data-bs-theme="dark"] .nu-body main small.text-muted,
+html[data-bs-theme="dark"] .nu-body main .card-text.text-muted {
+  color: var(--nu-text-muted) !important;
+}
+
+html[data-bs-theme="dark"] .nu-body main .text-muted.text-uppercase,
+html[data-bs-theme="dark"] .nu-body main h2.text-muted,
+html[data-bs-theme="dark"] .nu-body main .h6.text-muted {
+  color: var(--nu-text-muted-strong) !important;
 }
 
 html[data-bs-theme="dark"] .text-purple {
@@ -1305,7 +1396,7 @@ html[data-bs-theme="dark"] .nu-browse-title {
 }
 
 html[data-bs-theme="dark"] .nu-browse-subtitle {
-  color: #c8c0d8;
+  color: #d8d2e8;
 }
 
 html[data-bs-theme="dark"] .nu-section-lead {
@@ -1379,26 +1470,39 @@ html[data-bs-theme="dark"] .nu-body .badge.text-bg-light {
 
 html[data-bs-theme="dark"] .nu-report-found {
   background: #1e1a26;
-  border-color: var(--nu-purple);
-  color: var(--nu-purple);
+  border-color: var(--nu-purple-dark);
+  color: var(--nu-purple-dark);
 }
 
 html[data-bs-theme="dark"] .nu-report-found:hover,
 html[data-bs-theme="dark"] .nu-report-found:focus {
   background: #2a2438;
-  color: #e4daf8;
+  color: var(--nu-link-hover);
 }
 
 html[data-bs-theme="dark"] .nu-marketplace-post {
   background: #1e1a26;
-  border-color: var(--nu-purple);
-  color: var(--nu-purple);
+  border-color: var(--nu-purple-dark);
+  color: var(--nu-purple-dark);
 }
 
 html[data-bs-theme="dark"] .nu-btn-outline {
   background: #1e1a26;
-  border-color: var(--nu-purple);
-  color: var(--nu-purple);
+  border-color: var(--nu-purple-dark);
+  color: var(--nu-purple-dark);
+}
+
+html[data-bs-theme="dark"] .nu-body .btn-outline-primary {
+  color: var(--nu-purple-dark) !important;
+  border-color: var(--nu-purple-dark) !important;
+}
+
+html[data-bs-theme="dark"] .nu-rental-market .text-primary {
+  color: var(--nu-purple-dark) !important;
+}
+
+html[data-bs-theme="dark"] .nu-mp-price {
+  color: var(--nu-purple-dark);
 }
 
 html[data-bs-theme="dark"] .fc {

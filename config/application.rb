@@ -16,6 +16,11 @@ module NorthwesternLostFoundBoard
     # Common ones are `templates`, `generators`, or `middleware`, for example.
     config.autoload_lib(ignore: %w[assets tasks])
 
+    # Brand module (lib/purple_post.rb) — eager require so helpers/mailers see it in all environments.
+    config.before_configuration do
+      require Rails.root.join("lib/purple_post.rb").to_s
+    end
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
