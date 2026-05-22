@@ -1,4 +1,4 @@
-# Northwestern Lost and Found Board — wiki
+# Purple Post — wiki
 
 ## Problem we are solving
 

@@ -7,11 +7,26 @@ one:
   location_lost: "Norris University Center"
   date_lost: <%= Date.new(2026, 4, 1) %>
   contact_name: "Test User One"
-  contact_email: "lost_one@example.com"
+  contact_email: "lost_one@u.northwestern.edu"
   status: open
   image_url:
   reward:
   color: Black
+  brand:
+
+admin_owned:
+  user: admin
+  title: "Fixture lost item admin owned"
+  description: "Owned by admin for cross-user auth tests."
+  category: "Book"
+  location_lost: "South Campus"
+  date_lost: <%= Date.new(2026, 4, 5) %>
+  contact_name: "Admin User"
+  contact_email: "admin@u.northwestern.edu"
+  status: open
+  image_url:
+  reward:
+  color:
   brand:
 
 two:
@@ -21,7 +36,7 @@ two:
   location_lost: "Main Library"
   date_lost: <%= Date.new(2026, 4, 2) %>
   contact_name: "Test User Two"
-  contact_email: "lost_two@example.com"
+  contact_email: "lost_two@northwestern.edu"
   status: resolved
   image_url:
   reward:

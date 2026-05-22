@@ -1,9 +1,9 @@
-const CACHE_NAME = 'nu-things-v1';
+const CACHE_NAME = 'purple-post-v1';
 const ASSETS_TO_CACHE = [
   '/',
   '/manifest.json',
-  '/icon.png',
-  '/icon.svg'
+  '/appicon.svg',
+  '/applogo.png'
 ];
 
 // Install event - cache assets

@@ -6,11 +6,26 @@ one:
   location_found: "Technological Institute"
   date_found: <%= Date.new(2026, 4, 3) %>
   contact_name: "Finder One"
-  contact_email: "found_one@example.com"
+  contact_email: "found_one@u.northwestern.edu"
   status: unclaimed
   image_url:
   storage_location: "Tech front desk"
   color: Blue
+  brand:
+
+admin_owned:
+  user: admin
+  title: "Fixture found item admin owned"
+  description: "Owned by admin for cross-user auth tests."
+  category: "Book"
+  location_found: "South Campus"
+  date_found: <%= Date.new(2026, 4, 6) %>
+  contact_name: "Admin User"
+  contact_email: "admin@u.northwestern.edu"
+  status: unclaimed
+  image_url:
+  storage_location: "South desk"
+  color:
   brand:
 
 two:
@@ -20,7 +35,7 @@ two:
   location_found: "University Library"
   date_found: <%= Date.new(2026, 4, 4) %>
   contact_name: "Finder Two"
-  contact_email: "found_two@example.com"
+  contact_email: "found_two@northwestern.edu"
   status: claimed
   claimed_by_user: nu_student
   image_url:

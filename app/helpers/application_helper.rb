@@ -1,4 +1,20 @@
 module ApplicationHelper
+  def brand_name
+    ::PurplePost::BRAND_NAME
+  end
+
+  def brand_color
+    ::PurplePost::BRAND_COLOR
+  end
+
+  def page_title(page_name = nil)
+    if page_name.present?
+      "#{page_name} — #{brand_name}"
+    else
+      brand_name
+    end
+  end
+
   def app_source_code_url
     Rails.application.config.x.source_code_url.to_s
   end
@@ -7,12 +23,11 @@ module ApplicationHelper
     app_source_code_url.present?
   end
 
-  # For privacy / deletion requests: PRIVACY_CONTACT_EMAIL, then ADMIN_EMAIL (config or env).
+  # For privacy / deletion requests: PRIVACY_CONTACT_EMAIL, then ADMIN_EMAIL.
   def privacy_contact_email
     Rails.application.config.x.privacy_contact_email.presence ||
-      Rails.application.config.x.admin_email.presence ||
-      ENV["PRIVACY_CONTACT_EMAIL"].to_s.strip.downcase.presence ||
-      ENV["ADMIN_EMAIL"].to_s.strip.downcase.presence
+      ::PurplePost::ADMIN_EMAIL.presence ||
+      ENV["PRIVACY_CONTACT_EMAIL"].to_s.strip.downcase.presence
   end
 
   # Prefer stored first name (from sign-up / sign-in); otherwise derive from email local part.

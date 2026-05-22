@@ -30,7 +30,7 @@ class BoardFlowTest < ActionDispatch::IntegrationTest
           location_lost: "Norris ground floor",
           date_lost: Date.new(2026, 4, 20),
           contact_name: "Flow Tester",
-          contact_email: "flow.tester@example.com",
+          contact_email: "flow.tester@u.northwestern.edu",
           status: "open",
           image_url: "",
           reward: "",
@@ -50,7 +50,7 @@ class BoardFlowTest < ActionDispatch::IntegrationTest
         location_lost: "Norris ground floor",
         date_lost: Date.new(2026, 4, 20),
         contact_name: "Flow Tester",
-        contact_email: "flow.tester@example.com",
+        contact_email: "flow.tester@u.northwestern.edu",
         status: "resolved",
         image_url: "",
         reward: "",
@@ -82,7 +82,7 @@ class BoardFlowTest < ActionDispatch::IntegrationTest
           location_found: "Tech entrance",
           date_found: Date.new(2026, 4, 20),
           contact_name: "Finder Flow",
-          contact_email: "finder.flow@example.com",
+          contact_email: "finder.flow@u.northwestern.edu",
           status: "unclaimed",
           image_url: "",
           storage_location: "Tech desk",
@@ -102,14 +102,16 @@ class BoardFlowTest < ActionDispatch::IntegrationTest
         location_found: "Tech entrance",
         date_found: Date.new(2026, 4, 20),
         contact_name: "Finder Flow",
-        contact_email: "finder.flow@example.com",
-        status: "claimed",
+        contact_email: "finder.flow@u.northwestern.edu",
         image_url: "",
         storage_location: "Returned to owner",
         color: "Black",
         brand: ""
       }
     }
+    assert_redirected_to found_item_path(new_item)
+
+    post claim_found_item_path(new_item)
     assert_redirected_to found_item_path(new_item)
     assert_equal "claimed", new_item.reload.status
 

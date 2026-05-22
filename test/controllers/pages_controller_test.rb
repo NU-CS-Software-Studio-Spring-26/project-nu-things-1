@@ -6,7 +6,7 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
   test "about privacy and terms pages render" do
     get about_url
     assert_response :success
-    assert_match(/About NU Things/, @response.body)
+    assert_match(/About Purple Post/, @response.body)
 
     get privacy_url
     assert_response :success

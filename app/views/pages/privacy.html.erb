@@ -1,4 +1,4 @@
-<% content_for :title, "Privacy — NU Things" %>
+<% content_for :title, page_title("Privacy") %>
 
 <div class="card nu-card border-0 shadow-sm">
   <div class="card-body nu-prose mx-auto py-4 px-3 px-md-4" style="max-width: 48rem;">
@@ -31,7 +31,7 @@
       <% if privacy_contact_email.present? %>
         Email <%= mail_to privacy_contact_email, privacy_contact_email, class: "link-primary" %> from your Northwestern account.
       <% else %>
-        Email the NU Things team from your Northwestern account (see <%= link_to "About", about_path, class: "link-primary" %> for who runs the project).
+        Email the <%= brand_name %> team from your Northwestern account (see <%= link_to "About", about_path, class: "link-primary" %> for who runs the project).
       <% end %>
       Describe what you want removed or updated—for example your account, a specific listing, or a photo. We will handle reasonable requests in line with how the project is operated.
     </p>

@@ -1,4 +1,5 @@
 class FoundItem < ApplicationRecord
+  include ListingAuthorizable
   include ListingPhotoAttachment
   include ListingTextLimits
   include ModeratedContent
@@ -15,7 +16,7 @@ class FoundItem < ApplicationRecord
             :contact_name, :contact_email, :status, presence: true
   validates :status, inclusion: { in: STATUSES }
   validates :category, inclusion: { in: CATEGORIES }
-  validates :contact_email, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates :contact_email, format: { with: User::NORTHWESTERN_EMAIL, message: "must be a Northwestern email (@u.northwestern.edu or @northwestern.edu)" }
   validates :color, :brand, length: { maximum: ListingTextLimits::COLOR_BRAND_MAX_LENGTH }, allow_blank: true
   validates :custom_category, length: { maximum: ListingTextLimits::CUSTOM_CATEGORY_MAX_LENGTH }, allow_blank: true
   validate :custom_category_required_for_other

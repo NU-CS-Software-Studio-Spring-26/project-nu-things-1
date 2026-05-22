@@ -31,7 +31,7 @@ class BookingsController < ApplicationController
         start: booking.start_date.iso8601,
         end: booking.end_date.iso8601,
         title: "Booked",
-        backgroundColor: "#4b2e83",
+        backgroundColor: "#4e2a84",
         borderColor: "#3a2466",
         display: "background"
       }

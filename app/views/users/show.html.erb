@@ -1,8 +1,8 @@
 <% display = display_user_name(@user).presence || "Member" %>
-<% content_for :title, "#{display} — Profile — NU Things" %>
+<% content_for :title, page_title("#{display} — Profile") %>
 
 <h2 class="h2 mb-1 text-purple"><%= display %></h2>
-<p class="text-muted small mb-4">Profile — posts on NU Things.</p>
+<p class="text-muted small mb-4">Profile — posts on <%= brand_name %>.</p>
 
 <div class="d-flex flex-column gap-5">
 

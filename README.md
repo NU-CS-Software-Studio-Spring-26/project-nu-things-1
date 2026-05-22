@@ -1,4 +1,4 @@
-# Northwestern Lost and Found Board
+# Purple Post
 
 A Milestone 0 MVP: a **server-rendered Ruby on Rails** app where Northwestern students and staff can post **lost** and **found** items, browse listings, view details, and update or delete posts. The UI uses **Bootstrap 5** (via CDN) plus a small amount of custom CSS with a subtle purple accent.
 
@@ -7,7 +7,6 @@ This project is for a class milestone: **no authentication**, messaging, payment
 ## Team members
 
 - Rimen Jenhani
-- Shayan Shabani
 - Abem Girmai
 - Gwendolyn Slaughter
 - Nasser Issa
@@ -88,7 +87,7 @@ GitHub Actions runs the same checks on push and pull requests (see [`.github/wor
 
 ### Live app URL
 
-**https://shielded-woodland-42404-a6be1ad4a07b.herokuapp.com**
+**https://purple-post-e83ffbf122e1.herokuapp.com/**
 
 ### Deploy checklist
 

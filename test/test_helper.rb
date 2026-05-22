@@ -19,6 +19,10 @@ module ActiveSupport
     fixtures :all
 
     # Add more helper methods to be used by all tests here...
+    teardown do
+      OmniAuth.config.mock_auth[:google_oauth2] = nil
+    end
+
     def sign_in_as(user)
       OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new(
         "provider" => "google_oauth2",
@@ -26,7 +30,8 @@ module ActiveSupport
         "info" => {
           "email" => user.email,
           "first_name" => user.first_name
-        }
+        },
+        "extra" => { "raw_info" => { "email_verified" => true } }
       )
       get "/auth/google_oauth2/callback"
     end

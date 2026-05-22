@@ -1,4 +1,5 @@
 class RentalItem < ApplicationRecord
+  include ListingAuthorizable
   include ListingPhotoAttachment
   include ListingTextLimits
   include ModeratedContent
@@ -44,7 +45,7 @@ class RentalItem < ApplicationRecord
   validates :category, inclusion: { in: CATEGORIES }
   validates :status, inclusion: { in: STATUSES }
   validates :available_from, :available_to, presence: true
-  validates :owner_email, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates :owner_email, format: { with: User::NORTHWESTERN_EMAIL, message: "must be a Northwestern email (@u.northwestern.edu or @northwestern.edu)" }
   validate :available_to_after_available_from
   validate :validate_rental_location_words
 

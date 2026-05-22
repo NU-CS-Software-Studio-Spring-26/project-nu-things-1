@@ -1,5 +1,5 @@
 /*
- * Northwestern Lost and Found Board — global styles (Propshaft serves this file as-is).
+ * Purple Post — global styles (Propshaft serves this file as-is).
  */
 
 /* Skip to main content link - WCAG 2.1 Level AA accessible keyboard navigation */
@@ -70,7 +70,7 @@ a:not(.btn, .nav-link, .navbar-brand, .nu-clickable-card, .nu-browse-card, .skip
 }
 
 :root {
-  --nu-purple: #4b2e83;
+  --nu-purple: #4e2a84;
   --nu-purple-dark: #352364;
   /* Text on soft lavender / hero panels (≥4.5:1 on #faf7f2–#ebe3f7) */
   --nu-purple-hero-text: #23143f;
@@ -110,7 +110,7 @@ a:not(.btn, .nav-link, .navbar-brand, .nu-clickable-card, .nu-browse-card, .skip
 }
 
 .nu-navbar {
-  background: linear-gradient(105deg, #1f1538, #3a2466 52%, #4b2e83);
+  background: linear-gradient(105deg, #1f1538, #3a2466 52%, #4e2a84);
   padding: 0.5rem 0;
 }
 
@@ -137,6 +137,19 @@ a:not(.btn, .nav-link, .navbar-brand, .nu-clickable-card, .nu-browse-card, .skip
 
 .nu-site-title .navbar-brand {
   margin-right: 0;
+}
+
+.nu-navbar-logo {
+  height: 2.75rem;
+  width: auto;
+  display: block;
+  flex-shrink: 0;
+}
+
+@media (min-width: 992px) {
+  .nu-navbar-logo {
+    height: 3.25rem;
+  }
 }
 
 .nu-navbar-greeting {
@@ -398,6 +411,20 @@ ul.list-group.nu-card.rounded {
   z-index: 1;
 }
 
+.nu-hero__intro {
+  max-width: 32rem;
+}
+
+/* Large screens: sit intro a little above vertical center of the actions card */
+@media (min-width: 992px) {
+  .nu-hero__intro-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-bottom: 2.75rem;
+  }
+}
+
 .nu-home-actions {
   border: 1px solid rgba(75, 46, 131, 0.14);
   /* Opaque surface so text contrast is measured against solid white, not hero gradient */
@@ -455,6 +482,10 @@ ul.list-group.nu-card.rounded {
   color: #1a1f2a;
   font-size: 0.89rem;
   font-weight: 600;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
 }
 
 .nu-report-lost {
@@ -1060,12 +1091,24 @@ ul.list-group.nu-card.rounded {
 }
 
 .nu-body .alert.alert-danger {
-  color: #4a0f12;
+  color: #b91c1c;
+  background-color: #fde8e8;
+  border-color: #f5b5b5;
 }
 
 .nu-body .alert.alert-danger .alert-link {
-  color: #350a0d;
+  color: #991b1b;
   font-weight: 700;
+}
+
+html[data-bs-theme="dark"] .nu-body .alert.alert-danger {
+  color: #ff8a8a;
+  background-color: #3a1a22;
+  border-color: #8b3a45;
+}
+
+html[data-bs-theme="dark"] .nu-body .alert.alert-danger .alert-link {
+  color: #ffb4b4;
 }
 
 .nu-body .alert.alert-success .alert-link {
@@ -1193,8 +1236,18 @@ html[data-bs-theme="dark"] {
 }
 
 .nu-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   line-height: 1;
   opacity: 0.92;
+}
+
+.nu-theme-toggle__slot {
+  position: relative;
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
 }
 
 .nu-theme-toggle:hover,
@@ -1210,9 +1263,15 @@ html[data-bs-theme="dark"] {
 }
 
 .nu-theme-toggle__icon {
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.nu-theme-toggle__svg {
+  display: block;
 }
 
 html[data-bs-theme="dark"] .skip-to-main-content:focus,
