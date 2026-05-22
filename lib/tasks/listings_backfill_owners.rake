@@ -3,7 +3,7 @@
 namespace :listings do
   desc "Print authorization diagnostics (ADMIN_EMAIL, user_id coverage). Run on Heroku to debug production."
   task auth_audit: :environment do
-    puts "PurplePost::ADMIN_EMAIL=#{PurplePost::ADMIN_EMAIL.inspect}"
+    puts "PurplePost.admin_email=#{PurplePost.admin_email.inspect}"
     [ LostItem, FoundItem, MarketplaceListing, RentalItem ].each do |model|
       total = model.count
       with_user = model.where.not(user_id: nil).count

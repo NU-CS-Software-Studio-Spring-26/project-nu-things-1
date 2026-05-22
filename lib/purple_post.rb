@@ -5,6 +5,9 @@ module PurplePost
   BRAND_NAME = "Purple Post"
   BRAND_COLOR = "#4e2a84"
 
-  _admin_email = ENV["ADMIN_EMAIL"].to_s.strip.downcase
-  ADMIN_EMAIL = _admin_email.empty? ? nil : _admin_email
+  # Read at call time so test/CI env (and db:test:prepare) can set ADMIN_EMAIL after boot.
+  def self.admin_email
+    email = ENV["ADMIN_EMAIL"].to_s.strip.downcase
+    email.empty? ? nil : email
+  end
 end

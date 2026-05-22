@@ -26,7 +26,7 @@ module ApplicationHelper
   # For privacy / deletion requests: PRIVACY_CONTACT_EMAIL, then ADMIN_EMAIL.
   def privacy_contact_email
     Rails.application.config.x.privacy_contact_email.presence ||
-      ::PurplePost::ADMIN_EMAIL.presence ||
+      ::PurplePost.admin_email.presence ||
       ENV["PRIVACY_CONTACT_EMAIL"].to_s.strip.downcase.presence
   end
 
