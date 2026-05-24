@@ -163,6 +163,6 @@ module ApplicationHelper
     term = params[:q].to_s.strip
     return if term.blank?
 
-    "#{pluralize(count, 'result')} found for '#{h(term)}'"
+    "#{pluralize(count, 'result')} found for '#{h(term)}'".html_safe
   end
 end
