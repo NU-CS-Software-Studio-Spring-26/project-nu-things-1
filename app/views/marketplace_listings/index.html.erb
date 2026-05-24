@@ -35,6 +35,8 @@
   </div>
 </div>
 
+<%= render "application/listing_search_results_summary", count: @marketplace_listings.size %>
+
 <% if @marketplace_listings.any? %>
   <div class="row g-4">
     <% @marketplace_listings.each do |item| %>

@@ -27,6 +27,8 @@
     </div>
   </div>
 
+  <%= render "application/listing_search_results_summary", count: @lost_items.size %>
+
   <% if @lost_items.any? %>
     <div class="row g-4">
       <% @lost_items.each do |item| %>

@@ -158,4 +158,11 @@ module ApplicationHelper
   def listing_index_filters_active?
     params[:q].present? || params[:category].present? || params[:listing_type].present?
   end
+
+  def listing_search_results_label(count)
+    term = params[:q].to_s.strip
+    return if term.blank?
+
+    "#{pluralize(count, 'result')} found for '#{h(term)}'"
+  end
 end

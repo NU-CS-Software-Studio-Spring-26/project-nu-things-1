@@ -28,6 +28,8 @@
     </div>
   </div>
 
+  <%= render "application/listing_search_results_summary", count: @rental_items.size %>
+
   <% if @rental_items.any? %>
     <div class="row g-4">
       <% @rental_items.each do |item| %>

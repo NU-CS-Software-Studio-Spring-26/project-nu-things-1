@@ -27,6 +27,7 @@ class LostItemsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select ".nu-item-title", text: "Fixture lost item one"
     assert_select ".nu-item-title", text: "Fixture lost item two", count: 0
+    assert_match(/1 result found for 'Fixture lost item one'/, response.body)
   end
 
   test "index filters by q and category" do
