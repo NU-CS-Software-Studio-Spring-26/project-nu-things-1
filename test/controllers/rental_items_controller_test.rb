@@ -22,6 +22,39 @@ class RentalItemsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "index filters by q" do
+    RentalItem.create!(
+      VALID_RENTAL_PARAMS.merge(title: "Unique rental kayak", description: "Weekend paddle craft.")
+    )
+    RentalItem.create!(
+      VALID_RENTAL_PARAMS.merge(title: "Camping stove", description: "Portable burner for trips.")
+    )
+
+    get rental_items_url, params: { q: "kayak" }
+    assert_response :success
+    assert_select ".nu-item-title", text: "Unique rental kayak"
+    assert_select ".nu-item-title", text: "Camping stove", count: 0
+  end
+
+  test "index filters by q and category" do
+    RentalItem.create!(
+      VALID_RENTAL_PARAMS.merge(title: "Searchable tent", description: "Two-person tent.", category: "Camping Gear")
+    )
+
+    get rental_items_url, params: { q: "Searchable", category: "Camping Gear" }
+    assert_response :success
+    assert_select ".nu-item-title", text: "Searchable tent"
+  end
+
+  test "index blank q returns available rental items" do
+    RentalItem.create!(VALID_RENTAL_PARAMS.merge(title: "Available item #{SecureRandom.hex(4)}"))
+    RentalItem.create!(VALID_RENTAL_PARAMS.merge(title: "Another item #{SecureRandom.hex(4)}"))
+
+    get rental_items_url, params: { q: "" }
+    assert_response :success
+    assert_select ".nu-item-title", minimum: 2
+  end
+
   test "should redirect new when not signed in" do
     get new_rental_item_url
     assert_redirected_to new_session_url

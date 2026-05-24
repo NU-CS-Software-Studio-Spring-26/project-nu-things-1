@@ -149,8 +149,20 @@ class ApplicationController < ActionController::Base
     relation.where(column => value)
   end
 
-  def filter_category_options(model)
-    (ListingCategories::VALUES + model.distinct.pluck(:category).compact).uniq.sort
+  def filter_category_options(model, exclude: [])
+    options = (ListingCategories::VALUES + model.distinct.pluck(:category).compact).uniq.sort
+    exclude.any? ? options - exclude : options
+  end
+
+  def filter_by_search(relation, query)
+    term = query.to_s.strip
+    return relation if term.blank?
+
+    pattern = "%#{ActiveRecord::Base.sanitize_sql_like(term)}%"
+    relation.where(
+      "LOWER(title) LIKE LOWER(?) OR LOWER(description) LIKE LOWER(?)",
+      pattern, pattern
+    )
   end
 
   # Name + email for lost/found listing report mailers (signed-in uses account; guests use form params).

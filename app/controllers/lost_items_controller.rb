@@ -8,8 +8,9 @@ class LostItemsController < ApplicationController
 
   def index
     @lost_items = LostItem.with_attached_photo.order(date_lost: :desc, created_at: :desc)
-    @categories = filter_category_options(LostItem)
+    @categories = filter_category_options(LostItem, exclude: ListingCategories::LOST_FOUND_FILTER_EXCLUDED)
     @lost_items = filter_where_in(@lost_items, :category, params[:category], @categories)
+    @lost_items = filter_by_search(@lost_items, params[:q])
   end
 
   def show

@@ -10,6 +10,25 @@ class FoundItemsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "index filters by q" do
+    get found_items_url, params: { q: "Fixture found item one" }
+    assert_response :success
+    assert_select ".nu-item-title", text: "Fixture found item one"
+    assert_select ".nu-item-title", text: "Fixture found item admin owned", count: 0
+  end
+
+  test "index filters by q and category" do
+    get found_items_url, params: { q: "Fixture", category: "Book" }
+    assert_response :success
+    assert_select ".nu-item-title", minimum: 1
+  end
+
+  test "index blank q returns all found items" do
+    get found_items_url, params: { q: "" }
+    assert_response :success
+    assert_select ".nu-item-title", minimum: 2
+  end
+
   test "should redirect new when not signed in" do
     get new_found_item_url
     assert_redirected_to new_session_url

@@ -10,6 +10,7 @@ class RentalItemsController < ApplicationController
       .order(created_at: :desc)
     @categories = filter_category_options(RentalItem)
     @rental_items = filter_where_in(@rental_items, :category, params[:category], @categories)
+    @rental_items = filter_by_search(@rental_items, params[:q])
   end
 
   def show

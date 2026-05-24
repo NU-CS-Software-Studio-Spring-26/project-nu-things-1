@@ -1,0 +1,21 @@
+<%# locals: (url:, preserve_params: {}, input_id:) %>
+<div class="card nu-card mb-4">
+  <div class="card-body">
+    <h6 class="card-title text-purple mb-3">Search</h6>
+    <%= form_with url: url, method: :get, data: { listing_search_target: "form", turbo_frame: "listings" } do %>
+      <% preserve_params.each do |key, value| %>
+        <%= hidden_field_tag key, value if value.present? %>
+      <% end %>
+      <%= text_field_tag :q, params[:q],
+            id: input_id,
+            class: "form-control",
+            placeholder: "Search by item name or description",
+            autocomplete: "off",
+            data: {
+              listing_search_target: "query",
+              turbo_permanent: true,
+              action: "input->listing-search#search"
+            } %>
+    <% end %>
+  </div>
+</div>
