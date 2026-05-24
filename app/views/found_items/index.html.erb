@@ -8,53 +8,64 @@
   <%= link_to_new_listing "Post found item", new_found_item_path, class: "btn btn-primary nu-pill-btn" %>
 </div>
 
-<div class="card nu-card mb-4">
-  <div class="card-body">
-    <h6 class="card-title text-purple mb-3">Filter by category</h6>
-    <div class="d-flex flex-wrap gap-2">
-      <%= link_to "All categories", found_items_path, class: "btn btn-sm #{params[:category].blank? ? 'btn-primary' : 'btn-outline-primary'}" %>
-      <% @categories.each do |category| %>
-        <% if category == "Other" %>
-          <%= link_to category, found_items_path(category: category), class: "btn btn-sm btn-outline-primary nu-filter-other#{' nu-filter-other--selected' if params[:category] == 'Other'}" %>
-        <% else %>
-          <%= link_to category, found_items_path(category: category), class: "btn btn-sm #{params[:category] == category ? 'btn-primary' : 'btn-outline-primary'}" %>
-        <% end %>
-      <% end %>
-    </div>
-  </div>
-</div>
+<%= turbo_frame_tag "listings", data: { controller: "listing-search" } do %>
+  <%= render "application/listing_search_bar", url: found_items_path, preserve_params: { category: params[:category] }, input_id: "found-items-search-q" %>
 
-<% if @found_items.any? %>
-  <div class="row g-4">
-    <% @found_items.each do |item| %>
-      <div class="col-md-6 col-lg-4">
-        <%= link_to item, class: "card nu-card nu-clickable-card h-100" do %>
-          <% if item.listing_image_available? %>
-            <%= listing_image_tag item, alt: item.title, class: "card-img-top nu-listing-index-card-img" %>
+  <div class="card nu-card mb-4">
+    <div class="card-body">
+      <h6 class="card-title text-purple mb-3">Filter by category</h6>
+      <div class="d-flex flex-wrap gap-2">
+        <%= link_to "All categories", found_items_path(q: params[:q]), class: "btn btn-sm #{params[:category].blank? ? 'btn-primary' : 'btn-outline-primary'}", data: { turbo_frame: "listings" } %>
+        <% @categories.each do |category| %>
+          <% if category == "Other" %>
+            <%= link_to category, found_items_path(category: category, q: params[:q]), class: "btn btn-sm btn-outline-primary nu-filter-other#{' nu-filter-other--selected' if params[:category] == 'Other'}", data: { turbo_frame: "listings" } %>
           <% else %>
-            <%= render "application/listing_image_placeholder", aspect_index_card: true, extra_classes: "card-img-top" %>
+            <%= link_to category, found_items_path(category: category, q: params[:q]), class: "btn btn-sm #{params[:category] == category ? 'btn-primary' : 'btn-outline-primary'}", data: { turbo_frame: "listings" } %>
           <% end %>
-          <div class="card-body d-flex flex-column">
-            <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
-              <h3 class="h5 card-title mb-0 nu-item-title"><%= item.title %></h3>
-              <span class="badge rounded-pill flex-shrink-0 <%= found_status_badge_class(item.status) %>"><%= item.status.titleize %></span>
-            </div>
-            <p class="card-text text-muted small mb-3 flex-grow-1">
-              <%= truncate(item.description, length: 100) %>
-            </p>
-            <p class="nu-metadata small mb-3">
-              <strong>Category:</strong> <%= item.category_label %> ·
-              <strong>Found at:</strong> <%= item.location_found %> ·
-              <strong>Date:</strong> <%= item.date_found&.strftime("%b %d, %Y") %>
-            </p>
-            <div class="d-grid mt-auto">
-              <span class="btn btn-sm btn-primary nu-card-cta">View details</span>
-            </div>
-          </div>
         <% end %>
       </div>
-    <% end %>
+    </div>
   </div>
-<% else %>
-  <div class="alert nu-soft-alert">No found items yet. <%= link_to_new_listing "Add the first listing", new_found_item_path, class: "alert-link" %>.</div>
+
+  <%= render "application/listing_search_results_summary", count: @found_items.size %>
+
+  <% if @found_items.any? %>
+    <div class="row g-4">
+      <% @found_items.each do |item| %>
+        <div class="col-md-6 col-lg-4">
+          <%= link_to item, class: "card nu-card nu-clickable-card h-100" do %>
+            <% if item.listing_image_available? %>
+              <%= listing_image_tag item, alt: item.title, class: "card-img-top nu-listing-index-card-img" %>
+            <% else %>
+              <%= render "application/listing_image_placeholder", aspect_index_card: true, extra_classes: "card-img-top" %>
+            <% end %>
+            <div class="card-body d-flex flex-column">
+              <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+                <h3 class="h5 card-title mb-0 nu-item-title"><%= item.title %></h3>
+                <span class="badge rounded-pill flex-shrink-0 <%= found_status_badge_class(item.status) %>"><%= item.status.titleize %></span>
+              </div>
+              <p class="card-text text-muted small mb-3 flex-grow-1">
+                <%= truncate(item.description, length: 100) %>
+              </p>
+              <p class="nu-metadata small mb-3">
+                <strong>Category:</strong> <%= item.category_label %> ·
+                <strong>Found at:</strong> <%= item.location_found %> ·
+                <strong>Date:</strong> <%= item.date_found&.strftime("%b %d, %Y") %>
+              </p>
+              <div class="d-grid mt-auto">
+                <span class="btn btn-sm btn-primary nu-card-cta">View details</span>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% elsif listing_index_filters_active? %>
+    <div class="alert nu-soft-alert">
+      No results match your search.
+      <%= link_to "Clear filters", found_items_path, class: "alert-link", data: { turbo_frame: "listings", action: "listing-search#clearFilters" } %>
+    </div>
+  <% else %>
+    <div class="alert nu-soft-alert">No found items yet. <%= link_to_new_listing "Add the first listing", new_found_item_path, class: "alert-link" %>.</div>
+  <% end %>
 <% end %>

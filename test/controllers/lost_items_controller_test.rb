@@ -22,6 +22,26 @@ class LostItemsControllerTest < ActionDispatch::IntegrationTest
     assert_select "[class~=card]"
   end
 
+  test "index filters by q" do
+    get lost_items_url, params: { q: "Fixture lost item one" }
+    assert_response :success
+    assert_select ".nu-item-title", text: "Fixture lost item one"
+    assert_select ".nu-item-title", text: "Fixture lost item two", count: 0
+    assert_select "p[aria-live=polite]", text: "1 result found for 'Fixture lost item one'"
+  end
+
+  test "index filters by q and category" do
+    get lost_items_url, params: { q: "Fixture", category: "Book" }
+    assert_response :success
+    assert_select ".nu-item-title", minimum: 1
+  end
+
+  test "index blank q returns all lost items" do
+    get lost_items_url, params: { q: "" }
+    assert_response :success
+    assert_select ".nu-item-title", minimum: 2
+  end
+
   test "should redirect new when not signed in" do
     get new_lost_item_url
     assert_redirected_to new_session_url

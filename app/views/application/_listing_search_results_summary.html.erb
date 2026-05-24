@@ -1,0 +1,4 @@
+<%# locals: (count:) %>
+<% if params[:q].to_s.strip.present? %>
+  <p class="text-muted small mb-3" aria-live="polite"><%= listing_search_results_label(count) %></p>
+<% end %>

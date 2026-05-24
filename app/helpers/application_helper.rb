@@ -154,4 +154,15 @@ module ApplicationHelper
   def marketplace_listing_type_badge_class(listing_type)
     listing_type.to_s == "wanted" ? "nu-mp-type-wanted" : "nu-mp-type-for-sale"
   end
+
+  def listing_index_filters_active?
+    params[:q].present? || params[:category].present? || params[:listing_type].present?
+  end
+
+  def listing_search_results_label(count)
+    term = params[:q].to_s.strip
+    return if term.blank?
+
+    "#{pluralize(count, 'result')} found for '#{h(term)}'".html_safe
+  end
 end

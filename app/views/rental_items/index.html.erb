@@ -9,56 +9,67 @@
   <%= link_to_new_listing "Post item for rent", new_rental_item_path, class: "btn btn-primary" %>
 </div>
 
-<div class="card nu-card mb-4">
-  <div class="card-body">
-    <h6 class="card-title text-purple mb-3">Filter by category</h6>
-    <div class="d-flex flex-wrap gap-2">
-      <%= link_to "All categories", rental_items_path, class: "btn btn-sm #{params[:category].blank? ? 'btn-primary' : 'btn-outline-primary'}" %>
-      <% @categories.each do |category| %>
-        <% if category == "Other" %>
-          <%= link_to category, rental_items_path(category: category), class: "btn btn-sm btn-outline-primary nu-filter-other#{' nu-filter-other--selected' if params[:category] == 'Other'}" %>
-        <% else %>
-          <%= link_to category, rental_items_path(category: category), class: "btn btn-sm #{params[:category] == category ? 'btn-primary' : 'btn-outline-primary'}" %>
-        <% end %>
-      <% end %>
-    </div>
-  </div>
-</div>
+<%= turbo_frame_tag "listings", data: { controller: "listing-search" } do %>
+  <%= render "application/listing_search_bar", url: rental_items_path, preserve_params: { category: params[:category] }, input_id: "rental-items-search-q" %>
 
-<% if @rental_items.any? %>
-  <div class="row g-4">
-    <% @rental_items.each do |item| %>
-      <div class="col-md-6 col-lg-4">
-        <%= link_to item, class: "card nu-card nu-clickable-card h-100" do %>
-          <% if item.listing_image_available? %>
-            <%= listing_image_tag item, alt: item.title, class: "card-img-top nu-listing-index-card-img" %>
+  <div class="card nu-card mb-4">
+    <div class="card-body">
+      <h6 class="card-title text-purple mb-3">Filter by category</h6>
+      <div class="d-flex flex-wrap gap-2">
+        <%= link_to "All categories", rental_items_path(q: params[:q]), class: "btn btn-sm #{params[:category].blank? ? 'btn-primary' : 'btn-outline-primary'}", data: { turbo_frame: "listings" } %>
+        <% @categories.each do |category| %>
+          <% if category == "Other" %>
+            <%= link_to category, rental_items_path(category: category, q: params[:q]), class: "btn btn-sm btn-outline-primary nu-filter-other#{' nu-filter-other--selected' if params[:category] == 'Other'}", data: { turbo_frame: "listings" } %>
           <% else %>
-            <%= render "application/listing_image_placeholder", aspect_index_card: true, extra_classes: "card-img-top" %>
+            <%= link_to category, rental_items_path(category: category, q: params[:q]), class: "btn btn-sm #{params[:category] == category ? 'btn-primary' : 'btn-outline-primary'}", data: { turbo_frame: "listings" } %>
           <% end %>
-          <div class="card-body">
-            <h5 class="card-title nu-item-title"><%= item.title %></h5>
-            <p class="card-text text-muted small mb-2"><%= truncate(item.description, length: 80) %></p>
-
-            <div class="mb-2">
-              <span class="badge text-bg-primary"><%= item.category %></span>
-              <span class="badge text-bg-light border"><%= item.condition %></span>
-            </div>
-
-            <div class="mb-3">
-              <p class="h5 text-primary mb-2"><%= format_rental_rate(item) %></p>
-              <%= render "rental_stats", item: item %>
-              <p class="text-muted small mb-0 mt-2"><%= item.location %></p>
-            </div>
-
-            <div class="d-grid gap-2">
-              <span class="btn btn-sm btn-primary nu-card-cta">View details</span>
-            </div>
-          </div>
         <% end %>
       </div>
-    <% end %>
+    </div>
   </div>
-<% else %>
-  <div class="alert alert-info">No rental items available. Be the first to <%= link_to_new_listing "post an item", new_rental_item_path, class: "alert-link" %>.</div>
+
+  <%= render "application/listing_search_results_summary", count: @rental_items.size %>
+
+  <% if @rental_items.any? %>
+    <div class="row g-4">
+      <% @rental_items.each do |item| %>
+        <div class="col-md-6 col-lg-4">
+          <%= link_to item, class: "card nu-card nu-clickable-card h-100" do %>
+            <% if item.listing_image_available? %>
+              <%= listing_image_tag item, alt: item.title, class: "card-img-top nu-listing-index-card-img" %>
+            <% else %>
+              <%= render "application/listing_image_placeholder", aspect_index_card: true, extra_classes: "card-img-top" %>
+            <% end %>
+            <div class="card-body">
+              <h5 class="card-title nu-item-title"><%= item.title %></h5>
+              <p class="card-text text-muted small mb-2"><%= truncate(item.description, length: 80) %></p>
+
+              <div class="mb-2">
+                <span class="badge text-bg-primary"><%= item.category %></span>
+                <span class="badge text-bg-light border"><%= item.condition %></span>
+              </div>
+
+              <div class="mb-3">
+                <p class="h5 text-primary mb-2"><%= format_rental_rate(item) %></p>
+                <%= render "rental_stats", item: item %>
+                <p class="text-muted small mb-0 mt-2"><%= item.location %></p>
+              </div>
+
+              <div class="d-grid gap-2">
+                <span class="btn btn-sm btn-primary nu-card-cta">View details</span>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% elsif listing_index_filters_active? %>
+    <div class="alert alert-info">
+      No results match your search.
+      <%= link_to "Clear filters", rental_items_path, class: "alert-link", data: { turbo_frame: "listings", action: "listing-search#clearFilters" } %>
+    </div>
+  <% else %>
+    <div class="alert alert-info">No rental items available. Be the first to <%= link_to_new_listing "post an item", new_rental_item_path, class: "alert-link" %>.</div>
+  <% end %>
 <% end %>
 </div>

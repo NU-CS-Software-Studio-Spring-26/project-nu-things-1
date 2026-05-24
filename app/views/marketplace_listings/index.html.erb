@@ -9,13 +9,16 @@
   <%= link_to_new_listing "Post listing", new_marketplace_listing_path, class: "btn btn-primary nu-pill-btn" %>
 </div>
 
+<%= turbo_frame_tag "listings", data: { controller: "listing-search" } do %>
+  <%= render "application/listing_search_bar", url: marketplace_listings_path, preserve_params: { category: params[:category], listing_type: params[:listing_type] }, input_id: "marketplace-listings-search-q" %>
+
 <div class="card nu-card mb-4">
   <div class="card-body">
     <h6 class="card-title text-purple mb-3">Filter by type</h6>
     <div class="d-flex flex-wrap gap-2">
-      <%= link_to "All", marketplace_listings_path(category: params[:category]), class: "btn btn-sm #{params[:listing_type].blank? ? 'btn-primary' : 'btn-outline-primary'}" %>
-      <%= link_to "For sale", marketplace_listings_path(listing_type: "for_sale", category: params[:category]), class: "btn btn-sm #{params[:listing_type] == 'for_sale' ? 'btn-primary' : 'btn-outline-primary'}" %>
-      <%= link_to "Wanted", marketplace_listings_path(listing_type: "wanted", category: params[:category]), class: "btn btn-sm #{params[:listing_type] == 'wanted' ? 'btn-primary' : 'btn-outline-primary'}" %>
+      <%= link_to "All", marketplace_listings_path(category: params[:category], q: params[:q]), class: "btn btn-sm #{params[:listing_type].blank? ? 'btn-primary' : 'btn-outline-primary'}", data: { turbo_frame: "listings" } %>
+      <%= link_to "For sale", marketplace_listings_path(listing_type: "for_sale", category: params[:category], q: params[:q]), class: "btn btn-sm #{params[:listing_type] == 'for_sale' ? 'btn-primary' : 'btn-outline-primary'}", data: { turbo_frame: "listings" } %>
+      <%= link_to "Wanted", marketplace_listings_path(listing_type: "wanted", category: params[:category], q: params[:q]), class: "btn btn-sm #{params[:listing_type] == 'wanted' ? 'btn-primary' : 'btn-outline-primary'}", data: { turbo_frame: "listings" } %>
     </div>
   </div>
 </div>
@@ -24,13 +27,15 @@
   <div class="card-body">
     <h6 class="card-title text-purple mb-3">Filter by category</h6>
     <div class="d-flex flex-wrap gap-2">
-      <%= link_to "All categories", marketplace_listings_path(listing_type: params[:listing_type]), class: "btn btn-sm #{params[:category].blank? ? 'btn-primary' : 'btn-outline-primary'}" %>
+      <%= link_to "All categories", marketplace_listings_path(listing_type: params[:listing_type], q: params[:q]), class: "btn btn-sm #{params[:category].blank? ? 'btn-primary' : 'btn-outline-primary'}", data: { turbo_frame: "listings" } %>
       <% @categories.each do |category| %>
-        <%= link_to category, marketplace_listings_path(category: category, listing_type: params[:listing_type]), class: "btn btn-sm #{params[:category] == category ? 'btn-primary' : 'btn-outline-primary'}" %>
+        <%= link_to category, marketplace_listings_path(category: category, listing_type: params[:listing_type], q: params[:q]), class: "btn btn-sm #{params[:category] == category ? 'btn-primary' : 'btn-outline-primary'}", data: { turbo_frame: "listings" } %>
       <% end %>
     </div>
   </div>
 </div>
+
+<%= render "application/listing_search_results_summary", count: @marketplace_listings.size %>
 
 <% if @marketplace_listings.any? %>
   <div class="row g-4">
@@ -76,8 +81,16 @@
     <% end %>
   </div>
 <% else %>
-  <div class="alert nu-soft-alert">
+  <% if listing_index_filters_active? %>
+    <div class="alert nu-soft-alert">
+      No results match your search.
+      <%= link_to "Clear filters", marketplace_listings_path, class: "alert-link", data: { turbo_frame: "listings", action: "listing-search#clearFilters" } %>
+    </div>
+  <% else %>
+    <div class="alert nu-soft-alert">
     No listings yet. Be the first to <%= link_to_new_listing "post a listing", new_marketplace_listing_path, class: "alert-link" %>.
   </div>
+  <% end %>
+<% end %>
 <% end %>
 </div>

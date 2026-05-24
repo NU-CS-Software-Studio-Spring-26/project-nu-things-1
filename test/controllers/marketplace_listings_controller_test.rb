@@ -20,6 +20,25 @@ class MarketplaceListingsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "index filters by q" do
+    get marketplace_listings_url, params: { q: "Camping Tent" }
+    assert_response :success
+    assert_select ".nu-item-title", text: "Camping Tent"
+    assert_select ".nu-item-title", text: "Calculus Textbook", count: 0
+  end
+
+  test "index filters by q and listing_type" do
+    get marketplace_listings_url, params: { q: "Calculus", listing_type: "wanted" }
+    assert_response :success
+    assert_select ".nu-item-title", text: "Calculus Textbook"
+  end
+
+  test "index blank q returns all active listings" do
+    get marketplace_listings_url, params: { q: "" }
+    assert_response :success
+    assert_select ".nu-item-title", minimum: 2
+  end
+
   test "should redirect new when not signed in" do
     get new_marketplace_listing_url
     assert_redirected_to new_session_url
