@@ -3,3 +3,9 @@ student_to_admin_lost:
   starter: nu_student
   subject: "Fixture lost item admin owned"
   last_message_at: <%= Time.utc(2026, 5, 1, 14, 0, 0) %>
+
+admin_to_student_marketplace:
+  listable: for_sale_one (MarketplaceListing)
+  starter: admin
+  subject: "About camping tent"
+  last_message_at: <%= Time.utc(2026, 5, 2, 10, 0, 0) %>

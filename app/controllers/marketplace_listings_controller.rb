@@ -61,7 +61,11 @@ class MarketplaceListingsController < ApplicationController
     @marketplace_listing = MarketplaceListing.with_attached_photo
       .includes(:marketplace_listing_reviews)
       .find(params.expect(:id))
-    @user_review = @marketplace_listing.marketplace_listing_reviews.find_by(user: current_user) if signed_in?
+    if signed_in?
+      @user_review = @marketplace_listing.marketplace_listing_reviews.find_by(user: current_user)
+      @can_leave_review = @marketplace_listing.can_leave_review?(current_user)
+    end
+    @review ||= MarketplaceListingReview.new
   end
 
   def marketplace_listing_params

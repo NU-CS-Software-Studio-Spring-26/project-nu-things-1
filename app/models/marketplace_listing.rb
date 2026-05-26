@@ -7,17 +7,23 @@ class MarketplaceListing < ApplicationRecord
 
   belongs_to :user, optional: true
 
-  has_many :marketplace_listing_reviews, dependent: :destroy
+  has_many :conversations, as: :listable, dependent: :destroy
+  has_many :marketplace_listing_reviews, -> { order(created_at: :desc) }, dependent: :destroy
 
   def reviews_count
-    marketplace_listing_reviews.loaded? ? marketplace_listing_reviews.size : marketplace_listing_reviews.count
+    if marketplace_listing_reviews.loaded?
+      marketplace_listing_reviews.count(&:persisted?)
+    else
+      marketplace_listing_reviews.count
+    end
   end
 
   def average_rating
     if marketplace_listing_reviews.loaded?
-      return nil if marketplace_listing_reviews.empty?
+      ratings = marketplace_listing_reviews.select(&:persisted?).map(&:rating)
+      return nil if ratings.empty?
 
-      marketplace_listing_reviews.sum(&:rating).to_f / marketplace_listing_reviews.size
+      ratings.sum.to_f / ratings.size
     else
       marketplace_listing_reviews.average(:rating)&.to_f
     end
@@ -49,6 +55,24 @@ class MarketplaceListing < ApplicationRecord
   def category_label
     return category unless category == "Other"
     custom_category.presence || category
+  end
+
+  def posted_by?(user)
+    return false if user.blank?
+    return true if user_id.present? && user_id == user.id
+    return true if poster_account.present? && poster_account.id == user.id
+
+    email = poster_email_for_messaging
+    email.present? && User.normalize_email(email) == User.normalize_email(user.email)
+  end
+
+  def can_leave_review?(user)
+    return false if user.blank?
+    return false unless status == "active"
+    return false if posted_by?(user)
+    return false if marketplace_listing_reviews.exists?(user_id: user.id)
+
+    conversations.exists?(starter_id: user.id)
   end
 
   private

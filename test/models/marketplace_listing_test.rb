@@ -128,4 +128,28 @@ class MarketplaceListingTest < ActiveSupport::TestCase
     assert_equal 0, item.reviews_count
     assert_nil item.average_rating
   end
+
+  test "posted_by matches linked user" do
+    listing = marketplace_listings(:for_sale_one)
+    assert listing.posted_by?(users(:nu_student))
+    assert_not listing.posted_by?(users(:admin))
+  end
+
+  test "posted_by matches contact_email when user_id absent" do
+    listing = marketplace_listings(:wanted_one)
+    user = users(:admin)
+    listing.update!(contact_email: user.email)
+
+    assert listing.posted_by?(user)
+  end
+
+  test "can_leave_review requires active listing and prior message" do
+    listing = marketplace_listings(:for_sale_one)
+    admin = users(:admin)
+
+    assert listing.can_leave_review?(admin)
+
+    listing.update!(status: "inactive")
+    assert_not listing.can_leave_review?(admin)
+  end
 end
