@@ -4,7 +4,10 @@ class MarketplaceListingsController < ApplicationController
   before_action :require_admin, only: %i[destroy]
 
   def index
-    @marketplace_listings = MarketplaceListing.with_attached_photo.where(status: "active").order(created_at: :desc)
+    @marketplace_listings = MarketplaceListing.with_attached_photo
+      .includes(:marketplace_listing_reviews)
+      .where(status: "active")
+      .order(created_at: :desc)
     @marketplace_listings = filter_where_in(
       @marketplace_listings,
       :listing_type,
@@ -55,7 +58,10 @@ class MarketplaceListingsController < ApplicationController
   private
 
   def set_marketplace_listing
-    @marketplace_listing = MarketplaceListing.with_attached_photo.find(params.expect(:id))
+    @marketplace_listing = MarketplaceListing.with_attached_photo
+      .includes(:marketplace_listing_reviews)
+      .find(params.expect(:id))
+    @user_review = @marketplace_listing.marketplace_listing_reviews.find_by(user: current_user) if signed_in?
   end
 
   def marketplace_listing_params

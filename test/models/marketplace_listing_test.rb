@@ -116,4 +116,16 @@ class MarketplaceListingTest < ActiveSupport::TestCase
     listing = marketplace_listings(:for_sale_one)
     assert_equal "Camping Gear", listing.category_label
   end
+
+  test "average_rating and reviews_count from reviews" do
+    item = marketplace_listings(:for_sale_one)
+    assert_equal 2, item.reviews_count
+    assert_in_delta 4.5, item.average_rating, 0.01
+  end
+
+  test "no reviews yields nil average and zero count" do
+    item = marketplace_listings(:wanted_one)
+    assert_equal 0, item.reviews_count
+    assert_nil item.average_rating
+  end
 end

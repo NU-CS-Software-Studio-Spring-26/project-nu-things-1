@@ -7,6 +7,22 @@ class MarketplaceListing < ApplicationRecord
 
   belongs_to :user, optional: true
 
+  has_many :marketplace_listing_reviews, dependent: :destroy
+
+  def reviews_count
+    marketplace_listing_reviews.loaded? ? marketplace_listing_reviews.size : marketplace_listing_reviews.count
+  end
+
+  def average_rating
+    if marketplace_listing_reviews.loaded?
+      return nil if marketplace_listing_reviews.empty?
+
+      marketplace_listing_reviews.sum(&:rating).to_f / marketplace_listing_reviews.size
+    else
+      marketplace_listing_reviews.average(:rating)&.to_f
+    end
+  end
+
   LISTING_TYPES = %w[for_sale wanted].freeze
   CATEGORIES = ListingCategories::VALUES
   STATUSES = %w[active completed inactive].freeze

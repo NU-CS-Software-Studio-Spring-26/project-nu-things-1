@@ -134,12 +134,37 @@ module ApplicationHelper
   end
 
   def rental_rating_stars(item, max: 5)
+    listing_rating_stars(item, max: max)
+  end
+
+  def listing_rating_stars(item, max: 5)
     if item.reviews_count.positive?
       filled = item.average_rating.round.clamp(0, max)
       ("★" * filled) + ("☆" * (max - filled))
     else
       "☆" * max
     end
+  end
+
+  def marketplace_rating_summary(item)
+    if item.reviews_count.positive?
+      "#{number_with_precision(item.average_rating, precision: 1)} / 5"
+    else
+      "No ratings"
+    end
+  end
+
+  def marketplace_reviews_summary(item)
+    item.reviews_count.positive? ? pluralize(item.reviews_count, "review") : "No reviews"
+  end
+
+  def marketplace_rating_stars(item, max: 5)
+    listing_rating_stars(item, max: max)
+  end
+
+  def marketplace_review_rating_stars(rating, max: 5)
+    filled = rating.to_i.clamp(0, max)
+    ("★" * filled) + ("☆" * (max - filled))
   end
 
   def marketplace_category_slug(category)

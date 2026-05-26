@@ -1,0 +1,49 @@
+<%# locals: listing (MarketplaceListing), user_review (MarketplaceListingReview, optional) %>
+<div class="card nu-card mt-4">
+  <div class="card-body">
+    <h2 class="h6 text-muted text-uppercase mb-3">Reviews</h2>
+
+    <% if listing.marketplace_listing_reviews.any? %>
+      <ul class="list-unstyled mb-0 mt-3">
+        <% listing.marketplace_listing_reviews.order(created_at: :desc).each do |review| %>
+          <li class="border-top pt-3 mt-3">
+            <div class="d-flex justify-content-between align-items-start gap-2 mb-1">
+              <strong class="mb-0"><%= review.reviewer_name %></strong>
+              <span class="text-purple small" aria-label="<%= review.rating %> out of 5 stars"><%= marketplace_review_rating_stars(review.rating) %></span>
+            </div>
+            <% if review.body.present? %>
+              <p class="text-muted small mb-0"><%= review.body %></p>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-muted small mb-0">No reviews yet. Be the first to share your experience.</p>
+    <% end %>
+
+    <% if signed_in? %>
+      <% if listing.poster_account == current_user %>
+        <p class="text-muted small mb-0 mt-3">You can't review your own listing.</p>
+      <% elsif user_review %>
+        <p class="text-muted small mb-0 mt-3">You already left a review for this listing.</p>
+      <% else %>
+        <div class="border-top pt-3 mt-3">
+          <h3 class="h6 mb-3">Leave a review</h3>
+          <%= form_with model: [ listing, MarketplaceListingReview.new ], url: marketplace_listing_marketplace_listing_reviews_path(listing), class: "needs-validation" do |form| %>
+            <div class="mb-3">
+              <%= form.label :rating, "Rating", class: "form-label" %>
+              <%= form.select :rating, (1..5).map { |n| [ "#{n} star#{'s' if n != 1}", n ] }, { prompt: "Select a rating" }, class: "form-select", required: true %>
+            </div>
+            <div class="mb-3">
+              <%= form.label :body, "Your experience (optional)", class: "form-label" %>
+              <%= form.text_area :body, class: "form-control", rows: 3, placeholder: "How was dealing with this seller or buyer?" %>
+            </div>
+            <%= form.submit "Submit review", class: "btn btn-primary btn-sm" %>
+          <% end %>
+        </div>
+      <% end %>
+    <% else %>
+      <p class="text-muted small mb-0 mt-3"><%= link_to "Sign in", new_session_path, class: "link-primary" %> with your Northwestern account to leave a review.</p>
+    <% end %>
+  </div>
+</div>
