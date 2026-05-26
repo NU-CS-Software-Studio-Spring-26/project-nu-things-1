@@ -43,7 +43,9 @@ Rails.application.routes.draw do
       end
     end
   end
-  resources :marketplace_listings
+  resources :marketplace_listings do
+    resources :marketplace_listing_reviews, only: [ :create ]
+  end
 
   post "contacts/create_lost_item_contact", to: "contacts#create_lost_item_contact", as: :create_lost_item_contact
   post "contacts/create_found_item_contact", to: "contacts#create_found_item_contact", as: :create_found_item_contact

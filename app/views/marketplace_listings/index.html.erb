@@ -69,7 +69,8 @@
               <% else %>
                 <p class="h6 text-purple mb-1">Looking to buy</p>
               <% end %>
-              <p class="text-muted small mb-0"><%= item.location %></p>
+              <%= render "listing_stats", item: item %>
+              <p class="text-muted small mb-0 mt-2"><%= item.location %></p>
             </div>
 
             <div class="d-grid gap-2">

@@ -47,6 +47,8 @@
         </dl>
       </div>
     </div>
+
+    <%= render "marketplace_listings/reviews", listing: @marketplace_listing, user_review: @user_review, review: @review, can_leave_review: @can_leave_review %>
   </div>
 
   <div class="col-lg-5">
@@ -54,14 +56,16 @@
       <div class="card nu-card mb-3">
         <div class="card-body">
           <h2 class="h6 text-muted text-uppercase mb-3">Price</h2>
-          <p class="h3 nu-mp-price mb-0">$<%= number_with_precision(@marketplace_listing.price, precision: 2) %></p>
+          <p class="h3 nu-mp-price mb-2">$<%= number_with_precision(@marketplace_listing.price, precision: 2) %></p>
+          <%= render "marketplace_listings/listing_stats", item: @marketplace_listing %>
         </div>
       </div>
     <% else %>
       <div class="card nu-card mb-3">
         <div class="card-body">
           <h2 class="h6 text-muted text-uppercase mb-2">Wanted</h2>
-          <p class="text-muted small mb-0">This person is looking to buy this item. Reach out to coordinate details and pricing.</p>
+          <p class="text-muted small mb-2">This person is looking to buy this item. Reach out to coordinate details and pricing.</p>
+          <%= render "marketplace_listings/listing_stats", item: @marketplace_listing %>
         </div>
       </div>
     <% end %>

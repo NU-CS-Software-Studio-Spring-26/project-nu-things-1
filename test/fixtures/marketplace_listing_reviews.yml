@@ -1,0 +1,11 @@
+one_review:
+  marketplace_listing: for_sale_one
+  rating: 5
+  reviewer_name: Jamie R.
+  body: Smooth transaction, item as described.
+
+two_review:
+  marketplace_listing: for_sale_one
+  rating: 4
+  reviewer_name: Chris M.
+  body: Quick pickup, friendly seller.

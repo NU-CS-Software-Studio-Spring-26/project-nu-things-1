@@ -116,4 +116,40 @@ class MarketplaceListingTest < ActiveSupport::TestCase
     listing = marketplace_listings(:for_sale_one)
     assert_equal "Camping Gear", listing.category_label
   end
+
+  test "average_rating and reviews_count from reviews" do
+    item = marketplace_listings(:for_sale_one)
+    assert_equal 2, item.reviews_count
+    assert_in_delta 4.5, item.average_rating, 0.01
+  end
+
+  test "no reviews yields nil average and zero count" do
+    item = marketplace_listings(:wanted_one)
+    assert_equal 0, item.reviews_count
+    assert_nil item.average_rating
+  end
+
+  test "posted_by matches linked user" do
+    listing = marketplace_listings(:for_sale_one)
+    assert listing.posted_by?(users(:nu_student))
+    assert_not listing.posted_by?(users(:admin))
+  end
+
+  test "posted_by matches contact_email when user_id absent" do
+    listing = marketplace_listings(:wanted_one)
+    user = users(:admin)
+    listing.update!(contact_email: user.email)
+
+    assert listing.posted_by?(user)
+  end
+
+  test "can_leave_review requires active listing and prior message" do
+    listing = marketplace_listings(:for_sale_one)
+    admin = users(:admin)
+
+    assert listing.can_leave_review?(admin)
+
+    listing.update!(status: "inactive")
+    assert_not listing.can_leave_review?(admin)
+  end
 end

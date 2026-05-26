@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_20_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_25_180000) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -148,6 +148,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_20_120000) do
     t.datetime "updated_at", null: false
     t.integer "user_id"
     t.index ["user_id"], name: "index_lost_items_on_user_id"
+  end
+
+  create_table "marketplace_listing_reviews", force: :cascade do |t|
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.integer "marketplace_listing_id", null: false
+    t.integer "rating", null: false
+    t.string "reviewer_name"
+    t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.index ["marketplace_listing_id", "user_id"], name: "idx_on_marketplace_listing_id_user_id_16a3f7ecd1", unique: true, where: "user_id IS NOT NULL"
+    t.index ["marketplace_listing_id"], name: "index_marketplace_listing_reviews_on_marketplace_listing_id"
+    t.index ["user_id"], name: "index_marketplace_listing_reviews_on_user_id"
   end
 
   create_table "marketplace_listings", force: :cascade do |t|
@@ -372,6 +385,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_20_120000) do
   add_foreign_key "found_items", "users", column: "claimed_by_user_id"
   add_foreign_key "login_tokens", "users"
   add_foreign_key "lost_items", "users"
+  add_foreign_key "marketplace_listing_reviews", "marketplace_listings"
+  add_foreign_key "marketplace_listing_reviews", "users"
   add_foreign_key "marketplace_listings", "users"
   add_foreign_key "rental_items", "users"
   add_foreign_key "rental_reviews", "rental_items"

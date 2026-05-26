@@ -651,6 +651,7 @@ bike.rental_reviews.create!([
 ])
 bike.bookings.create!(start_date: Date.new(2026, 2, 15), end_date: Date.new(2026, 2, 17), status: "confirmed")
 
+MarketplaceListingReview.destroy_all if ApplicationRecord.connection.table_exists?("marketplace_listing_reviews")
 MarketplaceListing.destroy_all
 
 marketplace_seed = [
@@ -811,6 +812,17 @@ marketplace_seed = [
 ]
 
 marketplace_seed.each { |attrs| MarketplaceListing.create!(attrs) }
+
+macbook = MarketplaceListing.find_by!(title: "M2 MacBook Air (13\", 512GB) — lightly used")
+macbook.marketplace_listing_reviews.create!([
+  { rating: 5, reviewer_name: "Jamie R.", body: "Laptop matched the description. Pickup was easy." },
+  { rating: 4, reviewer_name: "Chris M.", body: "Fair price and responsive seller." }
+])
+
+headphones = MarketplaceListing.find_by!(title: "Sony WH-1000XM5 headphones")
+headphones.marketplace_listing_reviews.create!([
+  { rating: 5, reviewer_name: "Sam K.", body: "Headphones work perfectly, would buy again." }
+])
 
 # Sign-in accounts (User.destroy_all above removed any existing rows). Used for local demo logins via Google
 # (same emails as seed users; sign in through the app after configuring Google OAuth — see README).
