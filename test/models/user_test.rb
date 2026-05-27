@@ -147,6 +147,13 @@ class UserTest < ActiveSupport::TestCase
     assert_not users(:nu_student).admin?
   end
 
+  test "average_exchange_rating uses received booking exchange ratings" do
+    assert_in_delta 4.0, users(:admin).average_exchange_rating, 0.001
+    assert_equal 1, users(:admin).exchange_ratings_count
+    assert_in_delta 5.0, users(:nu_student).average_exchange_rating, 0.001
+    assert_equal 1, users(:nu_student).exchange_ratings_count
+  end
+
   test "rejects duplicate email" do
     email = "dup-uniqueness-test@u.northwestern.edu"
     User.create!(email: email, first_name: "Dup", password: "password123", password_confirmation: "password123")

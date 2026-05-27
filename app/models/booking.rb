@@ -4,6 +4,8 @@ class Booking < ApplicationRecord
   belongs_to :rental_item
   belongs_to :user, optional: true, inverse_of: :bookings
 
+  has_many :exchange_ratings, class_name: "BookingExchangeRating", dependent: :destroy
+
   STATUSES = %w[pending confirmed cancelled].freeze
 
   moderate_attributes :notes
@@ -29,7 +31,15 @@ class Booking < ApplicationRecord
   end
 
   def exchange_complete?
-    owner_marked_given_at.present? && renter_marked_received_at.present?
+    pickup_complete? && return_complete?
+  end
+
+  def pickup_complete?
+    owner_marked_given? && renter_marked_received?
+  end
+
+  def return_complete?
+    renter_marked_returned? && owner_marked_return_received?
   end
 
   def owner_marked_given?
@@ -38,6 +48,29 @@ class Booking < ApplicationRecord
 
   def renter_marked_received?
     renter_marked_received_at.present?
+  end
+
+  def renter_marked_returned?
+    renter_marked_returned_at.present?
+  end
+
+  def owner_marked_return_received?
+    owner_marked_return_received_at.present?
+  end
+
+  def exchange_ratee_for(actor)
+    return if actor.blank?
+
+    return owner_user if actor.id == user_id
+    return user if actor.id == owner_user&.id
+  end
+
+  def exchange_rating_from_to(from_user, to_user, interaction_phase: nil)
+    return if from_user.blank? || to_user.blank?
+
+    query = exchange_ratings.where(rater_id: from_user.id, ratee_id: to_user.id)
+    query = query.where(interaction_phase: interaction_phase) if interaction_phase.present?
+    query.first
   end
 
   def editable_by_owner?(actor)
@@ -62,6 +95,14 @@ class Booking < ApplicationRecord
 
   def can_mark_received?(actor)
     status == "confirmed" && editable_by_renter?(actor) && !renter_marked_received?
+  end
+
+  def can_mark_returned?(actor)
+    status == "confirmed" && editable_by_renter?(actor) && !renter_marked_returned?
+  end
+
+  def can_mark_return_received?(actor)
+    status == "confirmed" && editable_by_owner?(actor) && !owner_marked_return_received?
   end
 
   def can_cancel?(actor)

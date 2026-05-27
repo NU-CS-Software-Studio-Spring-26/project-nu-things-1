@@ -43,6 +43,9 @@ Rails.application.routes.draw do
         patch :confirm
         patch :mark_given
         patch :mark_received
+        patch :mark_returned
+        patch :mark_return_received
+        post :rate_exchange
       end
       collection do
         get :calendar_data

@@ -18,27 +18,91 @@
   <% end %>
 
   <% if booking.status == "confirmed" %>
-    <p class="small mb-2">
-      <strong>Handoff:</strong> <%= booking_exchange_summary(booking) %>
-    </p>
+    <p class="small mb-2"><strong>Status:</strong> <%= booking_exchange_summary(booking) %></p>
     <ul class="list-unstyled small mb-2">
+      <li class="fw-semibold text-muted mt-1">Pickup</li>
       <li>
         <% if booking.owner_marked_given? %>
-          <span class="text-success">Owner marked given</span>
+          <span class="text-success">Owner marked item given</span>
           <span class="text-muted">(<%= booking.owner_marked_given_at.strftime("%b %-d, %Y") %>)</span>
         <% else %>
-          <span class="text-muted">Owner has not marked given yet</span>
+          <span class="text-muted">Owner has not marked item given yet</span>
         <% end %>
       </li>
       <li>
         <% if booking.renter_marked_received? %>
-          <span class="text-success">Renter marked received</span>
+          <span class="text-success">Renter marked item received</span>
           <span class="text-muted">(<%= booking.renter_marked_received_at.strftime("%b %-d, %Y") %>)</span>
         <% else %>
-          <span class="text-muted">Renter has not marked received yet</span>
+          <span class="text-muted">Renter has not marked item received yet</span>
+        <% end %>
+      </li>
+
+      <li class="fw-semibold text-muted mt-2">Return</li>
+      <li>
+        <% if booking.renter_marked_returned? %>
+          <span class="text-success">Renter marked item returned</span>
+          <span class="text-muted">(<%= booking.renter_marked_returned_at.strftime("%b %-d, %Y") %>)</span>
+        <% else %>
+          <span class="text-muted">Renter has not marked item returned yet</span>
+        <% end %>
+      </li>
+      <li>
+        <% if booking.owner_marked_return_received? %>
+          <span class="text-success">Owner marked return received</span>
+          <span class="text-muted">(<%= booking.owner_marked_return_received_at.strftime("%b %-d, %Y") %>)</span>
+        <% else %>
+          <span class="text-muted">Owner has not marked return received yet</span>
         <% end %>
       </li>
     </ul>
+
+    <% ratee = as_owner ? booking.user : booking.owner_user %>
+    <% if ratee %>
+      <div class="border-top pt-2 mt-2">
+        <p class="small mb-2"><strong>Rate interactions</strong></p>
+        <% pickup_rating = booking.exchange_rating_from_to(current_user, ratee, interaction_phase: "pickup") %>
+        <% return_rating = booking.exchange_rating_from_to(current_user, ratee, interaction_phase: "return") %>
+        <% pickup_from_them = booking.exchange_rating_from_to(ratee, current_user, interaction_phase: "pickup") %>
+        <% return_from_them = booking.exchange_rating_from_to(ratee, current_user, interaction_phase: "return") %>
+
+        <p class="small mb-1"><strong>Pickup interaction</strong></p>
+        <% if booking.pickup_complete? %>
+          <% if pickup_rating %>
+            <p class="small text-muted mb-2">You rated: <span class="text-purple" aria-hidden="true"><%= marketplace_review_rating_stars(pickup_rating.rating) %></span></p>
+          <% else %>
+            <%= form_with url: rate_exchange_rental_item_booking_path(rental_item, booking, phase: "pickup"), method: :post, scope: :exchange_rating, class: "needs-validation mb-2" do |form| %>
+              <%= form.select :rating, (1..5).map { |n| [ "#{n} star#{'s' if n != 1}", n ] }, { prompt: "Pickup rating" }, class: "form-select form-select-sm mb-1", required: true %>
+              <%= form.text_area :body, class: "form-control form-control-sm mb-1", rows: 2, placeholder: "Optional comment" %>
+              <%= form.submit "Rate pickup", class: "btn btn-sm btn-primary w-100" %>
+            <% end %>
+          <% end %>
+          <% if pickup_from_them %>
+            <p class="small text-muted mb-2">They rated you: <span class="text-purple" aria-hidden="true"><%= marketplace_review_rating_stars(pickup_from_them.rating) %></span></p>
+          <% end %>
+        <% else %>
+          <p class="small text-muted mb-2">Complete pickup confirmations to rate this interaction.</p>
+        <% end %>
+
+        <p class="small mb-1"><strong>Return interaction</strong></p>
+        <% if booking.return_complete? %>
+          <% if return_rating %>
+            <p class="small text-muted mb-2">You rated: <span class="text-purple" aria-hidden="true"><%= marketplace_review_rating_stars(return_rating.rating) %></span></p>
+          <% else %>
+            <%= form_with url: rate_exchange_rental_item_booking_path(rental_item, booking, phase: "return"), method: :post, scope: :exchange_rating, class: "needs-validation mb-2" do |form| %>
+              <%= form.select :rating, (1..5).map { |n| [ "#{n} star#{'s' if n != 1}", n ] }, { prompt: "Return rating" }, class: "form-select form-select-sm mb-1", required: true %>
+              <%= form.text_area :body, class: "form-control form-control-sm mb-1", rows: 2, placeholder: "Optional comment" %>
+              <%= form.submit "Rate return", class: "btn btn-sm btn-primary w-100" %>
+            <% end %>
+          <% end %>
+          <% if return_from_them %>
+            <p class="small text-muted mb-0">They rated you: <span class="text-purple" aria-hidden="true"><%= marketplace_review_rating_stars(return_from_them.rating) %></span></p>
+          <% end %>
+        <% else %>
+          <p class="small text-muted mb-0">Complete return confirmations to rate this interaction.</p>
+        <% end %>
+      </div>
+    <% end %>
   <% end %>
 
   <div class="d-flex flex-wrap gap-2">
@@ -48,11 +112,19 @@
     <% end %>
 
     <% if booking.can_mark_given?(current_user) %>
-      <%= button_to "I've given the item", mark_given_rental_item_booking_path(rental_item, booking), method: :patch, class: "btn btn-sm btn-primary", form: { data: { turbo_confirm: "Confirm you handed the item to the renter?" } } %>
+      <%= button_to "I gave the item", mark_given_rental_item_booking_path(rental_item, booking), method: :patch, class: "btn btn-sm btn-primary", form: { data: { turbo_confirm: "Confirm you gave the item?" } } %>
     <% end %>
 
     <% if booking.can_mark_received?(current_user) %>
-      <%= button_to "I've received the item", mark_received_rental_item_booking_path(rental_item, booking), method: :patch, class: "btn btn-sm btn-primary", form: { data: { turbo_confirm: "Confirm you received the item from the owner?" } } %>
+      <%= button_to "I received the item", mark_received_rental_item_booking_path(rental_item, booking), method: :patch, class: "btn btn-sm btn-primary", form: { data: { turbo_confirm: "Confirm you received the item?" } } %>
+    <% end %>
+
+    <% if booking.can_mark_returned?(current_user) %>
+      <%= button_to "I gave the item back", mark_returned_rental_item_booking_path(rental_item, booking), method: :patch, class: "btn btn-sm btn-outline-primary", form: { data: { turbo_confirm: "Confirm you gave the item back?" } } %>
+    <% end %>
+
+    <% if booking.can_mark_return_received?(current_user) %>
+      <%= button_to "I received my item back", mark_return_received_rental_item_booking_path(rental_item, booking), method: :patch, class: "btn btn-sm btn-outline-primary", form: { data: { turbo_confirm: "Confirm you received your item back?" } } %>
     <% end %>
 
     <% if !as_owner && booking.status == "pending" && booking.can_cancel?(current_user) %>

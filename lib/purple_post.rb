@@ -5,9 +5,16 @@ module PurplePost
   BRAND_NAME = "Purple Post"
   BRAND_COLOR = "#4e2a84"
 
-  # Read at call time so test/CI env (and db:test:prepare) can set ADMIN_EMAIL after boot.
+  # Read at call time so test/CI env (and db:test:prepare) can set admin env vars after boot.
+  def self.admin_emails
+    raw = ENV["ADMIN_EMAILS"].to_s
+    emails = raw.split(",").map { |e| e.to_s.strip.downcase }.reject(&:empty?)
+    emails = [ ENV["ADMIN_EMAIL"].to_s.strip.downcase ] if emails.empty?
+    emails.reject(&:empty?).uniq
+  end
+
+  # Backward-compatible single admin accessor used by older code paths.
   def self.admin_email
-    email = ENV["ADMIN_EMAIL"].to_s.strip.downcase
-    email.empty? ? nil : email
+    admin_emails.first
   end
 end

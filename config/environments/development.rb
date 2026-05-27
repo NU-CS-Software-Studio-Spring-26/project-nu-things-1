@@ -3,7 +3,8 @@ require "active_support/core_ext/integer/time"
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  # Default admin for local dev sign-in (see SessionsController dev accounts).
+  # Default admins for local dev sign-in (see SessionsController dev accounts).
+  ENV["ADMIN_EMAILS"] = "admin@u.northwestern.edu,admin2@u.northwestern.edu" if ENV["ADMIN_EMAILS"].to_s.strip.empty?
   ENV["ADMIN_EMAIL"] = "admin@u.northwestern.edu" if ENV["ADMIN_EMAIL"].to_s.strip.empty?
 
   # Make code changes take effect immediately without server restart.

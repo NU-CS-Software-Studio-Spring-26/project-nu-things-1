@@ -167,6 +167,21 @@ module ApplicationHelper
     ("★" * filled) + ("☆" * (max - filled))
   end
 
+  def user_exchange_rating_summary(user)
+    count = user.exchange_ratings_count
+    return "No exchange ratings yet" if count.zero?
+
+    "#{number_with_precision(user.average_exchange_rating, precision: 1)} / 5 (#{pluralize(count, 'rating')})"
+  end
+
+  def user_exchange_rating_stars(user, max: 5)
+    count = user.exchange_ratings_count
+    return "☆" * max if count.zero?
+
+    filled = user.average_exchange_rating.to_f.round.clamp(0, max)
+    ("★" * filled) + ("☆" * (max - filled))
+  end
+
   def marketplace_category_slug(category)
     category.to_s.parameterize.presence || "other"
   end

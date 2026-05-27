@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_25_180000) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_27_105000) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -39,13 +39,30 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_25_180000) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "booking_exchange_ratings", force: :cascade do |t|
+    t.text "body"
+    t.integer "booking_id", null: false
+    t.datetime "created_at", null: false
+    t.string "interaction_phase", default: "pickup", null: false
+    t.integer "ratee_id", null: false
+    t.integer "rater_id", null: false
+    t.integer "rating", null: false
+    t.datetime "updated_at", null: false
+    t.index ["booking_id", "rater_id", "ratee_id", "interaction_phase"], name: "index_booking_exchange_ratings_on_booking_rater_ratee_phase", unique: true
+    t.index ["booking_id"], name: "index_booking_exchange_ratings_on_booking_id"
+    t.index ["ratee_id"], name: "index_booking_exchange_ratings_on_ratee_id"
+    t.index ["rater_id"], name: "index_booking_exchange_ratings_on_rater_id"
+  end
+
   create_table "bookings", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.date "end_date", null: false
     t.text "notes"
     t.datetime "owner_marked_given_at"
+    t.datetime "owner_marked_return_received_at"
     t.integer "rental_item_id", null: false
     t.datetime "renter_marked_received_at"
+    t.datetime "renter_marked_returned_at"
     t.date "start_date", null: false
     t.string "status", default: "pending", null: false
     t.datetime "updated_at", null: false
@@ -53,18 +70,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_25_180000) do
     t.index ["rental_item_id", "start_date", "end_date"], name: "index_bookings_on_rental_item_id_and_start_date_and_end_date"
     t.index ["rental_item_id"], name: "index_bookings_on_rental_item_id"
     t.index ["user_id"], name: "index_bookings_on_user_id"
-  end
-
-  create_table "claims", force: :cascade do |t|
-    t.bigint "claimable_id", null: false
-    t.string "claimable_type", null: false
-    t.datetime "created_at", null: false
-    t.string "status", default: "requested", null: false
-    t.datetime "updated_at", null: false
-    t.integer "user_id", null: false
-    t.index ["claimable_type", "claimable_id"], name: "index_claims_on_claimable_type_and_claimable_id"
-    t.index ["user_id", "claimable_type", "claimable_id"], name: "index_claims_on_user_and_claimable", unique: true
-    t.index ["user_id"], name: "index_claims_on_user_id"
   end
 
   create_table "conversation_messages", force: :cascade do |t|
@@ -122,16 +127,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_25_180000) do
     t.integer "user_id"
     t.index ["claimed_by_user_id"], name: "index_found_items_on_claimed_by_user_id"
     t.index ["user_id"], name: "index_found_items_on_user_id"
-  end
-
-  create_table "login_tokens", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "expires_at", null: false
-    t.datetime "updated_at", null: false
-    t.datetime "used_at"
-    t.integer "user_id", null: false
-    t.index ["expires_at"], name: "index_login_tokens_on_expires_at"
-    t.index ["user_id"], name: "index_login_tokens_on_user_id"
   end
 
   create_table "lost_items", force: :cascade do |t|
@@ -378,9 +373,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_25_180000) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "booking_exchange_ratings", "bookings"
+  add_foreign_key "booking_exchange_ratings", "users", column: "ratee_id"
+  add_foreign_key "booking_exchange_ratings", "users", column: "rater_id"
   add_foreign_key "bookings", "rental_items"
   add_foreign_key "bookings", "users"
-  add_foreign_key "claims", "users"
   add_foreign_key "conversation_messages", "conversations"
   add_foreign_key "conversation_messages", "users", column: "sender_id"
   add_foreign_key "conversation_participants", "conversations"
@@ -388,7 +385,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_25_180000) do
   add_foreign_key "conversations", "users", column: "starter_id"
   add_foreign_key "found_items", "users"
   add_foreign_key "found_items", "users", column: "claimed_by_user_id"
-  add_foreign_key "login_tokens", "users"
   add_foreign_key "lost_items", "users"
   add_foreign_key "marketplace_listing_reviews", "marketplace_listings"
   add_foreign_key "marketplace_listing_reviews", "users"

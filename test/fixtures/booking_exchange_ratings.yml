@@ -1,0 +1,15 @@
+owner_rated_renter:
+  booking: past_confirmed
+  rater: admin
+  ratee: nu_student
+  interaction_phase: pickup
+  rating: 5
+  body: Easy to coordinate.
+
+renter_rated_owner:
+  booking: past_confirmed
+  rater: nu_student
+  ratee: admin
+  interaction_phase: return
+  rating: 4
+  body: Good communication.

@@ -5,7 +5,7 @@ class RentalItemsController < ApplicationController
 
   def index
     @rental_items = RentalItem.with_attached_photo
-      .includes(:rental_reviews)
+      .includes(:rental_reviews, :user)
       .where(status: "available")
       .order(created_at: :desc)
     @categories = filter_category_options(RentalItem)
@@ -14,9 +14,9 @@ class RentalItemsController < ApplicationController
   end
 
   def show
-    @bookings = @rental_item.bookings.active.includes(:user).order(start_date: :asc)
+    @bookings = @rental_item.bookings.active.includes(:user, :exchange_ratings).order(start_date: :asc)
     if signed_in?
-      @is_rental_owner = can_edit_post?(@rental_item)
+      @is_rental_owner = @rental_item.user_id.present? && @rental_item.user_id == current_user.id
       @renter_bookings = @bookings.select { |b| b.user_id == current_user.id }
       @owner_manage_bookings = @is_rental_owner ? @bookings : []
     end

@@ -25,7 +25,7 @@
           <div class="border-top pt-3 mt-2">
             <p class="small fw-semibold text-purple mb-2">Local dev sign-in (no Google Cloud)</p>
             <p class="small text-muted mb-3">
-              Use two different accounts in two browsers to test rentals: one as owner, one as renter.
+              Use local accounts without Google popups. Includes two admin accounts so you can switch roles quickly.
             </p>
             <% @dev_sign_in_users.each do |user| %>
               <%= button_to "Sign in as #{user.first_name} (#{user.email})",
