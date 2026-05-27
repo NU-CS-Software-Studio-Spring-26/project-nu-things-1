@@ -53,6 +53,11 @@ class RentalItemsController < ApplicationController
 
   def set_rental_item
     @rental_item = RentalItem.with_attached_photo.includes(:rental_reviews, :bookings).find(params.expect(:id))
+    if signed_in?
+      @user_review = @rental_item.rental_reviews.find_by(user: current_user)
+      @can_leave_review = @rental_item.can_leave_review?(current_user)
+    end
+    @review ||= RentalReview.new
   end
 
   def rental_item_params

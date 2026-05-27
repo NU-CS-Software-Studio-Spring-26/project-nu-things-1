@@ -53,6 +53,8 @@
         </dl>
       </div>
     </div>
+
+    <%= render "rental_items/reviews", item: @rental_item, user_review: @user_review, review: @review, can_leave_review: @can_leave_review %>
   </div>
 
   <div class="col-lg-5">
