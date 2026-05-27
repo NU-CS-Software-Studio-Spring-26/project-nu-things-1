@@ -33,7 +33,7 @@
     <div class="row g-4">
       <% @found_items.each do |item| %>
         <div class="col-md-6 col-lg-4">
-          <%= link_to item, class: "card nu-card nu-clickable-card h-100" do %>
+          <%= link_to item, class: "card nu-card nu-clickable-card h-100", data: { turbo_frame: "_top" } do %>
             <% if item.listing_image_available? %>
               <%= listing_image_tag item, alt: item.title, class: "card-img-top nu-listing-index-card-img" %>
             <% else %>
