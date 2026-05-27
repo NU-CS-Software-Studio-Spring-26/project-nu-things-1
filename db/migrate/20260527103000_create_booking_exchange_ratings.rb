@@ -20,4 +20,3 @@ class CreateBookingExchangeRatings < ActiveRecord::Migration[8.1]
               name: "index_booking_exchange_ratings_on_booking_and_rater_and_ratee"
   end
 end
-

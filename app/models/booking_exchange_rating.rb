@@ -51,4 +51,3 @@ class BookingExchangeRating < ApplicationRecord
     errors.add(:ratee, "cannot be the same as the rater") if rater_id == ratee_id
   end
 end
-

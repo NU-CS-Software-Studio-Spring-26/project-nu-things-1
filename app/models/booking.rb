@@ -62,7 +62,7 @@ class Booking < ApplicationRecord
     return if actor.blank?
 
     return owner_user if actor.id == user_id
-    return user if actor.id == owner_user&.id
+    user if actor.id == owner_user&.id
   end
 
   def exchange_rating_from_to(from_user, to_user, interaction_phase: nil)
