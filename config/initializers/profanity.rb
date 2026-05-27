@@ -10,7 +10,9 @@ Moderate.configure do |config|
   config.additional_words = (config.additional_words + extra).uniq
 
   excluded = ENV.fetch("MODERATE_EXCLUDED_WORDS", "").split(",").map(&:strip).reject(&:blank?)
-  config.excluded_words = (config.excluded_words + excluded).uniq
+  # Northwestern's Henry Crown Sports Pavilion acronym; false-positive on the moderate word list.
+  campus_excluded = %w[spac]
+  config.excluded_words = (config.excluded_words + campus_excluded + excluded).uniq
 end
 
 if Rails.env.test?

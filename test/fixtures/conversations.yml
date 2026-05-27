@@ -9,3 +9,9 @@ admin_to_student_marketplace:
   starter: admin
   subject: "About camping tent"
   last_message_at: <%= Time.utc(2026, 5, 2, 10, 0, 0) %>
+
+admin_to_owner_rental:
+  listable: two (RentalItem)
+  starter: admin
+  subject: "About study desk lamp"
+  last_message_at: <%= Time.utc(2026, 5, 3, 10, 0, 0) %>

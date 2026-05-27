@@ -1,35 +1,32 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  title: MyString
-  description: MyText
-  category: MyString
-  rental_price: 9.99
-  rental_period: MyString
-  condition: MyString
-  location: MyString
+  user: nu_student
+  title: Campus camping tent
+  description: Lightweight two-person tent for weekend trips around Evanston.
+  category: Camping Gear
+  rental_price: 25.00
+  rental_period: per_day
+  condition: Good
+  location: Evanston campus
   available_from: 2026-05-01
-  available_to: 2026-05-01
-  image_url: MyString
-  owner_name: MyString
-  owner_email: owner@u.northwestern.edu
-  owner_phone: MyString
-  deposit_required: 9.99
-  status: MyString
+  available_to: 2026-12-31
+  owner_name: Sam Student
+  owner_email: student@u.northwestern.edu
+  deposit_required: 50.00
+  status: available
 
 two:
-  title: MyString
-  description: MyText
-  category: MyString
-  rental_price: 9.99
-  rental_period: MyString
-  condition: MyString
-  location: MyString
+  title: Study desk lamp
+  description: Adjustable LED desk lamp for dorm rooms with a sturdy clamp mount.
+  category: Electronics
+  rental_price: 5.00
+  rental_period: per_week
+  condition: Like New
+  location: North campus
   available_from: 2026-05-01
-  available_to: 2026-05-01
-  image_url: MyString
-  owner_name: MyString
-  owner_email: owner2@northwestern.edu
-  owner_phone: MyString
-  deposit_required: 9.99
-  status: MyString
+  available_to: 2026-12-31
+  owner_name: Desk Owner
+  owner_email: owner@u.northwestern.edu
+  deposit_required: 10.00
+  status: available
