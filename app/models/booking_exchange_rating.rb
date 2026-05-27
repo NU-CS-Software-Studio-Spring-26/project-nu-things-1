@@ -34,20 +34,21 @@ class BookingExchangeRating < ApplicationRecord
 
   def booking_exchange_completed
     return if booking.blank?
-    if interaction_phase == "pickup"
-      return if booking.pickup_complete?
-    elsif interaction_phase == "return"
-      return if booking.return_complete?
-    end
+
+    phase_complete =
+      case interaction_phase
+      when "pickup" then booking.pickup_complete?
+      when "return" then booking.return_complete?
+      else false
+      end
+    return if phase_complete
 
     errors.add(:booking, "must be complete for this interaction before ratings are submitted")
   end
 
   def cannot_rate_self
     return if rater_id.blank? || ratee_id.blank?
-    return unless rater_id == ratee_id
-
-    errors.add(:ratee, "cannot be the same as the rater")
+    errors.add(:ratee, "cannot be the same as the rater") if rater_id == ratee_id
   end
 end
 

@@ -61,9 +61,10 @@ class BookingsControllerTest < ActionDispatch::IntegrationTest
 
   test "owner can rate renter for pickup after pickup complete" do
     sign_in_as(users(:admin))
+    @booking.update!(owner_marked_given_at: Time.current, renter_marked_received_at: Time.current)
 
     assert_difference("BookingExchangeRating.count", 1) do
-      post rate_exchange_rental_item_booking_path(@rental_item, @exchange_booking, phase: "pickup"), params: {
+      post rate_exchange_rental_item_booking_path(@rental_item, @booking, phase: "pickup"), params: {
         exchange_rating: { rating: 5, body: "Easy pickup and return." }
       }
     end
@@ -77,9 +78,10 @@ class BookingsControllerTest < ActionDispatch::IntegrationTest
 
   test "renter can rate owner for return after return complete" do
     sign_in_as(users(:nu_student))
+    @booking.update!(renter_marked_returned_at: Time.current, owner_marked_return_received_at: Time.current)
 
     assert_difference("BookingExchangeRating.count", 1) do
-      post rate_exchange_rental_item_booking_path(@rental_item, @exchange_booking, phase: "return"), params: {
+      post rate_exchange_rental_item_booking_path(@rental_item, @booking, phase: "return"), params: {
         exchange_rating: { rating: 4, body: "Great communication." }
       }
     end
