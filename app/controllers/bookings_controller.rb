@@ -52,12 +52,12 @@ class BookingsController < ApplicationController
     end
 
     if @booking.update(renter_marked_received_at: Time.current)
-      msg = if @booking.exchange_complete?
-              "Marked as received. Handoff is complete on both sides."
-            else
-              "Marked as received. Waiting for the owner to confirm they gave you the item."
-            end
-      redirect_to @rental_item, notice: msg
+      notice = if @booking.exchange_complete?
+        "Marked as received. Handoff is complete on both sides."
+      else
+        "Marked as received. Waiting for the owner to confirm they gave you the item."
+      end
+      redirect_to @rental_item, notice: notice
     else
       redirect_to @rental_item, alert: "Could not update booking."
     end

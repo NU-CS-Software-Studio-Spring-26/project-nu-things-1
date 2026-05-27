@@ -13,7 +13,7 @@ class RentalReviewsControllerTest < ActionDispatch::IntegrationTest
 
   test "poster cannot review own listing" do
     rental = rental_items(:one)
-    sign_in_as users(:nu_student)
+    sign_in_as users(:admin)
     rental.conversations.create!(starter: users(:admin), subject: "Question", last_message_at: Time.current)
 
     post rental_item_rental_reviews_url(rental),
