@@ -8,7 +8,8 @@ class RentalItem < ApplicationRecord
   belongs_to :user, optional: true
 
   has_many :bookings, dependent: :destroy
-  has_many :rental_reviews, dependent: :destroy
+  has_many :conversations, as: :listable, dependent: :destroy
+  has_many :rental_reviews, -> { order(created_at: :desc) }, dependent: :destroy
 
   def reviews_count
     rental_reviews.loaded? ? rental_reviews.size : rental_reviews.count
@@ -26,6 +27,24 @@ class RentalItem < ApplicationRecord
 
   def past_renters_count
     bookings.completed_past.count
+  end
+
+  def posted_by?(user)
+    return false if user.blank?
+    return true if user_id.present? && user_id == user.id
+    return true if poster_account.present? && poster_account.id == user.id
+
+    email = poster_email_for_messaging
+    email.present? && User.normalize_email(email) == User.normalize_email(user.email)
+  end
+
+  def can_leave_review?(user)
+    return false if user.blank?
+    return false unless status == "available"
+    return false if posted_by?(user)
+    return false if rental_reviews.exists?(user_id: user.id)
+
+    conversations.exists?(starter_id: user.id)
   end
 
   def self.listing_name_attribute
