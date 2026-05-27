@@ -34,6 +34,7 @@ Rails.application.routes.draw do
     end
   end
   resources :rental_items do
+    resources :rental_reviews, only: [ :create ]
     resources :bookings, only: [ :create ] do
       member do
         patch :cancel
