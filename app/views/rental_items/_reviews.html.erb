@@ -1,0 +1,60 @@
+<%# locals: item (RentalItem), user_review (optional), review (optional), can_leave_review (optional) %>
+<div id="listing-reviews" class="card nu-card mt-4">
+  <div class="card-body">
+    <h2 class="h6 text-muted text-uppercase mb-2">Reviews for this rental</h2>
+    <p class="text-muted small mb-3">Ratings apply to this rental only, not the owner across other listings.</p>
+
+    <% if item.rental_reviews.any? %>
+      <ul class="list-unstyled mb-0">
+        <% item.rental_reviews.each do |rental_review| %>
+          <li class="border-top pt-3 mt-3">
+            <div class="d-flex justify-content-between align-items-start gap-2 mb-1">
+              <strong class="mb-0"><%= rental_review.reviewer_name %></strong>
+              <span class="text-purple small" aria-label="<%= rental_review.rating %> out of 5 stars"><%= marketplace_review_rating_stars(rental_review.rating) %></span>
+            </div>
+            <% if rental_review.body.present? %>
+              <p class="text-muted small mb-0"><%= rental_review.body %></p>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-muted small mb-0">No reviews yet. Be the first to share your experience with this rental.</p>
+    <% end %>
+
+    <% if signed_in? %>
+      <% if item.posted_by?(current_user) %>
+        <p class="text-muted small mb-0 mt-3">You can't review your own listing.</p>
+      <% elsif item.status != "available" %>
+        <p class="text-muted small mb-0 mt-3">Reviews are only accepted on available rentals.</p>
+      <% elsif user_review %>
+        <p class="text-muted small mb-0 mt-3">You already left a review for this listing.</p>
+      <% elsif can_leave_review %>
+        <div class="border-top pt-3 mt-3">
+          <h3 class="h6 mb-2">Leave a review</h3>
+          <p class="text-muted small mb-3">Share feedback about your experience with this specific rental.</p>
+          <%= form_with model: [ item, review || RentalReview.new ], url: rental_item_rental_reviews_path(item), class: "needs-validation" do |form| %>
+            <div class="mb-3">
+              <%= form.label :rating, "Rating", class: "form-label" %>
+              <%= form.select :rating, (1..5).map { |n| [ "#{n} star#{'s' if n != 1}", n ] }, { prompt: "Select a rating", selected: review&.rating }, class: "form-select", required: true %>
+            </div>
+            <div class="mb-3">
+              <%= form.label :body, "Your experience (optional)", class: "form-label" %>
+              <%= form.text_area :body, class: "form-control", rows: 3, value: review&.body, placeholder: "How did pickup, booking, or coordination go for this rental?" %>
+            </div>
+            <%= form.submit "Submit review", class: "btn btn-primary btn-sm" %>
+          <% end %>
+        </div>
+      <% elsif item.poster_account && current_user != item.poster_account %>
+        <p class="text-muted small mb-0 mt-3">
+          <%= link_to "Send a message", "#", class: "link-primary", data: { bs_toggle: "modal", bs_target: "#contactModal" } %>
+          about this listing before leaving a review.
+        </p>
+      <% else %>
+        <p class="text-muted small mb-0 mt-3">Contact the owner before leaving a review. On-site messaging may be unavailable for this listing.</p>
+      <% end %>
+    <% else %>
+      <p class="text-muted small mb-0 mt-3"><%= link_to "Sign in", new_session_path, class: "link-primary" %> with your Northwestern account to leave a review.</p>
+    <% end %>
+  </div>
+</div>
