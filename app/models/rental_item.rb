@@ -12,14 +12,19 @@ class RentalItem < ApplicationRecord
   has_many :rental_reviews, -> { order(created_at: :desc) }, dependent: :destroy
 
   def reviews_count
-    rental_reviews.loaded? ? rental_reviews.size : rental_reviews.count
+    if rental_reviews.loaded?
+      rental_reviews.count(&:persisted?)
+    else
+      rental_reviews.count
+    end
   end
 
   def average_rating
     if rental_reviews.loaded?
-      return nil if rental_reviews.empty?
+      ratings = rental_reviews.select(&:persisted?).map(&:rating)
+      return nil if ratings.empty?
 
-      rental_reviews.sum(&:rating).to_f / rental_reviews.size
+      ratings.sum.to_f / ratings.size
     else
       rental_reviews.average(:rating)&.to_f
     end

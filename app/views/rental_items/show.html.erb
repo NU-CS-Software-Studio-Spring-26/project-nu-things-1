@@ -62,7 +62,7 @@
       <div class="card-body">
         <h2 class="h6 text-muted text-uppercase mb-3">Price</h2>
         <p class="h3 text-primary mb-2"><%= format_rental_rate(@rental_item) %></p>
-        <%= render "rental_stats", item: @rental_item %>
+        <%= render "rental_items/rental_stats", item: @rental_item %>
       </div>
     </div>
 
