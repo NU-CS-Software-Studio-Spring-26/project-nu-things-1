@@ -10,13 +10,13 @@ module BookingsHelper
 
   def booking_exchange_summary(booking)
     if booking.exchange_complete?
-      "Handoff complete"
-    elsif booking.owner_marked_given? && !booking.renter_marked_received?
-      "Owner gave item — awaiting renter"
-    elsif booking.renter_marked_received? && !booking.owner_marked_given?
-      "Renter received item — awaiting owner"
+      "Pickup and return complete"
+    elsif booking.return_complete?
+      "Return complete, pickup complete"
+    elsif booking.pickup_complete?
+      "Pickup complete, return pending"
     else
-      "Handoff not started"
+      "Pickup pending"
     end
   end
 end

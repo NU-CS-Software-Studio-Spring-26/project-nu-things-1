@@ -51,7 +51,14 @@
 
               <div class="mb-3">
                 <p class="h5 text-primary mb-2"><%= format_rental_rate(item) %></p>
-                <%= render "rental_stats", item: item %>
+                <% if item.user.present? %>
+                  <p class="mb-1 d-flex align-items-center gap-2 flex-wrap">
+                    <span class="text-purple" aria-hidden="true"><%= user_exchange_rating_stars(item.user) %></span>
+                    <span class="fw-semibold"><%= user_exchange_rating_summary(item.user) %></span>
+                  </p>
+                <% else %>
+                  <p class="text-muted small mb-1">No owner reputation yet</p>
+                <% end %>
                 <p class="text-muted small mb-0 mt-2"><%= item.location %></p>
               </div>
 

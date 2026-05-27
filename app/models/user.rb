@@ -10,6 +10,10 @@ class User < ApplicationRecord
   has_many :marketplace_listings, inverse_of: :user, dependent: :nullify
   has_many :rental_items, inverse_of: :user, dependent: :nullify
   has_many :bookings, inverse_of: :user, dependent: :nullify
+  has_many :given_exchange_ratings, class_name: "BookingExchangeRating", foreign_key: :rater_id,
+                                    inverse_of: :rater, dependent: :destroy
+  has_many :received_exchange_ratings, class_name: "BookingExchangeRating", foreign_key: :ratee_id,
+                                       inverse_of: :ratee, dependent: :destroy
   has_many :conversation_participants, dependent: :destroy
   has_many :conversations, through: :conversation_participants
   has_many :started_conversations, class_name: "Conversation", foreign_key: :starter_id,
@@ -92,10 +96,10 @@ class User < ApplicationRecord
   end
 
   def self.ensure_seed_accounts!
-    admin_email = ENV.fetch("ADMIN_EMAIL", "admin@u.northwestern.edu").to_s.strip.downcase
-    admin_email = "admin@u.northwestern.edu" unless admin_email.match?(NORTHWESTERN_EMAIL)
+    admin_emails = PurplePost.admin_emails.select { |email| email.match?(NORTHWESTERN_EMAIL) }
+    admin_emails = [ "admin@u.northwestern.edu", "admin2@u.northwestern.edu" ] if admin_emails.empty?
 
-    [ admin_email, "student@u.northwestern.edu" ].uniq.each do |email|
+    (admin_emails + [ "student@u.northwestern.edu" ]).uniq.each do |email|
       next unless email.match?(NORTHWESTERN_EMAIL)
 
       user = find_or_initialize_by(email: normalize_email(email))
@@ -112,8 +116,16 @@ class User < ApplicationRecord
   end
 
   def admin?
-    ae = PurplePost.admin_email
-    ae.present? && email == ae
+    PurplePost.admin_emails.include?(email)
+  end
+
+  def exchange_ratings_count
+    received_exchange_ratings.count
+  end
+
+  def average_exchange_rating
+    avg = received_exchange_ratings.average(:rating)
+    avg&.to_f
   end
 
   private

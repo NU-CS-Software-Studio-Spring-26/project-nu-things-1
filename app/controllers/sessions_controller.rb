@@ -6,6 +6,7 @@ class SessionsController < ApplicationController
 
   DEV_SIGN_IN_ACCOUNTS = [
     { email: "admin@u.northwestern.edu", first_name: "Admin" },
+    { email: "admin2@u.northwestern.edu", first_name: "Admin 2" },
     { email: "student@u.northwestern.edu", first_name: "Sam" }
   ].freeze
 
