@@ -1,11 +1,22 @@
 past_confirmed:
   rental_item: one
+  user: nu_student
   start_date: 2026-03-01
   end_date: 2026-03-05
   status: confirmed
+  owner_marked_given_at: 2026-03-01 10:00:00
+  renter_marked_received_at: 2026-03-01 11:00:00
 
 future_pending:
   rental_item: one
+  user: nu_student
   start_date: 2026-06-01
   end_date: 2026-06-03
   status: pending
+
+confirmed_awaiting_handoff:
+  rental_item: one
+  user: nu_student
+  start_date: 2026-06-10
+  end_date: 2026-06-12
+  status: confirmed

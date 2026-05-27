@@ -9,6 +9,7 @@ class User < ApplicationRecord
   has_many :found_items, inverse_of: :user, dependent: :nullify
   has_many :marketplace_listings, inverse_of: :user, dependent: :nullify
   has_many :rental_items, inverse_of: :user, dependent: :nullify
+  has_many :bookings, inverse_of: :user, dependent: :nullify
   has_many :conversation_participants, dependent: :destroy
   has_many :conversations, through: :conversation_participants
   has_many :started_conversations, class_name: "Conversation", foreign_key: :starter_id,

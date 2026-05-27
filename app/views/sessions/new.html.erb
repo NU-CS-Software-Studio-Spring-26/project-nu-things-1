@@ -21,7 +21,22 @@
           Continue with Google
         <% end %>
 
-        <div class="d-flex flex-wrap gap-2">
+        <% if Rails.env.development? && @dev_sign_in_users.present? %>
+          <div class="border-top pt-3 mt-2">
+            <p class="small fw-semibold text-purple mb-2">Local dev sign-in (no Google Cloud)</p>
+            <p class="small text-muted mb-3">
+              Use two different accounts in two browsers to test rentals: one as owner, one as renter.
+            </p>
+            <% @dev_sign_in_users.each do |user| %>
+              <%= button_to "Sign in as #{user.first_name} (#{user.email})",
+                            dev_sign_in_session_path(user_id: user.id),
+                            method: :post,
+                            class: "btn btn-outline-primary btn-sm w-100 mb-2" %>
+            <% end %>
+          </div>
+        <% end %>
+
+        <div class="d-flex flex-wrap gap-2 mt-3">
           <%= link_to "Cancel", root_path, class: "btn btn-outline-secondary nu-pill-btn" %>
         </div>
       </div>

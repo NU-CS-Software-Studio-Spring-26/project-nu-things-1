@@ -2,8 +2,9 @@ class Booking < ApplicationRecord
   include ModeratedContent
 
   belongs_to :rental_item
+  belongs_to :user, optional: true, inverse_of: :bookings
 
-  STATUSES = [ "pending", "confirmed", "cancelled" ].freeze
+  STATUSES = %w[pending confirmed cancelled].freeze
 
   moderate_attributes :notes
 
@@ -12,8 +13,9 @@ class Booking < ApplicationRecord
   validate :end_date_after_start_date
   validate :no_overlapping_bookings
 
-  scope :overlapping, ->(start_date, end_date) {
-    where("start_date <= ? AND end_date >= ?", end_date, start_date)
+  # Portable date-range overlap (SQLite + PostgreSQL).
+  scope :overlapping, ->(range_start, range_end) {
+    where("start_date <= ? AND ? <= end_date", range_end, range_start)
   }
 
   scope :active, -> { where.not(status: "cancelled") }
@@ -21,6 +23,53 @@ class Booking < ApplicationRecord
   scope :completed_past, -> {
     where(status: "confirmed").where(end_date: ...Date.current)
   }
+
+  def owner_user
+    rental_item.user
+  end
+
+  def exchange_complete?
+    owner_marked_given_at.present? && renter_marked_received_at.present?
+  end
+
+  def owner_marked_given?
+    owner_marked_given_at.present?
+  end
+
+  def renter_marked_received?
+    renter_marked_received_at.present?
+  end
+
+  def editable_by_owner?(actor)
+    return false if actor.blank?
+
+    rental_item.editable_by?(actor)
+  end
+
+  def editable_by_renter?(actor)
+    return false if actor.blank?
+
+    user_id.present? && user_id == actor.id
+  end
+
+  def can_confirm?(actor)
+    status == "pending" && editable_by_owner?(actor)
+  end
+
+  def can_mark_given?(actor)
+    status == "confirmed" && editable_by_owner?(actor) && !owner_marked_given?
+  end
+
+  def can_mark_received?(actor)
+    status == "confirmed" && editable_by_renter?(actor) && !renter_marked_received?
+  end
+
+  def can_cancel?(actor)
+    return false if actor.blank?
+    return false if status == "cancelled"
+
+    can_confirm?(actor) || editable_by_renter?(actor) || actor.admin?
+  end
 
   private
 

@@ -14,6 +14,12 @@ class RentalItemsController < ApplicationController
   end
 
   def show
+    @bookings = @rental_item.bookings.active.includes(:user).order(start_date: :asc)
+    if signed_in?
+      @is_rental_owner = can_edit_post?(@rental_item)
+      @renter_bookings = @bookings.select { |b| b.user_id == current_user.id }
+      @owner_manage_bookings = @is_rental_owner ? @bookings : []
+    end
   end
 
   def new

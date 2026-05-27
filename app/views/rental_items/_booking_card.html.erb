@@ -1,0 +1,62 @@
+<div class="border rounded p-3 mb-3 nu-booking-card">
+  <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-2">
+    <div>
+      <p class="mb-1 fw-semibold">
+        <%= booking.start_date.strftime("%b %-d, %Y") %> – <%= booking.end_date.strftime("%b %-d, %Y") %>
+      </p>
+      <% if as_owner && booking.user.present? %>
+        <p class="small text-muted mb-0">Requested by <%= display_user_name(booking.user) %></p>
+      <% elsif !as_owner %>
+        <p class="small text-muted mb-0">Your booking request</p>
+      <% end %>
+    </div>
+    <span class="badge <%= booking_status_badge_class(booking.status) %>"><%= booking.status.titleize %></span>
+  </div>
+
+  <% if booking.notes.present? %>
+    <p class="small text-muted mb-2"><%= truncate(booking.notes, length: 160) %></p>
+  <% end %>
+
+  <% if booking.status == "confirmed" %>
+    <p class="small mb-2">
+      <strong>Handoff:</strong> <%= booking_exchange_summary(booking) %>
+    </p>
+    <ul class="list-unstyled small mb-2">
+      <li>
+        <% if booking.owner_marked_given? %>
+          <span class="text-success">Owner marked given</span>
+          <span class="text-muted">(<%= booking.owner_marked_given_at.strftime("%b %-d, %Y") %>)</span>
+        <% else %>
+          <span class="text-muted">Owner has not marked given yet</span>
+        <% end %>
+      </li>
+      <li>
+        <% if booking.renter_marked_received? %>
+          <span class="text-success">Renter marked received</span>
+          <span class="text-muted">(<%= booking.renter_marked_received_at.strftime("%b %-d, %Y") %>)</span>
+        <% else %>
+          <span class="text-muted">Renter has not marked received yet</span>
+        <% end %>
+      </li>
+    </ul>
+  <% end %>
+
+  <div class="d-flex flex-wrap gap-2">
+    <% if as_owner && booking.can_confirm?(current_user) %>
+      <%= button_to "Accept booking", confirm_rental_item_booking_path(rental_item, booking), method: :patch, class: "btn btn-sm btn-success" %>
+      <%= button_to "Decline", cancel_rental_item_booking_path(rental_item, booking), method: :patch, class: "btn btn-sm btn-outline-secondary", form: { data: { turbo_confirm: "Decline this booking request?" } } %>
+    <% end %>
+
+    <% if booking.can_mark_given?(current_user) %>
+      <%= button_to "I've given the item", mark_given_rental_item_booking_path(rental_item, booking), method: :patch, class: "btn btn-sm btn-primary", form: { data: { turbo_confirm: "Confirm you handed the item to the renter?" } } %>
+    <% end %>
+
+    <% if booking.can_mark_received?(current_user) %>
+      <%= button_to "I've received the item", mark_received_rental_item_booking_path(rental_item, booking), method: :patch, class: "btn btn-sm btn-primary", form: { data: { turbo_confirm: "Confirm you received the item from the owner?" } } %>
+    <% end %>
+
+    <% if !as_owner && booking.status == "pending" && booking.can_cancel?(current_user) %>
+      <%= button_to "Cancel request", cancel_rental_item_booking_path(rental_item, booking), method: :patch, class: "btn btn-sm btn-outline-danger", form: { data: { turbo_confirm: "Cancel your booking request?" } } %>
+    <% end %>
+  </div>
+</div>

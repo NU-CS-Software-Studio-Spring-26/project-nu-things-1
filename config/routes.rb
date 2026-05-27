@@ -8,7 +8,9 @@ Rails.application.routes.draw do
   match "/auth/failure", to: "omniauth_callbacks#failure", via: %i[get post]
   get "/auth/:provider/callback", to: "omniauth_callbacks#create"
 
-  resource :session, only: %i[new destroy]
+  resource :session, only: %i[new destroy] do
+    post :dev_sign_in, on: :collection if Rails.env.development?
+  end
 
   resources :users, only: %i[show]
 
@@ -38,6 +40,9 @@ Rails.application.routes.draw do
     resources :bookings, only: [ :create ] do
       member do
         patch :cancel
+        patch :confirm
+        patch :mark_given
+        patch :mark_received
       end
       collection do
         get :calendar_data

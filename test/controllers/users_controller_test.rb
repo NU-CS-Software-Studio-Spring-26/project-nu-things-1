@@ -24,4 +24,13 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "a[href='#{user_path(u)}']", text: /Profile/i
   end
+
+  test "profile lists rental bookings requested by user" do
+    u = users(:nu_student)
+    booking = bookings(:future_pending)
+    get user_url(u)
+    assert_response :success
+    assert_select "h2", text: /Rental bookings requested/i
+    assert_select "a[href='#{rental_item_path(booking.rental_item)}']", text: booking.rental_item.title
+  end
 end
