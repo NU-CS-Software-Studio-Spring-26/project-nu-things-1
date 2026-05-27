@@ -43,12 +43,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_25_180000) do
     t.datetime "created_at", null: false
     t.date "end_date", null: false
     t.text "notes"
+    t.datetime "owner_marked_given_at"
     t.integer "rental_item_id", null: false
+    t.datetime "renter_marked_received_at"
     t.date "start_date", null: false
     t.string "status", default: "pending", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id"
     t.index ["rental_item_id", "start_date", "end_date"], name: "index_bookings_on_rental_item_id_and_start_date_and_end_date"
     t.index ["rental_item_id"], name: "index_bookings_on_rental_item_id"
+    t.index ["user_id"], name: "index_bookings_on_user_id"
   end
 
   create_table "claims", force: :cascade do |t|
@@ -375,6 +379,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_25_180000) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "bookings", "rental_items"
+  add_foreign_key "bookings", "users"
   add_foreign_key "claims", "users"
   add_foreign_key "conversation_messages", "conversations"
   add_foreign_key "conversation_messages", "users", column: "sender_id"

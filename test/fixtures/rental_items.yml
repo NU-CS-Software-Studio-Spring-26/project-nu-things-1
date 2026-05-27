@@ -1,7 +1,7 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  user: nu_student
+  user: admin
   title: Campus camping tent
   description: Lightweight two-person tent for weekend trips around Evanston.
   category: Camping Gear
@@ -11,8 +11,8 @@ one:
   location: Evanston campus
   available_from: 2026-05-01
   available_to: 2026-12-31
-  owner_name: Sam Student
-  owner_email: student@u.northwestern.edu
+  owner_name: Admin User
+  owner_email: admin@u.northwestern.edu
   deposit_required: 50.00
   status: available
 

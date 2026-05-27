@@ -66,29 +66,64 @@
       </div>
     </div>
 
-    <div class="card nu-card mb-3">
-      <div class="card-body">
-        <h2 class="h6 text-muted text-uppercase mb-3">Request Booking</h2>
-        <%= form_with url: rental_item_bookings_path(@rental_item), method: :post, local: true, class: "needs-validation" do |f| %>
-          <div class="mb-3">
-            <%= f.label :start_date, "Start date", class: "form-label" %>
-            <%= f.date_field :start_date, class: "form-control", required: true, min: @rental_item.available_from, max: @rental_item.available_to %>
-          </div>
-
-          <div class="mb-3">
-            <%= f.label :end_date, "End date", class: "form-label" %>
-            <%= f.date_field :end_date, class: "form-control", required: true, min: @rental_item.available_from, max: @rental_item.available_to %>
-          </div>
-
-          <div class="mb-3">
-            <%= f.label :notes, "Additional notes (optional)", class: "form-label" %>
-            <%= f.text_area :notes, class: "form-control", rows: 3, placeholder: "Ask about specific dates, ask any questions, etc." %>
-          </div>
-
-          <%= f.submit "Request booking", class: "btn btn-primary w-100" %>
-        <% end %>
+    <% if signed_in? && @is_rental_owner %>
+      <div class="card nu-card mb-3">
+        <div class="card-body">
+          <h2 class="h6 text-muted text-uppercase mb-3">Booking requests</h2>
+          <% if @owner_manage_bookings.any? %>
+            <% @owner_manage_bookings.each do |booking| %>
+              <%= render "rental_items/booking_card", booking: booking, rental_item: @rental_item, as_owner: true %>
+            <% end %>
+          <% else %>
+            <p class="text-muted small mb-0">No active booking requests yet.</p>
+          <% end %>
+        </div>
       </div>
-    </div>
+    <% elsif signed_in? %>
+      <div class="card nu-card mb-3">
+        <div class="card-body">
+          <h2 class="h6 text-muted text-uppercase mb-3">Request booking</h2>
+          <%= form_with url: rental_item_bookings_path(@rental_item), scope: :booking, method: :post, local: true, class: "needs-validation" do |f| %>
+            <div class="mb-3">
+              <%= f.label :start_date, "Start date", class: "form-label" %>
+              <%= f.date_field :start_date, class: "form-control", required: true, min: @rental_item.available_from, max: @rental_item.available_to %>
+            </div>
+
+            <div class="mb-3">
+              <%= f.label :end_date, "End date", class: "form-label" %>
+              <%= f.date_field :end_date, class: "form-control", required: true, min: @rental_item.available_from, max: @rental_item.available_to %>
+            </div>
+
+            <div class="mb-3">
+              <%= f.label :notes, "Additional notes (optional)", class: "form-label" %>
+              <%= f.text_area :notes, class: "form-control", rows: 3, placeholder: "Ask about pickup, deposit, etc." %>
+            </div>
+
+            <%= f.submit "Request booking", class: "btn btn-primary w-100" %>
+          <% end %>
+        </div>
+      </div>
+
+      <% if @renter_bookings.present? %>
+        <div class="card nu-card mb-3">
+          <div class="card-body">
+            <h2 class="h6 text-muted text-uppercase mb-3">Your bookings</h2>
+            <p class="small text-muted mb-3">After the owner accepts, use the button below when you pick up the item. Contact them above if you need to coordinate.</p>
+            <% @renter_bookings.each do |booking| %>
+              <%= render "rental_items/booking_card", booking: booking, rental_item: @rental_item, as_owner: false %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="card nu-card mb-3">
+        <div class="card-body">
+          <h2 class="h6 text-muted text-uppercase mb-3">Request booking</h2>
+          <p class="text-muted small mb-3">Sign in with your Northwestern account to request dates and track handoff with the owner.</p>
+          <%= link_to "Sign in to request", new_session_path, class: "btn btn-primary w-100" %>
+        </div>
+      </div>
+    <% end %>
 
     <% if signed_in? %>
       <div class="card nu-card mb-3">
