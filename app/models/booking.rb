@@ -13,7 +13,7 @@ class Booking < ApplicationRecord
   validate :no_overlapping_bookings
 
   scope :overlapping, ->(start_date, end_date) {
-    where("(start_date, end_date) OVERLAPS (?, ?)", start_date, end_date)
+    where("start_date <= ? AND end_date >= ?", end_date, start_date)
   }
 
   scope :active, -> { where.not(status: "cancelled") }
@@ -37,7 +37,7 @@ class Booking < ApplicationRecord
 
     overlapping = Booking.active
       .where(rental_item_id: rental_item_id)
-      .where("(start_date, end_date) OVERLAPS (?, ?)", start_date, end_date)
+      .overlapping(start_date, end_date)
       .where.not(id: id)
 
     if overlapping.any?
