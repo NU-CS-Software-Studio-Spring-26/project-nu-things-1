@@ -1111,6 +1111,44 @@ html[data-bs-theme="dark"] .nu-body .alert.alert-danger .alert-link {
   color: #ffb4b4;
 }
 
+html[data-bs-theme="dark"] .nu-body .alert.alert-success {
+  color: #c8f0d8;
+  background-color: #1a3328;
+  border-color: #2d5c44;
+}
+
+html[data-bs-theme="dark"] .nu-body .alert.alert-success .alert-link {
+  color: #e8fff0;
+  font-weight: 700;
+}
+
+html[data-bs-theme="dark"] .nu-body .alert.alert-success .alert-link:hover,
+html[data-bs-theme="dark"] .nu-body .alert.alert-success .alert-link:focus {
+  color: #f4fff8;
+}
+
+html[data-bs-theme="dark"] .nu-body .alert-info {
+  color: #d8e4f4;
+  background-color: #1e2a38;
+  border-color: #3d5568;
+}
+
+html[data-bs-theme="dark"] .nu-body .alert-info .alert-link {
+  color: var(--nu-link);
+  text-decoration-color: var(--nu-link);
+  font-weight: 700;
+}
+
+html[data-bs-theme="dark"] .nu-body .alert-info .alert-link:hover,
+html[data-bs-theme="dark"] .nu-body .alert-info .alert-link:focus {
+  color: var(--nu-link-hover);
+  text-decoration-color: var(--nu-link-hover);
+}
+
+html[data-bs-theme="dark"] .nu-body .alert .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
+}
+
 .nu-body .alert.alert-success .alert-link {
   color: #0a2414;
   font-weight: 700;
@@ -1529,4 +1567,118 @@ html[data-bs-theme="dark"] .fc .fc-col-header-cell-cushion {
 html[data-bs-theme="dark"] .nu-message-bubble--theirs {
   background-color: #1e1a26;
   border-color: #3d3548;
+}
+
+html[data-bs-theme="dark"] .nu-rental-market .alert-info {
+  color: #e4dcf8;
+  background: linear-gradient(180deg, #221e2c, #1a1620);
+  border-color: rgba(180, 157, 240, 0.3);
+}
+
+html[data-bs-theme="dark"] .nu-rental-market .alert-info .alert-link {
+  color: var(--nu-link);
+  text-decoration-color: var(--nu-link);
+}
+
+html[data-bs-theme="dark"] .nu-rental-market .alert-info .alert-link:hover,
+html[data-bs-theme="dark"] .nu-rental-market .alert-info .alert-link:focus {
+  color: var(--nu-link-hover);
+  text-decoration-color: var(--nu-link-hover);
+}
+
+html[data-bs-theme="dark"] .nu-soft-alert .alert-link {
+  color: var(--nu-link);
+  text-decoration-color: var(--nu-link);
+}
+
+html[data-bs-theme="dark"] .nu-soft-alert .alert-link:hover,
+html[data-bs-theme="dark"] .nu-soft-alert .alert-link:focus {
+  color: var(--nu-link-hover);
+  text-decoration-color: var(--nu-link-hover);
+}
+
+/* Status / marketplace pills — light text on dark-tinted surfaces */
+html[data-bs-theme="dark"] .nu-badge-lost-open {
+  color: #f5e6d0;
+  background: linear-gradient(150deg, #3d3020 0%, #2e2818 100%);
+  border-color: rgba(200, 160, 90, 0.35);
+}
+
+html[data-bs-theme="dark"] .nu-badge-lost-resolved {
+  color: #c8e8dc;
+  background: linear-gradient(150deg, #1e342c 0%, #182820 100%);
+  border-color: rgba(90, 150, 120, 0.35);
+}
+
+html[data-bs-theme="dark"] .nu-badge-lost-default,
+html[data-bs-theme="dark"] .nu-badge-found-default {
+  color: #e0d8ec;
+  background: linear-gradient(150deg, #2a2438 0%, #221e2c 100%);
+  border-color: rgba(180, 157, 240, 0.25);
+}
+
+html[data-bs-theme="dark"] .nu-badge-found-unclaimed {
+  color: #d0dcf8;
+  background: linear-gradient(150deg, #243048 0%, #1c2838 100%);
+  border-color: rgba(100, 130, 200, 0.35);
+}
+
+html[data-bs-theme="dark"] .nu-badge-found-claimed {
+  color: #f0d8e0;
+  background: linear-gradient(150deg, #3a2830 0%, #2e2228 100%);
+  border-color: rgba(160, 110, 130, 0.3);
+}
+
+html[data-bs-theme="dark"] .nu-mp-type-for-sale {
+  color: #e4daf8;
+  background: linear-gradient(150deg, #2a2438 0%, #221e2c 100%);
+  border-color: rgba(180, 157, 240, 0.3);
+}
+
+html[data-bs-theme="dark"] .nu-mp-type-wanted {
+  color: #d4e0f0;
+  background: linear-gradient(150deg, #243040 0%, #1c2838 100%);
+  border-color: rgba(100, 140, 180, 0.3);
+}
+
+html[data-bs-theme="dark"] .nu-mp-cat--camping-gear {
+  color: #b8e8d0;
+  background: linear-gradient(150deg, #1e3428 0%, #182820 100%);
+  border-color: rgba(70, 140, 100, 0.35);
+}
+
+html[data-bs-theme="dark"] .nu-mp-cat--electronics {
+  color: #f5e8c0;
+  background: linear-gradient(150deg, #3d3420 0%, #302818 100%);
+  border-color: rgba(180, 150, 60, 0.35);
+}
+
+html[data-bs-theme="dark"] .nu-mp-cat--tools {
+  color: #d0dcf0;
+  background: linear-gradient(150deg, #283040 0%, #202830 100%);
+  border-color: rgba(90, 120, 160, 0.3);
+}
+
+html[data-bs-theme="dark"] .nu-mp-cat--books {
+  color: #f0d4dc;
+  background: linear-gradient(150deg, #382830 0%, #2c2228 100%);
+  border-color: rgba(150, 90, 110, 0.3);
+}
+
+html[data-bs-theme="dark"] .nu-mp-cat--furniture {
+  color: #f0dcc8;
+  background: linear-gradient(150deg, #3a3020 0%, #2e2818 100%);
+  border-color: rgba(160, 120, 70, 0.35);
+}
+
+html[data-bs-theme="dark"] .nu-mp-cat--sports-equipment {
+  color: #f8d0d8;
+  background: linear-gradient(150deg, #3a2428 0%, #2e1c20 100%);
+  border-color: rgba(180, 80, 100, 0.35);
+}
+
+html[data-bs-theme="dark"] .nu-mp-cat--other {
+  color: #e0d8f0;
+  background: linear-gradient(150deg, #2c2838 0%, #242030 100%);
+  border-color: rgba(120, 100, 160, 0.3);
 }
