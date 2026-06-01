@@ -26,6 +26,7 @@ Rails.application.routes.draw do
 
   resources :lost_items do
     member do
+      post :resolve
       post :report
     end
   end

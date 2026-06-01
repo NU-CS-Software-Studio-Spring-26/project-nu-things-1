@@ -75,6 +75,57 @@ class LostItemsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "should redirect resolve when not signed in" do
+    post resolve_lost_item_url(@lost_item)
+    assert_redirected_to new_session_url
+  end
+
+  test "owner can resolve open lost item" do
+    sign_in_as(users(:nu_student))
+    assert_equal "open", @lost_item.status
+
+    post resolve_lost_item_url(@lost_item)
+
+    assert_redirected_to lost_item_url(@lost_item)
+    assert_equal "resolved", @lost_item.reload.status
+    assert_match(/marked as resolved/i, flash[:notice].to_s)
+  end
+
+  test "non-owner cannot resolve lost item" do
+    sign_in_as(users(:nu_student))
+    post resolve_lost_item_url(lost_items(:admin_owned))
+
+    assert_redirected_to root_url
+    assert_match(/permission/i, flash[:alert].to_s)
+    assert_equal "open", lost_items(:admin_owned).reload.status
+  end
+
+  test "cannot resolve already resolved lost item" do
+    sign_in_as(users(:nu_student))
+    @lost_item.update!(status: "resolved")
+
+    post resolve_lost_item_url(@lost_item)
+
+    assert_redirected_to lost_item_url(@lost_item)
+    assert_match(/already resolved/i, flash[:alert].to_s)
+    assert_equal "resolved", @lost_item.reload.status
+  end
+
+  test "show displays Mark as resolved for owner when open" do
+    sign_in_as(users(:nu_student))
+    get lost_item_url(@lost_item)
+    assert_response :success
+    assert_select "button", { text: "Mark as resolved", count: 1 }
+  end
+
+  test "show hides Mark as resolved when already resolved" do
+    sign_in_as(users(:nu_student))
+    @lost_item.update!(status: "resolved")
+    get lost_item_url(@lost_item)
+    assert_response :success
+    assert_select "button", { text: "Mark as resolved", count: 0 }
+  end
+
   test "should redirect edit when not signed in" do
     get edit_lost_item_url(@lost_item)
     assert_redirected_to new_session_url

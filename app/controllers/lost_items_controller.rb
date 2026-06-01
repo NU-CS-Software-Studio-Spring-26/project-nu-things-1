@@ -1,6 +1,6 @@
 class LostItemsController < ApplicationController
-  before_action :set_lost_item, only: %i[show edit update destroy report]
-  before_action -> { require_owner_or_admin(@lost_item) }, only: %i[edit update]
+  before_action :set_lost_item, only: %i[show edit update destroy resolve report]
+  before_action -> { require_owner_or_admin(@lost_item) }, only: %i[edit update resolve]
   before_action :require_admin, only: %i[destroy]
 
   rate_limit to: 25, within: 24.hours, only: :report, scope: :lost_item_reports_lost_items,
@@ -47,6 +47,16 @@ class LostItemsController < ApplicationController
   def destroy
     @lost_item.destroy
     redirect_to lost_items_path, notice: "Lost item was successfully removed.", status: :see_other
+  end
+
+  def resolve
+    if @lost_item.status != "open"
+      redirect_to @lost_item, alert: "This listing is already resolved."
+      return
+    end
+
+    @lost_item.update!(status: "resolved")
+    redirect_to @lost_item, notice: "Marked as resolved. Thanks for updating your post!"
   end
 
   def report
