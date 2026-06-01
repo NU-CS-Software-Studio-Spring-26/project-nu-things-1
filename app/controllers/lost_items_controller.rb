@@ -25,7 +25,8 @@ class LostItemsController < ApplicationController
   end
 
   def create
-    @lost_item = LostItem.new(lost_item_params)
+    @lost_item = LostItem.new(lost_item_create_params)
+    @lost_item.status = "open"
     @lost_item.user = current_user
     apply_saved_identity_to_new_listing(@lost_item)
 
@@ -90,5 +91,10 @@ class LostItemsController < ApplicationController
   def lost_item_params
     params.expect(lost_item: [ :title, :description, :category, :custom_category, :location_lost, :date_lost,
                                :contact_name, :contact_email, :status, :image_url, :photo, :reward, :color, :brand ])
+  end
+
+  def lost_item_create_params
+    params.expect(lost_item: [ :title, :description, :category, :custom_category, :location_lost, :date_lost,
+                              :contact_name, :contact_email, :image_url, :photo, :reward, :color, :brand ])
   end
 end

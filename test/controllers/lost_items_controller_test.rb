@@ -51,6 +51,34 @@ class LostItemsControllerTest < ActionDispatch::IntegrationTest
     sign_in_as(users(:nu_student))
     get new_lost_item_url
     assert_response :success
+    assert_select "label", { text: /Status/i, count: 0 }
+    assert_select "select[name='lost_item[status]']", count: 0
+  end
+
+  test "edit form includes status field" do
+    sign_in_as(users(:nu_student))
+    get edit_lost_item_url(@lost_item)
+    assert_response :success
+    assert_select "select[name='lost_item[status]']"
+  end
+
+  test "create always sets status to open even if resolved submitted" do
+    sign_in_as(users(:nu_student))
+    assert_difference("LostItem.count", 1) do
+      post lost_items_url, params: {
+        lost_item: {
+          title: "New lost phone",
+          description: "Left in the library reading room yesterday afternoon.",
+          category: "Electronics",
+          location_lost: "Main Library",
+          date_lost: @lost_item.date_lost,
+          contact_name: @lost_item.contact_name,
+          contact_email: @lost_item.contact_email,
+          status: "resolved"
+        }
+      }
+    end
+    assert_equal "open", LostItem.last.status
   end
 
   test "should redirect create when not signed in" do

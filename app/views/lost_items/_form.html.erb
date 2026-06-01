@@ -45,10 +45,13 @@
           <%= f.email_field :contact_email, class: "form-control", required: true %>
         </div>
 
-        <div class="col-md-4">
-          <%= f.label :status, "Status *", class: "form-label" %>
-          <%= f.select :status, LostItem::STATUSES.map { |s| [s.titleize, s] }, {}, class: "form-select" %>
-        </div>
+        <% unless lost_item.new_record? %>
+          <div class="col-md-4">
+            <%= f.label :status, "Status *", class: "form-label" %>
+            <%= f.select :status, LostItem::STATUSES.map { |s| [ s.titleize, s ] }, {}, class: "form-select" %>
+            <small class="text-muted d-block mt-1">Use <strong>Resolved</strong> when the item is found, or mark resolved from the listing page.</small>
+          </div>
+        <% end %>
         <div class="col-12">
           <%= render "application/listing_photo_upload", form: f, record: lost_item %>
         </div>
