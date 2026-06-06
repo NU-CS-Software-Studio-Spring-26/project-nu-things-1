@@ -335,6 +335,16 @@ a.nu-clickable-card .nu-card-cta {
   pointer-events: none;
 }
 
+a.nu-clickable-card .card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+
+a.nu-clickable-card .card-body > .d-grid:has(.nu-card-cta) {
+  margin-top: auto;
+}
+
 /* Index listing cards: image area scales with zoom (no fixed px height) */
 .nu-listing-index-card-img {
   display: block;
