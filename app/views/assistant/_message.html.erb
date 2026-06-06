@@ -1,0 +1,23 @@
+<% mine = message["role"] == "user" %>
+<div class="d-flex <%= mine ? 'justify-content-end' : 'justify-content-start' %>">
+  <div class="nu-message-bubble <%= mine ? 'nu-message-bubble--mine' : 'nu-message-bubble--theirs' %> rounded-3 px-3 py-2" style="max-width: 90%;">
+    <p class="small fw-semibold mb-1 <%= mine ? 'text-white-50' : 'text-muted' %>">
+      <%= mine ? "You" : "AI Finder" %>
+    </p>
+    <p class="mb-1 <%= mine ? 'text-white' : '' %>" style="white-space: pre-wrap;"><%= message["body"] %></p>
+    <% if message["at"].present? %>
+      <time class="small <%= mine ? 'text-white-50' : 'text-muted' %>" datetime="<%= message["at"] %>">
+        <%= Time.zone.parse(message["at"]).strftime("%-l:%M %p") rescue "" %>
+      </time>
+    <% end %>
+
+    <% listings = Array(message["listings"]) %>
+    <% if listings.any? %>
+      <div class="mt-3 d-flex flex-column gap-2">
+        <% listings.each do |listing| %>
+          <%= render "assistant/listing_result", listing: listing, mine: mine %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

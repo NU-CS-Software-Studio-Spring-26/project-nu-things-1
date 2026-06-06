@@ -38,6 +38,16 @@ Posting and claiming require signing in with a **Northwestern Google account** (
 2. Under **Authorized redirect URIs**, add `http://localhost:3000/auth/google_oauth2/callback` for local development and `https://YOUR_DOMAIN/auth/google_oauth2/callback` for production (for example your Heroku URL).
 3. Set **`GOOGLE_CLIENT_ID`** and **`GOOGLE_CLIENT_SECRET`** in the environment, or store them in encrypted credentials under `google:` (`client_id` / `client_secret`) via `bin/rails credentials:edit`. Production boot fails fast if neither source provides both values.
 
+## AI Finder (Gemini)
+
+Signed-in users can open **AI Finder** in the navbar to search lost, found, rental, and marketplace listings in plain language.
+
+1. Get a free API key from [Google AI Studio](https://aistudio.google.com/apikey).
+2. Set **`GEMINI_API_KEY`** in the environment, or add `gemini: api_key:` to encrypted credentials.
+3. Optional: **`GEMINI_MODEL`** (default `gemini-2.0-flash`).
+
+Without `GEMINI_API_KEY`, the assistant page loads but search is disabled.
+
 ## Optional site URLs
 
 - **`APP_SOURCE_CODE_URL`**: Public GitHub (or other) repository URL. When set, the home page and footer show a **GitHub** link next to About / Privacy / Terms.

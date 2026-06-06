@@ -14,6 +14,11 @@ Rails.application.routes.draw do
 
   resources :users, only: %i[show]
 
+  resource :assistant, only: %i[show], controller: "assistant" do
+    delete :clear, on: :member
+    resources :messages, only: %i[create], module: :assistant
+  end
+
   resources :conversations, only: %i[index show] do
     resources :messages, only: %i[create], controller: "conversation_messages"
   end
