@@ -12,8 +12,8 @@ gem "faraday", ">= 2.14.2"
 gem "propshaft"
 # SQLite for local development and CI tests
 gem "sqlite3", ">= 2.1", groups: %i[development test]
-# Use the Puma web server [https://github.com/puma/puma]
-gem "puma", ">= 5.0"
+# Patched puma (CVE-2026-47736, CVE-2026-47737)
+gem "puma", ">= 8.0.2"
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
 gem "importmap-rails"
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
