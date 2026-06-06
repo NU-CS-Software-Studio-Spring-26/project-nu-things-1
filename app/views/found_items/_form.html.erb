@@ -55,7 +55,7 @@
           <%= render "application/listing_photo_upload", form: f, record: found_item %>
         </div>
         <div class="col-md-8" data-controller="url-preview">
-          <%= f.label :image_url, "Or image URL (optional)", class: "form-label" %>
+          <%= f.label :image_url, "Or photo URL *", class: "form-label" %>
           <%= f.text_field :image_url, class: "form-control", placeholder: "https://…", data: { url_preview_target: "field", action: "input->url-preview#update paste->url-preview#update" } %>
           <div class="mt-2 d-none" data-url-preview-target="wrap">
             <img class="img-thumbnail" style="max-height: 150px;" data-url-preview-target="image" data-action="error->url-preview#handleError">

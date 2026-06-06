@@ -10,6 +10,7 @@ for_sale_one:
   contact_name: "Test Seller"
   contact_email: "seller@u.northwestern.edu"
   status: active
+  image_url: "https://example.com/listing-photo.jpg"
 
 wanted_one:
   title: "Calculus Textbook"
@@ -20,6 +21,7 @@ wanted_one:
   contact_name: "Test Buyer"
   contact_email: "buyer@u.northwestern.edu"
   status: active
+  image_url: "https://example.com/listing-photo.jpg"
 
 other_category:
   title: "Vintage lamp"
@@ -32,3 +34,4 @@ other_category:
   contact_name: "Test Seller Two"
   contact_email: "seller2@u.northwestern.edu"
   status: active
+  image_url: "https://example.com/listing-photo.jpg"

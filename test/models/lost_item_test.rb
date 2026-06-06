@@ -1,6 +1,13 @@
 require "test_helper"
 
 class LostItemTest < ActiveSupport::TestCase
+  test "does not require photo or image URL" do
+    item = lost_items(:one)
+    item.image_url = nil
+    item.photo.purge if item.photo.attached?
+    assert item.valid?
+  end
+
   test "requires core fields" do
     item = LostItem.new
     assert_not item.valid?

@@ -1,6 +1,14 @@
 require "test_helper"
 
 class MarketplaceListingTest < ActiveSupport::TestCase
+  test "requires photo or image URL" do
+    listing = marketplace_listings(:for_sale_one)
+    listing.image_url = nil
+    listing.photo.purge if listing.photo.attached?
+    assert_not listing.valid?
+    assert listing.errors[:photo].any?
+  end
+
   test "requires core fields" do
     listing = MarketplaceListing.new
     assert_not listing.valid?
@@ -95,7 +103,8 @@ class MarketplaceListingTest < ActiveSupport::TestCase
       listing_type: "wanted",
       contact_name: "A Student",
       contact_email: "student@u.northwestern.edu",
-      status: nil
+      status: nil,
+      image_url: "https://example.com/listing-photo.jpg"
     )
     assert_equal "active", listing.reload.status
   end

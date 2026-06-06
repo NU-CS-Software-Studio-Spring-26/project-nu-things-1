@@ -147,7 +147,8 @@ class FoundItemsControllerTest < ActionDispatch::IntegrationTest
       date_found: Date.current,
       contact_name: "Admin",
       contact_email: "admin@u.northwestern.edu",
-      status: "unclaimed"
+      status: "unclaimed",
+      image_url: "https://example.com/listing-photo.jpg"
     )
     assert_difference("FoundItem.count", -1) do
       delete found_item_url(item)
@@ -198,7 +199,8 @@ class FoundItemsControllerTest < ActionDispatch::IntegrationTest
       contact_name: "Test",
       contact_email: "invalid@gmail.com",  # Invalid domain
       user: user,
-      status: "unclaimed"
+      status: "unclaimed",
+      image_url: "https://example.com/listing-photo.jpg"
     )
 
     assert_not item.valid?
@@ -216,7 +218,8 @@ class FoundItemsControllerTest < ActionDispatch::IntegrationTest
       contact_name: "Test",
       contact_email: "test@u.northwestern.edu",
       user: user,
-      status: "unclaimed"
+      status: "unclaimed",
+      image_url: "https://example.com/listing-photo.jpg"
     )
     assert item.valid?, "Should accept u.northwestern.edu email"
   end
@@ -232,7 +235,8 @@ class FoundItemsControllerTest < ActionDispatch::IntegrationTest
       contact_name: "Test",
       contact_email: "test@northwestern.edu",
       user: user,
-      status: "unclaimed"
+      status: "unclaimed",
+      image_url: "https://example.com/listing-photo.jpg"
     )
     assert item.valid?, "Should accept northwestern.edu email"
   end
@@ -248,7 +252,8 @@ class FoundItemsControllerTest < ActionDispatch::IntegrationTest
       contact_name: "Test",
       contact_email: "test@gmail.com",
       user: user,
-      status: "unclaimed"
+      status: "unclaimed",
+      image_url: "https://example.com/listing-photo.jpg"
     )
 
     assert_not item.valid?
@@ -266,7 +271,8 @@ class FoundItemsControllerTest < ActionDispatch::IntegrationTest
       contact_name: "Test",
       contact_email: "test@yahoo.com",
       user: user,
-      status: "unclaimed"
+      status: "unclaimed",
+      image_url: "https://example.com/listing-photo.jpg"
     )
 
     assert_not item.valid?
@@ -284,7 +290,8 @@ class FoundItemsControllerTest < ActionDispatch::IntegrationTest
       contact_name: "Hacker",
       contact_email: "hacker@example.com",
       user: user,
-      status: "unclaimed"
+      status: "unclaimed",
+      image_url: "https://example.com/listing-photo.jpg"
     )
 
     assert_not item.valid?

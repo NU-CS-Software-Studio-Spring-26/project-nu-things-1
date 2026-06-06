@@ -8,7 +8,7 @@ one:
   contact_name: "Finder One"
   contact_email: "found_one@u.northwestern.edu"
   status: unclaimed
-  image_url:
+  image_url: "https://example.com/listing-photo.jpg"
   storage_location: "Tech front desk"
   color: Blue
   brand:
@@ -23,7 +23,7 @@ admin_owned:
   contact_name: "Admin User"
   contact_email: "admin@u.northwestern.edu"
   status: unclaimed
-  image_url:
+  image_url: "https://example.com/listing-photo.jpg"
   storage_location: "South desk"
   color:
   brand:
@@ -38,7 +38,7 @@ two:
   contact_email: "found_two@northwestern.edu"
   status: claimed
   claimed_by_user: nu_student
-  image_url:
+  image_url: "https://example.com/listing-photo.jpg"
   storage_location: "Main Library desk"
   color:
   brand:
