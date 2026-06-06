@@ -179,7 +179,12 @@ class ApplicationController < ActionController::Base
   end
 
   def paginate_listings(relation)
-    pagy(:offset, relation, limit: LISTINGS_PER_PAGE)
+    pagy(
+      :offset,
+      relation,
+      limit: LISTINGS_PER_PAGE,
+      anchor_string: 'data-turbo-frame="listings"'
+    )
   end
 
   # Name + email for lost/found listing report mailers (signed-in uses account; guests use form params).

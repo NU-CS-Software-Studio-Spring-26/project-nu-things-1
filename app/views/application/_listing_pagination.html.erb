@@ -8,46 +8,5 @@
     </p>
   <% end %>
 
-  <ul class="pagination pagination-sm justify-content-center mb-0 flex-wrap">
-    <li class="page-item<%= " disabled" unless pagy.previous %>">
-      <% if pagy.previous %>
-        <%= link_to "Previous",
-              pagy.page_url(pagy.previous),
-              class: "page-link",
-              rel: "prev",
-              data: { turbo_frame: "listings" } %>
-      <% else %>
-        <span class="page-link">Previous</span>
-      <% end %>
-    </li>
-
-    <% pagy.series.each do |item| %>
-      <% if item.is_a?(Integer) %>
-        <li class="page-item">
-          <%= link_to item,
-                pagy.page_url(item),
-                class: "page-link",
-                data: { turbo_frame: "listings" } %>
-        </li>
-      <% elsif item.is_a?(String) %>
-        <li class="page-item active" aria-current="page">
-          <span class="page-link"><%= item %></span>
-        </li>
-      <% elsif item == :gap %>
-        <li class="page-item disabled"><span class="page-link">…</span></li>
-      <% end %>
-    <% end %>
-
-    <li class="page-item<%= " disabled" unless pagy.next %>">
-      <% if pagy.next %>
-        <%= link_to "Next",
-              pagy.page_url(pagy.next),
-              class: "page-link",
-              rel: "next",
-              data: { turbo_frame: "listings" } %>
-      <% else %>
-        <span class="page-link">Next</span>
-      <% end %>
-    </li>
-  </ul>
+  <%== pagy.series_nav(:bootstrap, aria_label: "Listing page numbers") %>
 </nav>
