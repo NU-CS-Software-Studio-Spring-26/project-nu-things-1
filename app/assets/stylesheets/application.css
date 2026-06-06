@@ -199,6 +199,11 @@ a:not(.btn, .nav-link, .navbar-brand, .nu-clickable-card, .nu-browse-card, .skip
   font-weight: 600;
 }
 
+/* Listing badges (status, category, condition) share the same pill shape across boards */
+.nu-body .badge {
+  border-radius: 999px;
+}
+
 .nu-navbar-right {
   align-items: flex-start;
 }
