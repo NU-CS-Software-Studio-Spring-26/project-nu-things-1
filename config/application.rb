@@ -26,7 +26,8 @@ module NorthwesternLostFoundBoard
     # These settings can be overridden in specific environments using the files
     # in config/environments, which are processed later.
     #
-    # config.time_zone = "Central Time (US & Canada)"
+    # Northwestern campus — Central Time for listings, messages, and AI chat timestamps.
+    config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
   end
 end
