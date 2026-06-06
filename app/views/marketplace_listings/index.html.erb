@@ -35,7 +35,7 @@
   </div>
 </div>
 
-<%= render "application/listing_search_results_summary", count: @marketplace_listings.size %>
+<%= render "application/listing_search_results_summary", total_count: @pagy.count %>
 
 <% if @marketplace_listings.any? %>
   <div class="row g-4">
@@ -81,6 +81,7 @@
       </div>
     <% end %>
   </div>
+  <%= render "application/listing_pagination", pagy: @pagy %>
 <% else %>
   <% if listing_index_filters_active? %>
     <div class="alert nu-soft-alert">

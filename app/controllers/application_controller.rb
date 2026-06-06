@@ -1,5 +1,8 @@
 class ApplicationController < ActionController::Base
   include AssistantSession
+  include Pagy::Method
+
+  LISTINGS_PER_PAGE = 12
 
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
@@ -172,6 +175,15 @@ class ApplicationController < ActionController::Base
     relation.where(
       "LOWER(title) LIKE LOWER(?) OR LOWER(description) LIKE LOWER(?)",
       pattern, pattern
+    )
+  end
+
+  def paginate_listings(relation)
+    pagy(
+      :offset,
+      relation,
+      limit: LISTINGS_PER_PAGE,
+      anchor_string: 'data-turbo-frame="listings"'
     )
   end
 

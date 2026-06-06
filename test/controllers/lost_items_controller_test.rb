@@ -42,6 +42,29 @@ class LostItemsControllerTest < ActionDispatch::IntegrationTest
     assert_select ".nu-item-title", minimum: 2
   end
 
+  test "index paginates lost items" do
+    create_lost_items_for_pagination(10)
+
+    get lost_items_url
+    assert_response :success
+    assert_select "nav[aria-label='Listing pages']"
+    assert_select ".nu-item-title", count: ApplicationController::LISTINGS_PER_PAGE
+
+    get lost_items_url, params: { page: 2 }
+    assert_response :success
+    assert_select ".nu-item-title", count: 2
+  end
+
+  test "index pagination preserves search query" do
+    create_lost_items_for_pagination(13)
+
+    get lost_items_url, params: { q: "Pagination", page: 2 }
+    assert_response :success
+    assert_select "a.page-link[href*='q=Pagination']"
+    assert_select "p[aria-live=polite]", text: /13 results found for 'Pagination'/
+    assert_select ".nu-item-title", count: 1
+  end
+
   test "should redirect new when not signed in" do
     get new_lost_item_url
     assert_redirected_to new_session_url

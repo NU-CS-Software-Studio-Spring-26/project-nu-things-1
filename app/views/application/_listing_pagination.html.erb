@@ -1,0 +1,12 @@
+<%# locals: (pagy:) %>
+<% return if pagy.last <= 1 %>
+
+<nav class="nu-listing-pagination mt-4" aria-label="Listing pages">
+  <% if pagy.count.positive? %>
+    <p class="text-muted small text-center mb-2">
+      Showing <%= pagy.from %>–<%= pagy.to %> of <%= pagy.count %>
+    </p>
+  <% end %>
+
+  <%== pagy.series_nav(:bootstrap, aria_label: "Listing page numbers") %>
+</nav>

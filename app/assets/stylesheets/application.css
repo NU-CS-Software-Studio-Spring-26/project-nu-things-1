@@ -1749,3 +1749,30 @@ html[data-bs-theme="dark"] .nu-assistant-panel {
     width: calc(100vw - 2rem);
   }
 }
+
+.nu-listing-pagination .page-link {
+  color: var(--nu-purple-dark);
+  border-color: rgba(78, 42, 132, 0.2);
+}
+
+.nu-listing-pagination .page-item.active .page-link {
+  background-color: var(--nu-purple);
+  border-color: var(--nu-purple);
+  color: #fff;
+}
+
+.nu-listing-pagination .page-item.disabled .page-link {
+  color: var(--nu-text-muted);
+}
+
+html[data-bs-theme="dark"] .nu-listing-pagination .page-link {
+  background-color: #2a2438;
+  border-color: #4a4258;
+  color: #e8e0f4;
+}
+
+html[data-bs-theme="dark"] .nu-listing-pagination .page-item.active .page-link {
+  background-color: var(--nu-purple);
+  border-color: var(--nu-purple);
+  color: #fff;
+}

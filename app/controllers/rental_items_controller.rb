@@ -11,6 +11,7 @@ class RentalItemsController < ApplicationController
     @categories = filter_category_options(RentalItem)
     @rental_items = filter_where_in(@rental_items, :category, params[:category], @categories)
     @rental_items = filter_by_search(@rental_items, params[:q])
+    @pagy, @rental_items = paginate_listings(@rental_items)
   end
 
   def show

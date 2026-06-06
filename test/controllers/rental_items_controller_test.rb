@@ -56,6 +56,19 @@ class RentalItemsControllerTest < ActionDispatch::IntegrationTest
     assert_select ".nu-item-title", minimum: 2
   end
 
+  test "index paginates rental items" do
+    create_rental_items_for_pagination(11)
+
+    get rental_items_url
+    assert_response :success
+    assert_select "nav[aria-label='Listing pages']"
+    assert_select ".nu-item-title", count: ApplicationController::LISTINGS_PER_PAGE
+
+    get rental_items_url, params: { page: 2 }
+    assert_response :success
+    assert_select ".nu-item-title", count: 1
+  end
+
   test "should redirect new when not signed in" do
     get new_rental_item_url
     assert_redirected_to new_session_url

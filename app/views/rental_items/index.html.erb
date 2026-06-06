@@ -28,7 +28,7 @@
     </div>
   </div>
 
-  <%= render "application/listing_search_results_summary", count: @rental_items.size %>
+  <%= render "application/listing_search_results_summary", total_count: @pagy.count %>
 
   <% if @rental_items.any? %>
     <div class="row g-4">
@@ -70,6 +70,7 @@
         </div>
       <% end %>
     </div>
+    <%= render "application/listing_pagination", pagy: @pagy %>
   <% elsif listing_index_filters_active? %>
     <div class="alert alert-info">
       No results match your search.
