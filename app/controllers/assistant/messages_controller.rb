@@ -10,27 +10,18 @@ module Assistant
 
     def create
       unless assistant_gemini_configured?
-        respond_to do |format|
-          format.html { redirect_to assistant_path, alert: "AI assistant is not configured. Set GEMINI_API_KEY." }
-          format.turbo_stream { @assistant_error = "AI assistant is not configured. Set GEMINI_API_KEY." }
-        end
+        render_assistant_error("AI assistant is not configured. Set GEMINI_API_KEY.")
         return
       end
 
       body = params[:message].to_s.strip
       if body.blank?
-        respond_to do |format|
-          format.html { redirect_to assistant_path, alert: "Please enter a message." }
-          format.turbo_stream { @assistant_error = "Please enter a message." }
-        end
+        render_assistant_error("Please enter a message.")
         return
       end
 
       if defined?(Moderate::Text) && Moderate::Text.bad_words?(body)
-        respond_to do |format|
-          format.html { redirect_to assistant_path, alert: profanity_blocked_alert }
-          format.turbo_stream { @assistant_error = profanity_blocked_alert }
-        end
+        render_assistant_error(profanity_blocked_alert)
         return
       end
 
@@ -45,9 +36,21 @@ module Assistant
         format.turbo_stream
       end
     rescue Assistant::Chat::Error, GeminiClient::Error => e
+      remove_last_assistant_user_message!
+      render_assistant_error(e.message)
+    rescue StandardError => e
+      remove_last_assistant_user_message!
+      Rails.logger.error("[Assistant::MessagesController] #{e.class}: #{e.message}\n#{e.backtrace.first(8).join("\n")}")
+      render_assistant_error("Something went wrong. Please try again in a moment.")
+    end
+
+    private
+
+    def render_assistant_error(message)
+      @assistant_error = message
       respond_to do |format|
-        format.html { redirect_to assistant_path, alert: e.message }
-        format.turbo_stream { @assistant_error = e.message }
+        format.html { redirect_to assistant_path, alert: message }
+        format.turbo_stream { render :create, status: :unprocessable_entity }
       end
     end
   end

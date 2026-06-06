@@ -193,8 +193,14 @@ class ApplicationController < ActionController::Base
 
   # Used by +rate_limit ... with: :notify_rate_limit+ (HTML UX instead of bare 429).
   def notify_rate_limit
-    redirect_back fallback_location: root_path,
-                  alert: "Too many attempts in a short time. Please wait a few minutes before trying again."
+    message = "Too many attempts in a short time. Please wait a few minutes before trying again."
+    respond_to do |format|
+      format.html { redirect_back fallback_location: root_path, alert: message }
+      format.turbo_stream do
+        @assistant_error = message
+        render "assistant/messages/create", status: :too_many_requests
+      end
+    end
   end
 
   # Shared keys for listing report throttles (signed-in vs guest buckets).
