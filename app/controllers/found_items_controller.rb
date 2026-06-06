@@ -44,6 +44,7 @@ class FoundItemsController < ApplicationController
     end
 
     @found_item.update!(status: "claimed", claimed_by_user_id: current_user.id)
+    record_audit("found_item.claim", auditable: @found_item)
     redirect_to @found_item, notice: "You marked this item as claimed."
   end
 
@@ -56,6 +57,7 @@ class FoundItemsController < ApplicationController
   end
 
   def destroy
+    record_audit("found_item.destroy", auditable: @found_item, metadata: { found_item_id: @found_item.id })
     @found_item.destroy
     redirect_to found_items_path, notice: "Found item was successfully removed.", status: :see_other
   end
@@ -79,6 +81,7 @@ class FoundItemsController < ApplicationController
     end
 
     ContactMailer.found_item_report(@found_item, name, email, details).deliver_later
+    record_audit("found_item.report", auditable: @found_item, metadata: { reporter_email: email })
     redirect_to @found_item, notice: "Thanks—your report was sent to the moderators."
   end
 

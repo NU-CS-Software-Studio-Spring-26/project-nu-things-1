@@ -46,6 +46,7 @@ class LostItemsController < ApplicationController
   end
 
   def destroy
+    record_audit("lost_item.destroy", auditable: @lost_item, metadata: { lost_item_id: @lost_item.id })
     @lost_item.destroy
     redirect_to lost_items_path, notice: "Lost item was successfully removed.", status: :see_other
   end
@@ -57,6 +58,7 @@ class LostItemsController < ApplicationController
     end
 
     @lost_item.update!(status: "resolved")
+    record_audit("lost_item.resolve", auditable: @lost_item)
     redirect_to @lost_item, notice: "Marked as resolved. Thanks for updating your post!"
   end
 
@@ -79,6 +81,7 @@ class LostItemsController < ApplicationController
     end
 
     ContactMailer.lost_item_report(@lost_item, name, email, details).deliver_later
+    record_audit("lost_item.report", auditable: @lost_item, metadata: { reporter_email: email })
     redirect_to @lost_item, notice: "Thanks—your report was sent to the moderators."
   end
 

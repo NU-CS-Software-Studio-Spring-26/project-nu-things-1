@@ -205,4 +205,17 @@ module ApplicationHelper
 
     "#{pluralize(count, 'result')} found for '#{h(term)}'".html_safe
   end
+
+  def audit_log_action_label(action)
+    {
+      "lost_item.destroy" => "Deleted lost item",
+      "lost_item.resolve" => "Resolved lost item",
+      "lost_item.report" => "Reported lost item",
+      "found_item.destroy" => "Deleted found item",
+      "found_item.claim" => "Claimed found item",
+      "found_item.report" => "Reported found item",
+      "rental_item.destroy" => "Deleted rental item",
+      "marketplace_listing.destroy" => "Deleted marketplace listing"
+    }.fetch(action.to_s, action.to_s.humanize)
+  end
 end

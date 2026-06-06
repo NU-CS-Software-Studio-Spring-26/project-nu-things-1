@@ -14,6 +14,8 @@ Rails.application.routes.draw do
 
   resources :users, only: %i[show]
 
+  resources :audit_logs, only: %i[index]
+
   resource :assistant, only: %i[show], controller: "assistant" do
     delete :clear, on: :member
     resources :messages, only: %i[create], module: :assistant

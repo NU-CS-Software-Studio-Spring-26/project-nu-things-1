@@ -19,6 +19,7 @@ class User < ApplicationRecord
   has_many :started_conversations, class_name: "Conversation", foreign_key: :starter_id,
                                    inverse_of: :starter, dependent: :destroy
   has_many :conversation_messages, foreign_key: :sender_id, inverse_of: :sender, dependent: :destroy
+  has_many :audit_logs, inverse_of: :user, dependent: :nullify
 
   attr_reader :password, :password_confirmation
   attr_writer :password_confirmation

@@ -1,0 +1,48 @@
+<% content_for :title, page_title("Audit log") %>
+
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4">
+  <div>
+    <h2 class="h2 mb-1 text-purple">Audit log</h2>
+    <p class="nu-section-lead mb-0">Recent moderation and listing actions across PurplePost.</p>
+  </div>
+</div>
+
+<% if @audit_logs.any? %>
+  <div class="card nu-card">
+    <div class="table-responsive">
+      <table class="table table-hover mb-0 align-middle">
+        <thead>
+          <tr>
+            <th scope="col">When</th>
+            <th scope="col">Action</th>
+            <th scope="col">Subject</th>
+            <th scope="col">User</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @audit_logs.each do |entry| %>
+            <tr>
+              <td class="text-nowrap small text-muted">
+                <%= time_tag entry.created_at, l(entry.created_at, format: :long) %>
+              </td>
+              <td><%= audit_log_action_label(entry.action) %></td>
+              <td><%= entry.subject %></td>
+              <td class="small">
+                <% if entry.user %>
+                  <%= display_user_name(entry.user) %>
+                  <span class="text-muted d-block"><%= entry.user.email %></span>
+                <% else %>
+                  <span class="text-muted">Guest</span>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <%= render "application/listing_pagination", pagy: @pagy %>
+<% else %>
+  <div class="alert nu-soft-alert mb-0">No audit entries yet.</div>
+<% end %>

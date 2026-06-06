@@ -238,8 +238,15 @@ class LostItemsControllerTest < ActionDispatch::IntegrationTest
       status: "open"
     )
     assert_difference("LostItem.count", -1) do
-      delete lost_item_url(item)
+      assert_difference("AuditLog.count", 1) do
+        delete lost_item_url(item)
+      end
     end
+
+    log = AuditLog.order(:id).last
+    assert_equal "lost_item.destroy", log.action
+    assert_equal "Delete me", log.subject
+    assert_equal users(:admin), log.user
 
     assert_redirected_to lost_items_url
   end
