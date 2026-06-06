@@ -11,6 +11,7 @@ class FoundItemsController < ApplicationController
     @categories = filter_category_options(FoundItem, exclude: ListingCategories::LOST_FOUND_FILTER_EXCLUDED)
     @found_items = filter_where_in(@found_items, :category, params[:category], @categories)
     @found_items = filter_by_search(@found_items, params[:q])
+    @pagy, @found_items = paginate_listings(@found_items)
   end
 
   def show
