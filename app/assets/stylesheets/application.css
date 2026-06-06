@@ -193,6 +193,12 @@ a:not(.btn, .nav-link, .navbar-brand, .nu-clickable-card, .nu-browse-card, .skip
   font-size: 0.875rem;
 }
 
+/* #152: consistent pill shape for all main-content buttons (not a mix of rounded rect + pill) */
+.nu-body .btn {
+  border-radius: 999px;
+  font-weight: 600;
+}
+
 .nu-navbar-right {
   align-items: flex-start;
 }
