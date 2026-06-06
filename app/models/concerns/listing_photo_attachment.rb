@@ -8,9 +8,18 @@ module ListingPhotoAttachment
   ALLOWED_TYPES = %w[image/jpeg image/png image/gif image/webp].freeze
   ALLOWED_TYPES_DISPLAY = "JPEG, PNG, GIF, or WebP".freeze
 
-  included do
+  included do |base|
+    base.class_attribute :requires_listing_photo, instance_writer: false, default: false
+
     has_one_attached :photo
     validate :acceptable_listing_photo
+    validate :listing_photo_present, if: -> { self.class.requires_listing_photo }
+  end
+
+  class_methods do
+    def requires_listing_photo!
+      self.requires_listing_photo = true
+    end
   end
 
   def listing_image_available?
@@ -18,6 +27,12 @@ module ListingPhotoAttachment
   end
 
   private
+
+  def listing_photo_present
+    return if listing_image_available?
+
+    errors.add(:photo, "can't be blank — upload a photo or provide a photo URL")
+  end
 
   def acceptable_listing_photo
     return unless photo.attached?

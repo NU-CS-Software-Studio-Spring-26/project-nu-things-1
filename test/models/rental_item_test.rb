@@ -1,6 +1,14 @@
 require "test_helper"
 
 class RentalItemTest < ActiveSupport::TestCase
+  test "requires photo or image URL" do
+    item = rental_items(:one)
+    item.image_url = nil
+    item.photo.purge if item.photo.attached?
+    assert_not item.valid?
+    assert item.errors[:photo].any?
+  end
+
   test "average_rating and reviews_count from reviews" do
     item = rental_items(:one)
     assert_equal 2, item.reviews_count
@@ -36,7 +44,8 @@ class RentalItemTest < ActiveSupport::TestCase
       available_to: Date.new(2026, 12, 31),
       owner_name: "Sam Student",
       owner_email: owner.email,
-      status: "available"
+      status: "available",
+      image_url: "https://example.com/listing-photo.jpg"
     )
     assert item.posted_by?(owner)
     assert_not item.posted_by?(users(:admin))
@@ -58,7 +67,8 @@ class RentalItemTest < ActiveSupport::TestCase
       available_to: Date.new(2026, 12, 31),
       owner_name: "Sam Student",
       owner_email: owner.email,
-      status: "available"
+      status: "available",
+      image_url: "https://example.com/listing-photo.jpg"
     )
 
     assert_not item.can_leave_review?(reviewer)

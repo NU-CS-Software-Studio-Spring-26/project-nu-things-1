@@ -1,6 +1,10 @@
 <%# locals: (form:, record:) %>
+<% photo_required = record.class.requires_listing_photo %>
 <div data-controller="photo-preview">
-  <%= form.label :photo, "Upload photo (optional)", class: "form-label" %>
+  <%= form.label :photo, photo_required ? "Upload photo *" : "Upload photo (optional)", class: "form-label" %>
+  <% if photo_required %>
+    <small class="text-muted d-block mb-2">Required — upload a photo or provide a photo URL below.</small>
+  <% end %>
   <small class="text-muted d-block mb-2">Max file size: 5 MB. Supported formats: JPEG, PNG, GIF, WebP</small>
   <%= form.file_field :photo,
       accept: "image/png,image/jpeg,image/gif,image/webp",

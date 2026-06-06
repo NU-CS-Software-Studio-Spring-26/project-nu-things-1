@@ -1,6 +1,14 @@
 require "test_helper"
 
 class FoundItemTest < ActiveSupport::TestCase
+  test "requires photo or image URL" do
+    item = found_items(:one)
+    item.image_url = nil
+    item.photo.purge if item.photo.attached?
+    assert_not item.valid?
+    assert item.errors[:photo].any?
+  end
+
   test "requires core fields" do
     item = FoundItem.new
     assert_not item.valid?
@@ -37,7 +45,8 @@ class FoundItemTest < ActiveSupport::TestCase
       date_found: Date.current,
       contact_name: "A Finder",
       contact_email: "finder@u.northwestern.edu",
-      status: nil
+      status: nil,
+      image_url: "https://example.com/listing-photo.jpg"
     )
     assert_equal "unclaimed", item.reload.status
   end

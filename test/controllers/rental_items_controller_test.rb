@@ -14,7 +14,8 @@ class RentalItemsControllerTest < ActionDispatch::IntegrationTest
     owner_name: "Test Owner",
     owner_email: "owner@u.northwestern.edu",
     deposit_required: 20,
-    status: "available"
+    status: "available",
+    image_url: "https://example.com/listing-photo.jpg"
   }.freeze
 
   test "should get index" do

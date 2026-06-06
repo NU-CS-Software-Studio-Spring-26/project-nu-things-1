@@ -15,6 +15,7 @@ one:
   owner_email: admin@u.northwestern.edu
   deposit_required: 50.00
   status: available
+  image_url: "https://example.com/listing-photo.jpg"
 
 two:
   title: Study desk lamp
@@ -30,3 +31,4 @@ two:
   owner_email: owner@u.northwestern.edu
   deposit_required: 10.00
   status: available
+  image_url: "https://example.com/listing-photo.jpg"

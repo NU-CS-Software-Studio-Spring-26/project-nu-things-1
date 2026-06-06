@@ -84,7 +84,7 @@ class BoardFlowTest < ActionDispatch::IntegrationTest
           contact_name: "Finder Flow",
           contact_email: "finder.flow@u.northwestern.edu",
           status: "unclaimed",
-          image_url: "",
+          image_url: "https://example.com/listing-photo.jpg",
           storage_location: "Tech desk",
           color: "Black",
           brand: ""
@@ -103,7 +103,7 @@ class BoardFlowTest < ActionDispatch::IntegrationTest
         date_found: Date.new(2026, 4, 20),
         contact_name: "Finder Flow",
         contact_email: "finder.flow@u.northwestern.edu",
-        image_url: "",
+        image_url: "https://example.com/listing-photo.jpg",
         storage_location: "Returned to owner",
         color: "Black",
         brand: ""
