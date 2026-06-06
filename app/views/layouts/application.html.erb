@@ -62,7 +62,6 @@
             <li class="nav-item"><%= link_to "Rentals", rental_items_path, class: "nav-link" %></li>
             <li class="nav-item"><%= link_to "Marketplace", marketplace_listings_path, class: "nav-link" %></li>
             <% if signed_in? %>
-              <li class="nav-item"><%= link_to "AI Finder", assistant_path, class: "nav-link" %></li>
               <li class="nav-item">
                 <%= link_to conversations_path, class: "nav-link d-inline-flex align-items-center gap-1" do %>
                   Messages
@@ -132,6 +131,10 @@
         <%= render "shared/site_meta_links", extra_class: "nu-footer-meta" %>
       </div>
     </footer>
+
+    <% if signed_in? %>
+      <%= render "shared/assistant_widget" %>
+    <% end %>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     

@@ -1,5 +1,7 @@
 <% content_for :title, page_title("AI Finder") %>
 
+<p class="text-muted mb-4">The AI Finder chat is available from the purple chat button at the bottom-right of any page.</p>
+
 <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4">
   <div>
     <h2 class="h2 mb-1 text-purple">AI Finder</h2>
@@ -12,7 +14,7 @@
   <% end %>
 </div>
 
-<% unless @gemini_configured %>
+<% unless assistant_gemini_configured? %>
   <div class="alert alert-warning nu-soft-alert" role="alert">
     The AI assistant needs a <code>GEMINI_API_KEY</code> environment variable. See the README for setup.
   </div>
@@ -21,14 +23,7 @@
 <div class="card nu-card mb-4">
   <div class="card-body d-flex flex-column gap-3 nu-assistant-log" style="max-height: 28rem; overflow-y: auto;" role="log" aria-live="polite" aria-relevant="additions" data-controller="assistant-chat">
     <% if @messages.empty? %>
-      <div class="text-muted nu-prose">
-        <p class="mb-2"><strong>Try asking:</strong></p>
-        <ul class="mb-0">
-          <li>I lost a black backpack near SPAC</li>
-          <li>Need to rent a tent for camping</li>
-          <li>Cheap econ textbook for sale</li>
-        </ul>
-      </div>
+      <%= render "assistant/empty_state" %>
     <% else %>
       <% @messages.each do |message| %>
         <%= render "assistant/message", message: message %>
@@ -49,11 +44,11 @@
                   rows="3"
                   required
                   maxlength="1000"
-                  placeholder="e.g., I lost my AirPods case at Main Library yesterday"
-                  <%= "disabled" unless @gemini_configured %>></textarea>
+                  placeholder="e.g. tent, lost backpack, cheap textbook"
+                  <%= "disabled" unless assistant_gemini_configured? %>></textarea>
         <small class="text-muted">Results are suggestions only — always verify listings before contacting someone.</small>
       </div>
-      <%= submit_tag "Search", class: "btn btn-primary nu-pill-btn", disabled: !@gemini_configured %>
+      <%= submit_tag "Search", class: "btn btn-primary nu-pill-btn", disabled: !assistant_gemini_configured? %>
     <% end %>
   </div>
 </div>

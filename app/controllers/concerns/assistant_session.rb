@@ -5,10 +5,16 @@ module AssistantSession
 
   MAX_ASSISTANT_MESSAGES = 20
 
-  private
+  included do
+    helper_method :assistant_chat_messages, :assistant_gemini_configured? if respond_to?(:helper_method)
+  end
 
   def assistant_chat_messages
     session[:assistant_chat] ||= []
+  end
+
+  def assistant_gemini_configured?
+    Rails.application.config.x.gemini_api_key.present?
   end
 
   def assistant_history_for_prompt
@@ -25,6 +31,7 @@ module AssistantSession
     messages << assistant_message_entry("user", body)
     trim_assistant_chat!(messages)
     session[:assistant_chat] = messages
+    messages.last
   end
 
   def append_assistant_bot_message!(reply:, listings:)
@@ -32,11 +39,14 @@ module AssistantSession
     messages << assistant_message_entry("assistant", reply, listings: listings)
     trim_assistant_chat!(messages)
     session[:assistant_chat] = messages
+    messages.last
   end
 
   def clear_assistant_chat!
     session.delete(:assistant_chat)
   end
+
+  private
 
   def trim_assistant_chat!(messages)
     messages.shift while messages.size > MAX_ASSISTANT_MESSAGES
