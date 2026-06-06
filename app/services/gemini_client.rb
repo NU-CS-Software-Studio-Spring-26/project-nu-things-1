@@ -50,12 +50,23 @@ class GeminiClient
     response = connection.post(url, payload.to_json)
 
     unless response.success?
-      raise ApiError, "Gemini request failed (#{response.status})."
+      detail = extract_api_error(response.body)
+      raise ApiError, "Gemini request failed (#{response.status})#{detail}"
     end
 
     JSON.parse(response.body)
+  rescue Faraday::Error => e
+    raise ApiError, "Could not reach Gemini (#{e.class.name.demodulize})."
   rescue JSON::ParserError
     raise ApiError, "Gemini returned an invalid response."
+  end
+
+  def extract_api_error(body)
+    parsed = JSON.parse(body)
+    message = parsed.dig("error", "message").to_s.strip
+    message.present? ? ": #{message}" : ""
+  rescue JSON::ParserError
+    ""
   end
 
   def connection

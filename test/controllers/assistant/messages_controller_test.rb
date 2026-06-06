@@ -7,10 +7,12 @@ class Assistant::MessagesControllerTest < ActionDispatch::IntegrationTest
     @user = users(:nu_student)
     @original_key = Rails.application.config.x.gemini_api_key
     Rails.application.config.x.gemini_api_key = "test-key"
+    Rails.cache.delete("assistant_chat/v1/user/#{@user.id}")
   end
 
   teardown do
     Rails.application.config.x.gemini_api_key = @original_key
+    Rails.cache.delete("assistant_chat/v1/user/#{@user.id}")
   end
 
   test "requires sign in" do

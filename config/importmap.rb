@@ -6,8 +6,8 @@ pin "@hotwired/stimulus", to: "stimulus.min.js"
 pin "@hotwired/stimulus-loading", to: "stimulus-loading.js"
 pin_all_from "app/javascript/controllers", under: "controllers"
 
-# FullCalendar
-pin "@fullcalendar/core", to: "https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.10/index.global.js"
-pin "@fullcalendar/daygrid", to: "https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.10/index.global.js"
-pin "@fullcalendar/timegrid", to: "https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@6.1.10/index.global.js"
-pin "@fullcalendar/interaction", to: "https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@6.1.10/index.global.js"
+# FullCalendar (ESM builds — do not use index.global.js with importmap)
+pin "@fullcalendar/core", to: "https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.10/index.js"
+pin "@fullcalendar/daygrid", to: "https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.10/index.js"
+pin "@fullcalendar/timegrid", to: "https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@6.1.10/index.js"
+pin "@fullcalendar/interaction", to: "https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@6.1.10/index.js"

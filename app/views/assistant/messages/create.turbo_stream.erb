@@ -13,5 +13,5 @@
     <%= render "assistant/message", message: @bot_message, widget: true %>
   <% end %>
 
-  <%= turbo_stream.update "assistant-form-errors", "" %>
+  <%= turbo_stream.update "assistant-form-errors" do %><% end %>
 <% end %>

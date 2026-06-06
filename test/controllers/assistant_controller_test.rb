@@ -7,10 +7,12 @@ class AssistantControllerTest < ActionDispatch::IntegrationTest
     @user = users(:nu_student)
     @original_key = Rails.application.config.x.gemini_api_key
     Rails.application.config.x.gemini_api_key = "test-key"
+    clear_assistant_chat_cache_for(@user)
   end
 
   teardown do
     Rails.application.config.x.gemini_api_key = @original_key
+    clear_assistant_chat_cache_for(@user)
   end
 
   test "redirects guests to sign in" do
@@ -41,5 +43,11 @@ class AssistantControllerTest < ActionDispatch::IntegrationTest
     assert_no_match(/Stubbed reply/i, response.body)
   ensure
     Assistant::Chat.define_singleton_method(:process!, original)
+  end
+
+  private
+
+  def clear_assistant_chat_cache_for(user)
+    Rails.cache.delete("assistant_chat/v1/user/#{user.id}")
   end
 end
