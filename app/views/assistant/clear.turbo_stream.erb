@@ -1,0 +1,5 @@
+<%= turbo_stream.update "assistant-messages" do %>
+  <%= render "assistant/empty_state" %>
+<% end %>
+
+<%= turbo_stream.update "assistant-form-errors", "" %>

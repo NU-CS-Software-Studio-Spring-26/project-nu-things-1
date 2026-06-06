@@ -9,7 +9,7 @@ module Assistant
       lost (open missing-item reports), found (unclaimed found items), rentals (available gear to borrow),
       and marketplace (active buy/sell listings).
       Valid categories: #{ListingCategories::VALUES.join(", ")}.
-      Return JSON only.
+      Return JSON only. search_terms must be concrete item nouns only — never filler words.
     PROMPT
 
     def self.call(message:, history: [], client: GeminiClient.new)
@@ -41,22 +41,29 @@ module Assistant
 
         Return JSON with this shape:
         {
-          "boards": ["lost", "found", "rentals", "marketplace"],
-          "search_terms": ["keyword", "phrases"],
+          "boards": ["rentals", "marketplace"],
+          "search_terms": ["tent"],
           "category": null,
           "marketplace_type": null,
-          "intent_summary": "short plain-English summary of what the user wants"
+          "intent_summary": "user wants a tent"
         }
 
         Rules:
         - "boards" must use only: lost, found, rentals, marketplace.
-        - If the user lost something, search found first, then lost.
-        - If the user found something, search lost first, then found.
-        - If the user wants to borrow or rent, search rentals.
-        - If the user wants to buy or sell, search marketplace.
-        - "category" must be null or one of the valid categories exactly.
+        - If the user lost something, use ["found", "lost"].
+        - If the user found something, use ["lost", "found"].
+        - If the user wants to borrow, rent, or use something temporarily, use ["rentals"] and often ["marketplace"] too.
+        - If the user wants to buy or sell, use ["marketplace", "rentals"].
+        - If intent is unclear but they describe an item, search ["rentals", "marketplace", "found", "lost"].
+        - "search_terms" must be 1-4 concrete nouns/adjectives for the ITEM ONLY (e.g. "tent", "backpack", "econ textbook").
+          NEVER include filler words like: looking, find, for, buy, want, need, am, the, a.
+        - "category" must be null unless the user clearly names a valid category.
         - "marketplace_type" must be null, "for_sale", or "wanted".
-        - "search_terms" should be 1-6 useful keywords; omit filler words.
+
+        Examples:
+        - "I am looking for a tent" -> boards: ["rentals", "marketplace"], search_terms: ["tent"]
+        - "Buy tent" -> boards: ["marketplace", "rentals"], search_terms: ["tent"]
+        - "I lost my black backpack near SPAC" -> boards: ["found", "lost"], search_terms: ["backpack", "black"]
       PROMPT
     end
 
@@ -74,7 +81,7 @@ module Assistant
 
     def normalize(raw)
       boards = Array(raw["boards"]).map(&:to_s).map(&:downcase) & BOARDS
-      boards = default_boards if boards.empty?
+      boards = infer_boards if boards.empty?
 
       category = raw["category"].to_s.presence
       category = nil unless ListingCategories::VALUES.include?(category)
@@ -92,29 +99,30 @@ module Assistant
     end
 
     def normalize_terms(terms)
-      list = Array(terms).map { |t| t.to_s.strip.downcase }.reject(&:blank?)
-      list = @message.downcase.split(/\s+/).first(6) if list.empty?
-      list.uniq
+      extracted = SearchTerms.extract(terms, fallback_text: @message)
+      extracted.presence || SearchTerms.extract([ @message ], fallback_text: @message)
     end
 
-    def default_boards
-      %w[found lost rentals marketplace]
+    def infer_boards
+      fallback[:boards]
     end
 
     def fallback
-      boards = if @message.match?(/\b(rent|borrow|loan)\b/i)
-        %w[rentals]
-      elsif @message.match?(/\b(buy|sell|price|marketplace)\b/i)
-        %w[marketplace]
+      boards = if @message.match?(/\b(lost|missing|misplaced)\b/i)
+        %w[found lost]
       elsif @message.match?(/\b(found|picked up)\b/i)
         %w[lost found]
+      elsif @message.match?(/\b(rent|borrow|loan|hire)\b/i)
+        %w[rentals marketplace]
+      elsif @message.match?(/\b(buy|sell|purchase|marketplace)\b/i)
+        %w[marketplace rentals]
       else
-        %w[found lost rentals marketplace]
+        %w[rentals marketplace found lost]
       end
 
       {
         boards: boards,
-        search_terms: @message.downcase.split(/\s+/).reject { |w| w.length < 3 }.first(6),
+        search_terms: SearchTerms.extract([ @message ], fallback_text: @message),
         category: nil,
         marketplace_type: nil,
         intent_summary: @message

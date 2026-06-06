@@ -50,4 +50,19 @@ class Assistant::ListingSearchTest < ActiveSupport::TestCase
     candidates = Assistant::ListingSearch.call(parsed: parsed, limit: 3)
     assert_operator candidates.size, :<=, 3
   end
+
+  test "finds tent listings from natural language terms" do
+    parsed = {
+      boards: %w[rentals marketplace],
+      search_terms: Assistant::SearchTerms.extract([ "looking", "for", "tent" ]),
+      category: nil,
+      marketplace_type: nil,
+      intent_summary: "looking for a tent"
+    }
+
+    candidates = Assistant::ListingSearch.call(parsed: parsed, limit: 10)
+    titles = candidates.map(&:title).join(" ").downcase
+
+    assert_includes titles, "tent"
+  end
 end

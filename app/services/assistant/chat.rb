@@ -74,11 +74,11 @@ module Assistant
     end
 
     def no_results_reply(parsed)
-      terms = Array(parsed[:search_terms]).join(" ")
-      if terms.present?
-        "I didn't find listings matching \"#{terms}\" on Purple Post. Try broader keywords or check another board."
+      keywords = SearchTerms.extract(parsed[:search_terms], fallback_text: parsed[:intent_summary])
+      if keywords.any?
+        "I didn't find listings for #{keywords.join(', ')} on Purple Post. Try a shorter keyword (e.g. just \"tent\") or browse Rentals and Marketplace."
       else
-        "I didn't find matching listings. Try describing the item, whether you lost it, found it, want to rent it, or buy/sell it."
+        "I didn't find matching listings. Try naming the item in a few words — e.g. \"tent\", \"backpack\", or \"econ textbook\"."
       end
     end
   end

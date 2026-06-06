@@ -44,66 +44,95 @@ module Assistant
     end
 
     def call
-      candidates = []
-      per_board = [ (@limit.to_f / @parsed[:boards].size).ceil, 5 ].max
+      candidates = search_parsed(@parsed, apply_category: true)
+      return candidates if candidates.any?
 
-      @parsed[:boards].each do |board_key|
+      candidates = search_parsed(@parsed.merge(category: nil), apply_category: false)
+      return candidates if candidates.any?
+
+      keyword = SearchTerms.best_keyword(@parsed[:search_terms], fallback_text: @parsed[:intent_summary])
+      return [] if keyword.blank?
+
+      search_parsed(
+        @parsed.merge(
+          boards: %w[rentals marketplace found lost],
+          search_terms: [ keyword ],
+          category: nil,
+          marketplace_type: nil
+        ),
+        apply_category: false
+      )
+    end
+
+    private
+
+    def search_parsed(parsed, apply_category:)
+      candidates = []
+      boards = Array(parsed[:boards]).presence || %w[rentals marketplace found lost]
+      per_board = [ (@limit.to_f / boards.size).ceil, 5 ].max
+
+      boards.each do |board_key|
         break if candidates.size >= @limit
 
         remaining = @limit - candidates.size
-        board_candidates = search_board(board_key, limit: [ per_board, remaining ].min)
+        board_candidates = search_board(
+          board_key,
+          parsed: parsed,
+          apply_category: apply_category,
+          limit: [ per_board, remaining ].min
+        )
         candidates.concat(board_candidates)
       end
 
       candidates.first(@limit)
     end
 
-    private
-
-    def search_board(board_key, limit:)
+    def search_board(board_key, parsed:, apply_category:, limit:)
       config = BOARD_CONFIG[board_key]
       return [] unless config
 
       relation = config[:model].order(created_at: :desc)
       relation = config[:scope].call(relation)
-      relation = filter_category(relation, config[:model])
-      relation = filter_marketplace_type(relation, board_key)
-      relation = filter_search(relation, search_query)
+      relation = filter_category(relation, config[:model], parsed, apply_category)
+      relation = filter_marketplace_type(relation, board_key, parsed)
+      relation = filter_search(relation, parsed[:search_terms], parsed[:intent_summary])
 
       relation.limit(limit).map { |record| build_candidate(record, config) }
     end
 
-    def search_query
-      terms = Array(@parsed[:search_terms]).join(" ").strip
-      terms.presence || @parsed[:intent_summary].to_s
-    end
+    def filter_category(relation, model, parsed, apply_category)
+      return relation unless apply_category
 
-    def filter_category(relation, model)
-      category = @parsed[:category]
+      category = parsed[:category]
       return relation if category.blank?
       return relation unless model::CATEGORIES.include?(category)
 
       relation.where(category: category)
     end
 
-    def filter_marketplace_type(relation, board_key)
+    def filter_marketplace_type(relation, board_key, parsed)
       return relation unless board_key == "marketplace"
 
-      listing_type = @parsed[:marketplace_type]
+      listing_type = parsed[:marketplace_type]
       return relation if listing_type.blank?
 
       relation.where(listing_type: listing_type)
     end
 
-    def filter_search(relation, query)
-      term = query.to_s.strip
-      return relation if term.blank?
+    def filter_search(relation, terms, fallback_text)
+      keywords = SearchTerms.extract(terms, fallback_text: fallback_text)
+      return relation if keywords.empty?
 
-      pattern = "%#{ActiveRecord::Base.sanitize_sql_like(term)}%"
-      relation.where(
-        "LOWER(title) LIKE LOWER(?) OR LOWER(description) LIKE LOWER(?)",
-        pattern, pattern
-      )
+      clauses = keywords.flat_map do
+        [ "LOWER(title) LIKE LOWER(?)", "LOWER(description) LIKE LOWER(?)" ]
+      end
+      values = keywords.flat_map { |keyword| [ like(keyword), like(keyword) ] }
+
+      relation.where(clauses.join(" OR "), *values)
+    end
+
+    def like(keyword)
+      "%#{ActiveRecord::Base.sanitize_sql_like(keyword)}%"
     end
 
     def build_candidate(record, config)
