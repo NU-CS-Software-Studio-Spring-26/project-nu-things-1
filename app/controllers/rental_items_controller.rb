@@ -52,6 +52,7 @@ class RentalItemsController < ApplicationController
   end
 
   def destroy
+    record_audit("rental_item.destroy", auditable: @rental_item, metadata: { rental_item_id: @rental_item.id })
     @rental_item.destroy
     redirect_to rental_items_path, notice: "Rental item was successfully removed.", status: :see_other
   end

@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   include AssistantSession
+  include AuditableLogging
   include Pagy::Method
 
   LISTINGS_PER_PAGE = 12

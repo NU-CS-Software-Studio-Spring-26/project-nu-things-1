@@ -52,6 +52,8 @@ class MarketplaceListingsController < ApplicationController
   end
 
   def destroy
+    record_audit("marketplace_listing.destroy", auditable: @marketplace_listing,
+      metadata: { marketplace_listing_id: @marketplace_listing.id })
     @marketplace_listing.destroy
     redirect_to marketplace_listings_path, notice: "Listing was successfully removed.", status: :see_other
   end

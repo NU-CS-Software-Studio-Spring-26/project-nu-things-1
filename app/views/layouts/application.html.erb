@@ -61,6 +61,9 @@
             <li class="nav-item"><%= link_to "Found", found_items_path, class: "nav-link" %></li>
             <li class="nav-item"><%= link_to "Rentals", rental_items_path, class: "nav-link" %></li>
             <li class="nav-item"><%= link_to "Marketplace", marketplace_listings_path, class: "nav-link" %></li>
+            <% if admin? %>
+              <li class="nav-item"><%= link_to "Audit log", audit_logs_path, class: "nav-link" %></li>
+            <% end %>
             <% if signed_in? %>
               <li class="nav-item">
                 <%= link_to conversations_path, class: "nav-link d-inline-flex align-items-center gap-1" do %>
