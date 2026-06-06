@@ -251,6 +251,13 @@ normalize_listing_seed_category = lambda do |attrs|
   end
 end
 
+ensure_listing_image_url = lambda do |attrs|
+  return if attrs[:image_url].present?
+
+  slug = attrs[:title].to_s.parameterize.presence || "listing"
+  attrs[:image_url] = "https://picsum.photos/seed/nu-#{slug}/600/400"
+end
+
 lost_seed.each do |attrs|
   h = attrs.dup
   normalize_listing_seed_category.call(h)
@@ -495,6 +502,7 @@ found_seed = [
 found_seed.each do |attrs|
   h = attrs.dup
   normalize_listing_seed_category.call(h)
+  ensure_listing_image_url.call(h)
   FoundItem.create!(h)
 end
 
@@ -635,7 +643,11 @@ rental_seed = [
   }
 ]
 
-rental_seed.each { |attrs| RentalItem.create!(attrs) }
+rental_seed.each do |attrs|
+  h = attrs.dup
+  ensure_listing_image_url.call(h)
+  RentalItem.create!(h)
+end
 
 tent = RentalItem.find_by!(title: "4-Person Camping Tent")
 tent.rental_reviews.create!([
@@ -811,7 +823,11 @@ marketplace_seed = [
   }
 ]
 
-marketplace_seed.each { |attrs| MarketplaceListing.create!(attrs) }
+marketplace_seed.each do |attrs|
+  h = attrs.dup
+  ensure_listing_image_url.call(h)
+  MarketplaceListing.create!(h)
+end
 
 macbook = MarketplaceListing.find_by!(title: "M2 MacBook Air (13\", 512GB) — lightly used")
 macbook.marketplace_listing_reviews.create!([
