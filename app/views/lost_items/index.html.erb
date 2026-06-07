@@ -47,11 +47,11 @@
               <p class="card-text text-muted small mb-3 flex-grow-1">
                 <%= truncate(item.description, length: 100) %>
               </p>
-              <p class="nu-metadata small mb-3">
-                <strong>Category:</strong> <%= item.category_label %> ·
-                <strong>Lost at:</strong> <%= item.location_lost %> ·
-                <strong>Date:</strong> <%= item.date_lost&.strftime("%b %d, %Y") %>
-              </p>
+              <div class="nu-metadata small mb-3">
+                <span class="nu-metadata__item"><strong>Category:</strong> <%= item.category_label %></span>
+                <span class="nu-metadata__item"><strong>Lost at:</strong> <%= item.location_lost %></span>
+                <span class="nu-metadata__item"><strong>Date:</strong> <%= item.date_lost&.strftime("%b %d, %Y") %></span>
+              </div>
               <div class="d-grid mt-auto">
                 <span class="btn btn-sm btn-primary nu-card-cta">View details</span>
               </div>
