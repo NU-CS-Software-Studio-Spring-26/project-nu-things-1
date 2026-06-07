@@ -438,6 +438,20 @@ ul.list-group.nu-card.rounded {
   letter-spacing: 0.03em;
 }
 
+/* Exchange ratings on profile: scroll inside this wrapper only (not the list itself). */
+.nu-reputation-ratings-scroll {
+  max-height: calc(3 * 5.75rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-radius: 1rem;
+  box-shadow: 0 0.5rem 1.35rem rgba(75, 46, 131, 0.1);
+}
+
+.nu-reputation-ratings-scroll ul.list-group.nu-card.rounded {
+  overflow: hidden;
+  box-shadow: none;
+}
+
 .popover.nu-reputation-popover,
 .popover:has(.nu-reputation-breakdown) {
   max-width: 18rem;
