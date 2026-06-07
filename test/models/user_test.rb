@@ -147,11 +147,13 @@ class UserTest < ActiveSupport::TestCase
     assert_not users(:nu_student).admin?
   end
 
-  test "average_exchange_rating uses received booking exchange ratings" do
-    assert_in_delta 4.0, users(:admin).average_exchange_rating, 0.001
-    assert_equal 1, users(:admin).exchange_ratings_count
-    assert_in_delta 5.0, users(:nu_student).average_exchange_rating, 0.001
-    assert_equal 1, users(:nu_student).exchange_ratings_count
+  test "reputation_score uses received exchange ratings from rental handoffs" do
+    assert_in_delta 4.0, users(:admin).reputation_score, 0.001
+    assert_equal 1, users(:admin).reputation_ratings_count
+    assert_in_delta 5.0, users(:nu_student).reputation_score, 0.001
+    assert_equal 1, users(:nu_student).reputation_ratings_count
+    assert_equal users(:admin).reputation_score, users(:admin).average_exchange_rating
+    assert_equal users(:nu_student).reputation_ratings_count, users(:nu_student).exchange_ratings_count
   end
 
   test "rejects duplicate email" do

@@ -1,8 +1,8 @@
-<%# locals: item (MarketplaceListing) %>
-<div class="nu-rental-stats text-body" aria-label="Ratings and reviews">
-  <p class="mb-1 d-flex align-items-center gap-2 flex-wrap">
-    <span class="nu-rental-stats__stars text-purple mb-0" aria-hidden="true"><%= marketplace_rating_stars(item) %></span>
-    <span class="fw-semibold mb-0"><%= marketplace_rating_summary(item) %></span>
-  </p>
-  <p class="text-muted small mb-0"><%= marketplace_reviews_summary(item) %></p>
+<%# locals: item (MarketplaceListing) — poster exchange reputation, not per-item reviews %>
+<div class="nu-rental-stats text-body" aria-label="Poster reputation">
+  <% if item.user.present? %>
+    <%= render "application/user_reputation_score", user: item.user %>
+  <% else %>
+    <p class="text-muted small mb-0">No user reputation yet</p>
+  <% end %>
 </div>

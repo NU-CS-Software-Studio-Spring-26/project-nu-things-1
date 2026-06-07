@@ -1,0 +1,20 @@
+<%# locals: user, empty_message:, heading:, show_profile_link: %>
+<% heading = local_assigns.fetch(:heading, "User reputation") %>
+<% show_profile_link = local_assigns.fetch(:show_profile_link, true) %>
+<div class="card nu-card mb-3">
+  <div class="card-body">
+    <h2 class="h6 text-muted text-uppercase mb-3"><%= heading %></h2>
+
+    <% if user.present? %>
+      <%= render "application/user_reputation_score", user: user %>
+      <% if show_profile_link %>
+        <p class="small text-muted mb-0">
+          <%= link_to display_user_name(user), user_path(user), class: "link-primary" %>
+        </p>
+      <% end %>
+      <p class="small text-muted mb-0 mt-2">Based on exchange ratings from completed handoffs. Same score on rentals and marketplace.</p>
+    <% else %>
+      <p class="small text-muted mb-0"><%= empty_message %></p>
+    <% end %>
+  </div>
+</div>

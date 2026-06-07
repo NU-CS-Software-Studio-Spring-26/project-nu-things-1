@@ -126,13 +126,21 @@ class User < ApplicationRecord
     PurplePost.admin_emails.include?(email)
   end
 
-  def exchange_ratings_count
+  def reputation_ratings_count
     received_exchange_ratings.count
   end
 
-  def average_exchange_rating
+  def reputation_score
     avg = received_exchange_ratings.average(:rating)
     avg&.to_f
+  end
+
+  def exchange_ratings_count
+    reputation_ratings_count
+  end
+
+  def average_exchange_rating
+    reputation_score
   end
 
   def blocking?(other)

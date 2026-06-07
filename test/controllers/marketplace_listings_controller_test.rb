@@ -125,6 +125,21 @@ class MarketplaceListingsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "show displays user reputation for linked account" do
+    get marketplace_listing_url(@listing)
+    assert_response :success
+    assert_select "h2", text: /User reputation/i
+    assert_includes response.body, "5.0 / 5"
+    assert_includes response.body, "1 rating"
+  end
+
+  test "index displays user reputation on listing cards" do
+    get marketplace_listings_url
+    assert_response :success
+    assert_includes response.body, "5.0 / 5"
+    assert_not_includes response.body, "4.5 / 5"
+  end
+
   test "should redirect edit when not signed in" do
     get edit_marketplace_listing_url(@listing)
     assert_redirected_to new_session_url
