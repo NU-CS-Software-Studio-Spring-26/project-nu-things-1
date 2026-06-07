@@ -8,9 +8,11 @@ export default class extends Controller {
   }
 
   toggleOther() {
-    if (!this.hasReasonTarget || !this.hasOtherFieldTarget) return
+    if (!this.hasOtherFieldTarget) return
 
-    const showOther = this.reasonTarget.value === "other"
+    const showOther = this.reasonTargets.some(
+      (input) => input.value === "other" && input.checked
+    )
     this.otherFieldTarget.classList.toggle("d-none", !showOther)
 
     if (this.hasOtherInputTarget) {

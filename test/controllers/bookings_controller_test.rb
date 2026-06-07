@@ -79,7 +79,7 @@ class BookingsControllerTest < ActionDispatch::IntegrationTest
 
     assert_difference("BookingExchangeRating.count", 1) do
       post rate_exchange_rental_item_booking_path(@rental_item, @booking, phase: "pickup"), params: {
-        exchange_rating: { rating: 5, reason: "timeliness" }
+        exchange_rating: { rating: 5, reasons: [ "timeliness" ] }
       }
     end
 
@@ -88,7 +88,7 @@ class BookingsControllerTest < ActionDispatch::IntegrationTest
     assert_equal users(:nu_student), rating.ratee
     assert_equal "pickup", rating.interaction_phase
     assert_equal 5, rating.rating
-    assert_equal "timeliness", rating.reason
+    assert_equal [ "timeliness" ], rating.reasons
   end
 
   test "renter can rate owner for return after return complete" do
@@ -97,7 +97,7 @@ class BookingsControllerTest < ActionDispatch::IntegrationTest
 
     assert_difference("BookingExchangeRating.count", 1) do
       post rate_exchange_rental_item_booking_path(@rental_item, @booking, phase: "return"), params: {
-        exchange_rating: { rating: 4, reason: "communication" }
+        exchange_rating: { rating: 4, reasons: %w[communication kindness] }
       }
     end
 
@@ -106,20 +106,20 @@ class BookingsControllerTest < ActionDispatch::IntegrationTest
     assert_equal users(:admin), rating.ratee
     assert_equal "return", rating.interaction_phase
     assert_equal 4, rating.rating
-    assert_equal "communication", rating.reason
+    assert_equal %w[communication kindness], rating.reasons
   end
 
   test "user cannot rate same phase twice for one booking" do
     sign_in_as(users(:admin))
 
     post rate_exchange_rental_item_booking_path(@rental_item, @exchange_booking, phase: "pickup"), params: {
-      exchange_rating: { rating: 5, reason: "communication" }
+      exchange_rating: { rating: 5, reasons: [ "communication" ] }
     }
     assert_redirected_to rental_item_url(@rental_item)
 
     assert_no_difference("BookingExchangeRating.count") do
       post rate_exchange_rental_item_booking_path(@rental_item, @exchange_booking, phase: "pickup"), params: {
-        exchange_rating: { rating: 3, reason: "rudeness" }
+        exchange_rating: { rating: 3, reasons: [ "kindness" ] }
       }
     end
     assert_redirected_to rental_item_url(@rental_item)
@@ -136,7 +136,7 @@ class BookingsControllerTest < ActionDispatch::IntegrationTest
 
     assert_no_difference("BookingExchangeRating.count") do
       post rate_exchange_rental_item_booking_path(@rental_item, @exchange_booking, phase: "pickup"), params: {
-        exchange_rating: { rating: 5, reason: "communication" }
+        exchange_rating: { rating: 5, reasons: [ "communication" ] }
       }
     end
     assert_redirected_to rental_item_url(@rental_item)

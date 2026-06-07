@@ -32,7 +32,7 @@ class MarketplaceTransactionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_difference -> { MarketplaceExchangeRating.count }, 1 do
       post rate_exchange_conversation_marketplace_transaction_path(@conversation),
-           params: { exchange_rating: { rating: 5, reason: "communication" } }
+           params: { exchange_rating: { rating: 5, reasons: [ "communication" ] } }
     end
 
     assert_redirected_to conversation_path(@conversation)
@@ -46,7 +46,7 @@ class MarketplaceTransactionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_no_difference -> { MarketplaceExchangeRating.count } do
       post rate_exchange_conversation_marketplace_transaction_path(@conversation),
-           params: { exchange_rating: { rating: 5, reason: "timeliness" } }
+           params: { exchange_rating: { rating: 5, reasons: [ "timeliness" ] } }
     end
 
     assert_redirected_to conversation_path(@conversation)

@@ -4,7 +4,7 @@ owner_rated_renter:
   ratee: nu_student
   interaction_phase: pickup
   rating: 5
-  reason: timeliness
+  reasons: '["timeliness"]'
 
 renter_rated_owner:
   booking: past_confirmed
@@ -12,4 +12,4 @@ renter_rated_owner:
   ratee: admin
   interaction_phase: return
   rating: 4
-  reason: communication
+  reasons: '["communication"]'

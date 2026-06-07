@@ -83,7 +83,7 @@ class MarketplaceTransactionsController < ApplicationController
   end
 
   def exchange_rating_params
-    params.expect(exchange_rating: [ :rating, :reason, :body ])
+    params.expect(exchange_rating: [ :rating, :body, { reasons: [] } ])
   end
 
   def buyer_marked_notice
