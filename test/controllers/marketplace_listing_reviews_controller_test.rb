@@ -21,7 +21,7 @@ class MarketplaceListingReviewsControllerTest < ActionDispatch::IntegrationTest
 
   test "user must message listing before reviewing" do
     sign_in_as users(:admin)
-    Conversation.where(listable: @listing, starter: users(:admin)).delete_all
+    Conversation.where(listable: @listing, starter: users(:admin)).destroy_all
 
     post marketplace_listing_marketplace_listing_reviews_url(@listing),
          params: { marketplace_listing_review: { rating: 5, body: "Great!" } }

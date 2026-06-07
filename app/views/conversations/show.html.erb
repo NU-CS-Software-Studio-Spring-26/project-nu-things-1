@@ -49,6 +49,10 @@
   </div>
 </div>
 
+<% if @marketplace_transaction.present? %>
+  <%= render "conversations/marketplace_transaction", transaction: @marketplace_transaction %>
+<% end %>
+
 <% other = @conversation.other_participant(current_user) %>
 <div class="card nu-card">
   <div class="card-body">

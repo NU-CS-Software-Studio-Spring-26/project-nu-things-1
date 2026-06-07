@@ -14,6 +14,8 @@ class User < ApplicationRecord
                                     inverse_of: :rater, dependent: :destroy
   has_many :received_exchange_ratings, class_name: "BookingExchangeRating", foreign_key: :ratee_id,
                                        inverse_of: :ratee, dependent: :destroy
+  has_many :received_marketplace_exchange_ratings, class_name: "MarketplaceExchangeRating", foreign_key: :ratee_id,
+                                                   inverse_of: :ratee, dependent: :destroy
   has_many :conversation_participants, dependent: :destroy
   has_many :conversations, through: :conversation_participants
   has_many :started_conversations, class_name: "Conversation", foreign_key: :starter_id,
@@ -127,12 +129,14 @@ class User < ApplicationRecord
   end
 
   def reputation_ratings_count
-    received_exchange_ratings.count
+    received_exchange_ratings.count + received_marketplace_exchange_ratings.count
   end
 
   def reputation_score
-    avg = received_exchange_ratings.average(:rating)
-    avg&.to_f
+    ratings = received_exchange_ratings.pluck(:rating) + received_marketplace_exchange_ratings.pluck(:rating)
+    return nil if ratings.empty?
+
+    ratings.sum.to_f / ratings.size
   end
 
   def exchange_ratings_count

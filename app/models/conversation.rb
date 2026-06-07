@@ -7,6 +7,7 @@ class Conversation < ApplicationRecord
   has_many :conversation_participants, dependent: :destroy
   has_many :participants, through: :conversation_participants, source: :user
   has_many :conversation_messages, dependent: :destroy
+  has_one :marketplace_transaction, dependent: :destroy
 
   validates :subject, presence: true
   validates :last_message_at, presence: true

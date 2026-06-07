@@ -32,4 +32,14 @@ module ConversationsHelper
     preview = body.length > 80 ? "#{body[0, 77]}..." : body
     "#{prefix}#{preview}"
   end
+
+  def marketplace_transaction_summary(transaction)
+    if transaction.complete?
+      "Purchase closed on both sides"
+    elsif transaction.buyer_marked_complete? || transaction.seller_marked_complete?
+      "Waiting for the other person to confirm"
+    else
+      "Purchase still open"
+    end
+  end
 end
