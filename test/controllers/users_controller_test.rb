@@ -50,7 +50,8 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     sign_in_as(admin)
     get user_url(admin)
     assert_response :success
-    assert_select "h2", text: /Blocked users/i
+    assert_select "button.nu-profile-blocked-toggle", text: /Blocked users \(1\)/i
+    assert_select "#profileBlockedUsers.collapse"
     assert_select "a[href='#{user_path(student)}']", text: student.first_name
     assert_select "form[action='#{user_block_path(student)}'] input[name='_method'][value=delete]"
   end
@@ -59,7 +60,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     sign_in_as(users(:admin))
     get user_url(users(:admin))
     assert_response :success
-    assert_select "h2", text: /Blocked users/i
+    assert_select "button.nu-profile-blocked-toggle", text: /Blocked users/i
     assert_includes response.body, "You haven't blocked anyone."
   end
 
@@ -70,6 +71,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     sign_in_as(admin)
     get user_url(users(:nu_student))
     assert_response :success
-    assert_select "h2", text: /Blocked users/i, count: 0
+    assert_select "button.nu-profile-blocked-toggle", count: 0
+    assert_select "#profileBlockedUsers", count: 0
   end
 end
