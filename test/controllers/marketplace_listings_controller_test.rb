@@ -140,6 +140,13 @@ class MarketplaceListingsControllerTest < ActionDispatch::IntegrationTest
     assert_not_includes response.body, "4.5 / 5"
   end
 
+  test "marketplace listing card includes reputation popover trigger for other users" do
+    sign_in_as(users(:admin))
+    get marketplace_listings_url
+    assert_response :success
+    assert_select "[data-controller='reputation-popover']"
+  end
+
   test "should redirect edit when not signed in" do
     get edit_marketplace_listing_url(@listing)
     assert_redirected_to new_session_url

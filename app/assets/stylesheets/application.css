@@ -422,6 +422,27 @@ ul.list-group.nu-card.rounded {
   font-size: 0.875rem;
 }
 
+.nu-reputation-score__trigger {
+  cursor: help;
+  width: fit-content;
+}
+
+.nu-reputation-breakdown {
+  max-width: 16rem;
+  text-align: left;
+}
+
+.nu-reputation-breakdown dt {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.popover.nu-reputation-popover,
+.popover:has(.nu-reputation-breakdown) {
+  max-width: 18rem;
+}
+
 .nu-card > .card-img-top:first-child,
 .nu-card > .nu-listing-image-placeholder:first-child {
   border-top-left-radius: 1rem;

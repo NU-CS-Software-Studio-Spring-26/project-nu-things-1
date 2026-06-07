@@ -6,7 +6,7 @@
     <h2 class="h6 text-muted text-uppercase mb-3"><%= heading %></h2>
 
     <% if user.present? %>
-      <%= render "application/user_reputation_score", user: user %>
+      <%= render "application/user_reputation_score", user: user, show_breakdown: show_user_reputation_breakdown?(user) %>
       <% if show_profile_link %>
         <p class="small text-muted mb-0">
           <%= link_to display_user_name(user), user_path(user), class: "link-primary" %>

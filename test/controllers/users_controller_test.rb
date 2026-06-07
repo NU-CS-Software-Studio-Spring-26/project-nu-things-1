@@ -44,6 +44,13 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.body, "exchange ratings from completed handoffs"
   end
 
+  test "profile lists exchange ratings with listing links" do
+    get user_url(users(:admin))
+    assert_response :success
+    assert_select "h2", text: /Exchange ratings received/i
+    assert_select "a[href='#{rental_item_path(rental_items(:one))}']"
+  end
+
   test "own profile lists blocked users with unblock action" do
     admin = users(:admin)
     student = users(:nu_student)

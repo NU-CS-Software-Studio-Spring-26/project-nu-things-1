@@ -1,0 +1,43 @@
+<section>
+  <h2 class="h5 text-muted text-uppercase mb-3">Exchange ratings received</h2>
+  <p class="small text-muted mb-3">Ratings from completed rental handoffs and marketplace purchases. These feed this profile's reputation score.</p>
+
+  <% if @received_reputation_entries.any? %>
+    <ul class="list-group nu-card rounded">
+      <% @received_reputation_entries.each do |_time, source, rating| %>
+        <li class="list-group-item">
+          <div class="d-flex flex-column flex-sm-row gap-2 justify-content-between align-items-sm-start">
+            <div>
+              <p class="mb-1">
+                <span class="text-purple" aria-hidden="true"><%= marketplace_review_rating_stars(rating.rating) %></span>
+                <span class="fw-semibold"><%= rating.rating %> / 5</span>
+                <% if source == :rental %>
+                  <span class="text-muted">· <%= rental_exchange_phase_label(rating.interaction_phase) %></span>
+                <% else %>
+                  <span class="text-muted">· Marketplace purchase</span>
+                <% end %>
+              </p>
+              <p class="small mb-1">
+                <% if source == :rental %>
+                  <%= link_to rating.booking.rental_item.title, rating.booking.rental_item, class: "link-primary text-decoration-none" %>
+                  <span class="text-muted">· Rental</span>
+                <% else %>
+                  <%= link_to rating.marketplace_transaction.marketplace_listing.title, rating.marketplace_transaction.marketplace_listing, class: "link-primary text-decoration-none" %>
+                  <span class="text-muted">· Marketplace</span>
+                <% end %>
+              </p>
+              <% if rating.body.present? %>
+                <p class="small text-muted mb-0"><%= rating.body %></p>
+              <% end %>
+            </div>
+            <time class="small text-muted flex-shrink-0" datetime="<%= rating.created_at.iso8601 %>">
+              <%= rating.created_at.strftime("%b %-d, %Y") %>
+            </time>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="text-muted mb-0">No exchange ratings yet.</p>
+  <% end %>
+</section>

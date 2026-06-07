@@ -190,6 +190,27 @@ module ApplicationHelper
     user_reputation_stars(user, max: max)
   end
 
+  def show_user_reputation_breakdown?(user)
+    return false if user.blank?
+    return false if user.reputation_ratings_count.zero?
+
+    !signed_in? || user != current_user
+  end
+
+  def format_reputation_average(value)
+    return "—" if value.nil?
+
+    number_with_precision(value, precision: 1)
+  end
+
+  def rental_exchange_phase_label(phase)
+    case phase.to_s
+    when "pickup" then "Initial handoff"
+    when "return" then "Return handoff"
+    else phase.to_s.titleize
+    end
+  end
+
   def marketplace_category_slug(category)
     category.to_s.parameterize.presence || "other"
   end
