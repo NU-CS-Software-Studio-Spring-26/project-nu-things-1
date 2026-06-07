@@ -400,6 +400,28 @@ ul.list-group.nu-card.rounded {
   overflow: visible;
 }
 
+.nu-profile-blocked-toggle {
+  color: var(--bs-secondary-color);
+  text-decoration: none;
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
+}
+
+.nu-profile-blocked-toggle:hover,
+.nu-profile-blocked-toggle:focus {
+  color: var(--bs-body-color);
+  text-decoration: underline;
+}
+
+.nu-profile-blocked-panel {
+  max-width: 28rem;
+  margin-inline: auto;
+}
+
+.nu-profile-blocked-list .list-group-item {
+  font-size: 0.875rem;
+}
+
 .nu-card > .card-img-top:first-child,
 .nu-card > .nu-listing-image-placeholder:first-child {
   border-top-left-radius: 1rem;
