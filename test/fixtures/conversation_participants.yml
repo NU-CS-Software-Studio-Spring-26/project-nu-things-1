@@ -7,3 +7,13 @@ admin_on_student_lost:
   conversation: student_to_admin_lost
   user: admin
   last_read_at:
+
+admin_on_student_marketplace:
+  conversation: admin_to_student_marketplace
+  user: admin
+  last_read_at:
+
+student_on_admin_marketplace:
+  conversation: admin_to_student_marketplace
+  user: nu_student
+  last_read_at:

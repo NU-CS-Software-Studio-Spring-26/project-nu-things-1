@@ -25,6 +25,11 @@ Rails.application.routes.draw do
 
   resources :conversations, only: %i[index show] do
     resources :messages, only: %i[create], controller: "conversation_messages"
+    resource :marketplace_transaction, only: [], controller: "marketplace_transactions" do
+      patch :mark_buyer_complete
+      patch :mark_seller_complete
+      post :rate_exchange
+    end
   end
 
   post "lost_items/:lost_item_id/conversation", to: "listing_conversations#create", as: :lost_item_conversation

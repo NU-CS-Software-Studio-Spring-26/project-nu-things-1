@@ -6,7 +6,7 @@
 <div class="mb-4">
   <p class="small text-muted text-uppercase mb-1">User reputation</p>
   <%= render "application/user_reputation_score", user: @user %>
-  <p class="small text-muted mb-0">Based on exchange ratings from completed handoffs. Same score on rentals and marketplace.</p>
+  <p class="small text-muted mb-0">Based on exchange ratings from completed handoffs and marketplace purchases. Same score on rentals and marketplace.</p>
 </div>
 
 <% if signed_in? && current_user != @user %>

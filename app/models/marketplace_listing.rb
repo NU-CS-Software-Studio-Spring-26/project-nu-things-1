@@ -11,6 +11,7 @@ class MarketplaceListing < ApplicationRecord
 
   has_many :conversations, as: :listable, dependent: :destroy
   has_many :marketplace_listing_reviews, -> { order(created_at: :desc) }, dependent: :destroy
+  has_many :marketplace_transactions, dependent: :destroy
 
   def reviews_count
     if marketplace_listing_reviews.loaded?

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_07_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_07_140100) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -165,6 +165,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_07_120000) do
     t.index ["user_id"], name: "index_lost_items_on_user_id"
   end
 
+  create_table "marketplace_exchange_ratings", force: :cascade do |t|
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.integer "marketplace_transaction_id", null: false
+    t.integer "ratee_id", null: false
+    t.integer "rater_id", null: false
+    t.integer "rating", null: false
+    t.datetime "updated_at", null: false
+    t.index ["marketplace_transaction_id", "rater_id", "ratee_id"], name: "index_marketplace_exchange_ratings_on_transaction_and_rater", unique: true
+    t.index ["marketplace_transaction_id"], name: "idx_on_marketplace_transaction_id_52d262a2d8"
+    t.index ["ratee_id"], name: "index_marketplace_exchange_ratings_on_ratee_id"
+    t.index ["rater_id"], name: "index_marketplace_exchange_ratings_on_rater_id"
+  end
+
   create_table "marketplace_listing_reviews", force: :cascade do |t|
     t.text "body"
     t.datetime "created_at", null: false
@@ -196,6 +210,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_07_120000) do
     t.datetime "updated_at", null: false
     t.integer "user_id"
     t.index ["user_id"], name: "index_marketplace_listings_on_user_id"
+  end
+
+  create_table "marketplace_transactions", force: :cascade do |t|
+    t.integer "buyer_id", null: false
+    t.datetime "buyer_marked_complete_at"
+    t.integer "conversation_id", null: false
+    t.datetime "created_at", null: false
+    t.integer "marketplace_listing_id", null: false
+    t.integer "seller_id", null: false
+    t.datetime "seller_marked_complete_at"
+    t.datetime "updated_at", null: false
+    t.index ["buyer_id"], name: "index_marketplace_transactions_on_buyer_id"
+    t.index ["conversation_id"], name: "index_marketplace_transactions_on_conversation_id", unique: true
+    t.index ["marketplace_listing_id"], name: "index_marketplace_transactions_on_marketplace_listing_id"
+    t.index ["seller_id"], name: "index_marketplace_transactions_on_seller_id"
   end
 
   create_table "rental_items", force: :cascade do |t|
@@ -413,9 +442,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_07_120000) do
   add_foreign_key "found_items", "users"
   add_foreign_key "found_items", "users", column: "claimed_by_user_id"
   add_foreign_key "lost_items", "users"
+  add_foreign_key "marketplace_exchange_ratings", "marketplace_transactions"
+  add_foreign_key "marketplace_exchange_ratings", "users", column: "ratee_id"
+  add_foreign_key "marketplace_exchange_ratings", "users", column: "rater_id"
   add_foreign_key "marketplace_listing_reviews", "marketplace_listings"
   add_foreign_key "marketplace_listing_reviews", "users"
   add_foreign_key "marketplace_listings", "users"
+  add_foreign_key "marketplace_transactions", "conversations"
+  add_foreign_key "marketplace_transactions", "marketplace_listings"
+  add_foreign_key "marketplace_transactions", "users", column: "buyer_id"
+  add_foreign_key "marketplace_transactions", "users", column: "seller_id"
   add_foreign_key "rental_items", "users"
   add_foreign_key "rental_reviews", "rental_items"
   add_foreign_key "rental_reviews", "users"

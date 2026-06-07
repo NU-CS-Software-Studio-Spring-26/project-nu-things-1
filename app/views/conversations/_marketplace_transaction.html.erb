@@ -1,0 +1,78 @@
+<%# locals: transaction (MarketplaceTransaction) %>
+<div class="card nu-card mb-4">
+  <div class="card-body">
+    <h2 class="h6 text-purple mb-2">Complete purchase</h2>
+    <p class="small text-muted mb-3">
+      Do not mark complete until the exchange is truly finished.
+      <strong>Buyers:</strong> only confirm after you have received the item.
+      <strong>Sellers:</strong> only confirm after you have received payment.
+      Each person must confirm individually. When both have confirmed, the purchase is closed and you can rate each other.
+    </p>
+
+    <p class="small mb-2"><strong>Status:</strong> <%= marketplace_transaction_summary(transaction) %></p>
+    <ul class="list-unstyled small mb-3">
+      <li>
+        <% if transaction.buyer_marked_complete? %>
+          <span class="text-success">Buyer confirmed item received</span>
+          <span class="text-muted">(<%= transaction.buyer_marked_complete_at.strftime("%b %-d, %Y") %>)</span>
+        <% else %>
+          <span class="text-muted">Buyer has not confirmed item received yet</span>
+        <% end %>
+      </li>
+      <li>
+        <% if transaction.seller_marked_complete? %>
+          <span class="text-success">Seller confirmed payment received</span>
+          <span class="text-muted">(<%= transaction.seller_marked_complete_at.strftime("%b %-d, %Y") %>)</span>
+        <% else %>
+          <span class="text-muted">Seller has not confirmed payment received yet</span>
+        <% end %>
+      </li>
+    </ul>
+
+    <div class="d-flex flex-wrap gap-2 mb-3">
+      <% if current_user.id == transaction.buyer_id && !transaction.buyer_marked_complete? %>
+        <%= button_to "I received the item",
+                      mark_buyer_complete_conversation_marketplace_transaction_path(@conversation),
+                      method: :patch,
+                      class: "btn btn-sm btn-primary",
+                      form: { data: { turbo_confirm: "Confirm you received the item? Only mark this after the item is in your hands. This closes the purchase on your side." } } %>
+      <% end %>
+
+      <% if current_user.id == transaction.seller_id && !transaction.seller_marked_complete? %>
+        <%= button_to "I received payment",
+                      mark_seller_complete_conversation_marketplace_transaction_path(@conversation),
+                      method: :patch,
+                      class: "btn btn-sm btn-primary",
+                      form: { data: { turbo_confirm: "Confirm you received payment? Only mark this after payment is in your account or hands. This closes the purchase on your side." } } %>
+      <% end %>
+    </div>
+
+    <% ratee = transaction.exchange_ratee_for(current_user) %>
+    <% if ratee %>
+      <div class="border-top pt-3">
+        <p class="small mb-2"><strong>Rate your exchange partner</strong></p>
+        <% if transaction.complete? %>
+          <% my_rating = transaction.exchange_rating_from_to(current_user, ratee) %>
+          <% their_rating = transaction.exchange_rating_from_to(ratee, current_user) %>
+          <% if my_rating %>
+            <p class="small text-muted mb-2">You rated: <span class="text-purple" aria-hidden="true"><%= marketplace_review_rating_stars(my_rating.rating) %></span></p>
+          <% else %>
+            <%= form_with url: rate_exchange_conversation_marketplace_transaction_path(@conversation),
+                          method: :post,
+                          scope: :exchange_rating,
+                          class: "needs-validation" do |form| %>
+              <%= form.select :rating, (1..5).map { |n| [ "#{n} star#{'s' if n != 1}", n ] }, { prompt: "Your rating" }, class: "form-select form-select-sm mb-2", required: true %>
+              <%= form.text_area :body, class: "form-control form-control-sm mb-2", rows: 2, placeholder: "Optional comment about this purchase" %>
+              <%= form.submit "Submit rating", class: "btn btn-sm btn-primary" %>
+            <% end %>
+          <% end %>
+          <% if their_rating %>
+            <p class="small text-muted mb-0">They rated you: <span class="text-purple" aria-hidden="true"><%= marketplace_review_rating_stars(their_rating.rating) %></span></p>
+          <% end %>
+        <% else %>
+          <p class="small text-muted mb-0">Both sides must confirm the purchase is complete before you can rate each other.</p>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
