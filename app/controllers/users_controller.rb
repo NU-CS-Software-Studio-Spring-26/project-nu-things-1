@@ -22,6 +22,17 @@ class UsersController < ApplicationController
     @claimed_found_items = scope.call(FoundItem.where(claimed_by_user_id: @user.id))
       .order(date_found: :desc, updated_at: :desc)
 
+    @received_rental_exchange_ratings = @user.received_exchange_ratings
+      .includes(booking: :rental_item)
+      .order(created_at: :desc)
+    @received_marketplace_exchange_ratings = @user.received_marketplace_exchange_ratings
+      .includes(marketplace_transaction: :marketplace_listing)
+      .order(created_at: :desc)
+    @received_reputation_entries = (
+      @received_rental_exchange_ratings.map { |rating| [ rating.created_at, :rental, rating ] } +
+      @received_marketplace_exchange_ratings.map { |rating| [ rating.created_at, :marketplace, rating ] }
+    ).sort_by(&:first).reverse
+
     return unless signed_in? && current_user == @user
 
     @blocked_users = current_user.blocked_users.order(:first_name, :email)

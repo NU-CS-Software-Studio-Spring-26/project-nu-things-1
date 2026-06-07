@@ -1,5 +1,22 @@
-<%# locals: user %>
-<p class="mb-1 d-flex align-items-center gap-2 flex-wrap" aria-label="User reputation">
-  <span class="text-purple" aria-hidden="true"><%= user_reputation_stars(user) %></span>
-  <span class="fw-semibold"><%= user_reputation_summary(user) %></span>
-</p>
+<%# locals: user, show_breakdown: false %>
+<% show_breakdown = local_assigns.fetch(:show_breakdown, false) && show_user_reputation_breakdown?(user) %>
+<% if show_breakdown %>
+  <div class="nu-reputation-score" data-controller="reputation-popover">
+    <div class="d-none" data-reputation-popover-target="content">
+      <%= render "application/user_reputation_breakdown", user: user %>
+    </div>
+    <p class="mb-1 d-flex align-items-center gap-2 flex-wrap nu-reputation-score__trigger"
+       data-reputation-popover-target="trigger"
+       tabindex="0"
+       role="button"
+       aria-label="User reputation. Hover for breakdown.">
+      <span class="text-purple" aria-hidden="true"><%= user_reputation_stars(user) %></span>
+      <span class="fw-semibold"><%= user_reputation_summary(user) %></span>
+    </p>
+  </div>
+<% else %>
+  <p class="mb-1 d-flex align-items-center gap-2 flex-wrap" aria-label="User reputation">
+    <span class="text-purple" aria-hidden="true"><%= user_reputation_stars(user) %></span>
+    <span class="fw-semibold"><%= user_reputation_summary(user) %></span>
+  </p>
+<% end %>

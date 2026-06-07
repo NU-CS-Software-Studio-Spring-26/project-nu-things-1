@@ -154,6 +154,16 @@ class UserTest < ActiveSupport::TestCase
     assert_equal 1, users(:nu_student).reputation_ratings_count
   end
 
+  test "reputation breakdown averages rental phases and marketplace separately" do
+    admin = users(:admin)
+    assert_in_delta 4.0, admin.average_rental_exchange_rating, 0.001
+    assert_equal 1, admin.rental_exchange_ratings_count
+    assert_nil admin.average_rental_pickup_rating
+    assert_in_delta 4.0, admin.average_rental_return_rating, 0.001
+    assert_nil admin.average_marketplace_exchange_rating
+    assert_equal 0, admin.marketplace_exchange_ratings_count
+  end
+
   test "rejects duplicate email" do
     email = "dup-uniqueness-test@u.northwestern.edu"
     User.create!(email: email, first_name: "Dup", password: "password123", password_confirmation: "password123")

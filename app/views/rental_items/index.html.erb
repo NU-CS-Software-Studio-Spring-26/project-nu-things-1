@@ -52,7 +52,7 @@
               <div class="mb-3">
                 <p class="h5 text-primary mb-2"><%= format_rental_rate(item) %></p>
                 <% if item.user.present? %>
-                  <%= render "application/user_reputation_score", user: item.user %>
+                  <%= render "application/user_reputation_score", user: item.user, show_breakdown: show_user_reputation_breakdown?(item.user) %>
                 <% else %>
                   <p class="text-muted small mb-1">No user reputation yet</p>
                 <% end %>

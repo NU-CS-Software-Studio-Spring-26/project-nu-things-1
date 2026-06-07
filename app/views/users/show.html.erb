@@ -5,7 +5,7 @@
 <p class="text-muted small mb-1">Profile — posts on <%= brand_name %>.</p>
 <div class="mb-4">
   <p class="small text-muted text-uppercase mb-1">User reputation</p>
-  <%= render "application/user_reputation_score", user: @user %>
+  <%= render "application/user_reputation_score", user: @user, show_breakdown: show_user_reputation_breakdown?(@user) %>
   <p class="small text-muted mb-0">Based on exchange ratings from completed handoffs and marketplace purchases. Same score on rentals and marketplace.</p>
 </div>
 
@@ -22,6 +22,8 @@
 <% end %>
 
 <div class="d-flex flex-column gap-5">
+
+  <%= render "users/reputation_ratings_received" %>
 
   <%# Lost items (authored) %>
   <section>

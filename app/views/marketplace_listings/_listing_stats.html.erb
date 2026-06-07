@@ -1,7 +1,7 @@
 <%# locals: item (MarketplaceListing) — poster exchange reputation, not per-item reviews %>
 <div class="nu-rental-stats text-body" aria-label="Poster reputation">
   <% if item.user.present? %>
-    <%= render "application/user_reputation_score", user: item.user %>
+    <%= render "application/user_reputation_score", user: item.user, show_breakdown: show_user_reputation_breakdown?(item.user) %>
   <% else %>
     <p class="text-muted small mb-0">No user reputation yet</p>
   <% end %>

@@ -139,6 +139,38 @@ class User < ApplicationRecord
     ratings.sum.to_f / ratings.size
   end
 
+  def rental_exchange_ratings_count
+    received_exchange_ratings.count
+  end
+
+  def marketplace_exchange_ratings_count
+    received_marketplace_exchange_ratings.count
+  end
+
+  def average_rental_exchange_rating
+    received_exchange_ratings.average(:rating)&.to_f
+  end
+
+  def average_marketplace_exchange_rating
+    received_marketplace_exchange_ratings.average(:rating)&.to_f
+  end
+
+  def average_rental_pickup_rating
+    received_exchange_ratings.where(interaction_phase: "pickup").average(:rating)&.to_f
+  end
+
+  def average_rental_return_rating
+    received_exchange_ratings.where(interaction_phase: "return").average(:rating)&.to_f
+  end
+
+  def rental_pickup_ratings_count
+    received_exchange_ratings.where(interaction_phase: "pickup").count
+  end
+
+  def rental_return_ratings_count
+    received_exchange_ratings.where(interaction_phase: "return").count
+  end
+
   def exchange_ratings_count
     reputation_ratings_count
   end

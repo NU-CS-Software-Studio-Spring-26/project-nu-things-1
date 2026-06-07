@@ -1,0 +1,24 @@
+<%# locals: user %>
+<div class="nu-reputation-breakdown small">
+  <p class="mb-2"><strong><%= pluralize(user.reputation_ratings_count, "rating") %></strong> · overall <%= format_reputation_average(user.reputation_score) %> / 5</p>
+  <dl class="mb-0">
+    <dt class="text-muted">Rentals</dt>
+    <dd class="mb-2">
+      <%= format_reputation_average(user.average_rental_exchange_rating) %> / 5
+      <% if user.rental_exchange_ratings_count.positive? %>
+        (<%= pluralize(user.rental_exchange_ratings_count, "rating") %>)
+      <% end %>
+      <ul class="list-unstyled mb-0 mt-1 ps-0">
+        <li>Initial handoff: <%= format_reputation_average(user.average_rental_pickup_rating) %> / 5</li>
+        <li>Return handoff: <%= format_reputation_average(user.average_rental_return_rating) %> / 5</li>
+      </ul>
+    </dd>
+    <dt class="text-muted">Marketplace</dt>
+    <dd class="mb-0">
+      <%= format_reputation_average(user.average_marketplace_exchange_rating) %> / 5
+      <% if user.marketplace_exchange_ratings_count.positive? %>
+        (<%= pluralize(user.marketplace_exchange_ratings_count, "rating") %>)
+      <% end %>
+    </dd>
+  </dl>
+</div>
