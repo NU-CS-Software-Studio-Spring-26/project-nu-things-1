@@ -7,18 +7,24 @@ class BookingExchangeRatingTest < ActiveSupport::TestCase
     @rating = booking_exchange_ratings(:owner_rated_renter)
   end
 
-  test "requires a valid reason" do
-    @rating.reason = nil
+  test "requires at least one valid reason" do
+    @rating.reasons = []
     assert_not @rating.valid?
-    assert_includes @rating.errors[:reason], "can't be blank"
+    assert_includes @rating.errors[:reasons], "select at least one"
 
-    @rating.reason = "invalid"
+    @rating.reasons = [ "invalid" ]
     assert_not @rating.valid?
-    assert_includes @rating.errors[:reason], "is not included in the list"
+    assert_includes @rating.errors[:reasons], "includes invalid options"
+  end
+
+  test "accepts multiple reasons" do
+    @rating.reasons = %w[communication kindness]
+    assert @rating.valid?
+    assert_equal "Communication · Kindness", @rating.reason_summary
   end
 
   test "other reason requires body up to 50 characters" do
-    @rating.reason = "other"
+    @rating.reasons = [ "other" ]
     @rating.body = nil
     assert_not @rating.valid?
     assert_includes @rating.errors[:body], "can't be blank when Other is selected"
@@ -32,8 +38,8 @@ class BookingExchangeRatingTest < ActiveSupport::TestCase
     assert_equal "Other: Late and unresponsive.", @rating.reason_summary
   end
 
-  test "clears body when reason is not other" do
-    @rating.reason = "communication"
+  test "clears body when other is not selected" do
+    @rating.reasons = [ "communication" ]
     @rating.body = "Should be cleared."
     @rating.valid?
 
