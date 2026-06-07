@@ -200,4 +200,25 @@
     <% end %>
   </section>
 
+  <% if signed_in? && current_user == @user %>
+    <section>
+      <h2 class="h5 text-muted text-uppercase mb-3">Blocked users</h2>
+      <p class="small text-muted mb-3">People you've blocked can't message you or see your listings. They can still view past rental bookings with you.</p>
+      <% if @blocked_users.any? %>
+        <ul class="list-group nu-card rounded">
+          <% @blocked_users.each do |blocked_user| %>
+            <li class="list-group-item d-flex flex-column flex-sm-row gap-2 align-items-sm-center justify-content-between">
+              <div class="min-w-0">
+                <%= link_to display_user_name(blocked_user), blocked_user, class: "fw-semibold text-purple text-decoration-none" %>
+              </div>
+              <%= button_to "Unblock", user_block_path(blocked_user), method: :delete, class: "btn btn-sm btn-outline-secondary flex-shrink-0" %>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="text-muted mb-0">You haven't blocked anyone.</p>
+      <% end %>
+    </section>
+  <% end %>
+
 </div>
