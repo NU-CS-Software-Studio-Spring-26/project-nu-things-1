@@ -127,6 +127,36 @@ class RentalItemsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_url
   end
 
+  test "blocked renter can view rental item with prior booking" do
+    admin = users(:admin)
+    student = users(:nu_student)
+    admin.block!(student)
+    item = rental_items(:one)
+
+    sign_in_as(student)
+    get rental_item_url(item)
+    assert_response :success
+    assert_select "h2", text: item.title
+    assert_select "input[type=submit][value='Request booking']", count: 0
+  end
+
+  test "blocked renter gets not found for rental without prior booking" do
+    admin = users(:admin)
+    student = users(:nu_student)
+    admin.block!(student)
+    item = RentalItem.create!(
+      VALID_RENTAL_PARAMS.merge(
+        user: admin,
+        title: "Blocked rental #{SecureRandom.hex(4)}",
+        owner_email: admin.email
+      )
+    )
+
+    sign_in_as(student)
+    get rental_item_url(item)
+    assert_response :not_found
+  end
+
   test "should destroy rental_item when admin" do
     sign_in_as(users(:admin))
     item = RentalItem.create!(

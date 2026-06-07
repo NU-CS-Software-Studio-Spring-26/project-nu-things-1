@@ -10,20 +10,21 @@ module Assistant
       :key, :type, :id, :title, :board_label, :reason, :path, :category, :location
     )
 
-    def self.process!(message:, history: [])
-      new(message: message, history: history).process!
+    def self.process!(message:, history: [], viewer: nil)
+      new(message: message, history: history, viewer: viewer).process!
     end
 
-    def initialize(message:, history:)
+    def initialize(message:, history:, viewer: nil)
       @message = message.to_s.strip
       @history = history
+      @viewer = viewer
     end
 
     def process!
       raise Error, "Message can't be blank." if @message.blank?
 
       parsed = QueryParser.call(message: @message, history: @history)
-      candidates = ListingSearch.call(parsed: parsed, limit: 20)
+      candidates = ListingSearch.call(parsed: parsed, limit: 20, viewer: @viewer)
 
       if candidates.empty?
         return Result.new(

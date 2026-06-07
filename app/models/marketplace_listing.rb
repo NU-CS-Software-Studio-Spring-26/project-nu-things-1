@@ -4,6 +4,7 @@ class MarketplaceListing < ApplicationRecord
   requires_listing_photo!
   include ListingTextLimits
   include ListableMessaging
+  include BlockableListings
   include ModeratedContent
 
   belongs_to :user, optional: true

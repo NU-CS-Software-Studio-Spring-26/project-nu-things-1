@@ -45,7 +45,7 @@
             <%= form.submit "Submit review", class: "btn btn-primary btn-sm" %>
           <% end %>
         </div>
-      <% elsif listing.poster_account && current_user != listing.poster_account %>
+      <% elsif can_message_listing?(listing) %>
         <p class="text-muted small mb-0 mt-3">
           <%= link_to "Send a message", "#", class: "link-primary", data: { bs_toggle: "modal", bs_target: "#contactModal" } %>
           about this listing before leaving a review.

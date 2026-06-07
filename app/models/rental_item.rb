@@ -4,6 +4,7 @@ class RentalItem < ApplicationRecord
   requires_listing_photo!
   include ListingTextLimits
   include ListableMessaging
+  include BlockableListings
   include ModeratedContent
 
   belongs_to :user, optional: true
@@ -33,6 +34,12 @@ class RentalItem < ApplicationRecord
 
   def past_renters_count
     bookings.completed_past.count
+  end
+
+  def accessible_with_prior_interaction?(viewer)
+    return false if viewer.blank?
+
+    bookings.exists?(user_id: viewer.id)
   end
 
   def posted_by?(user)

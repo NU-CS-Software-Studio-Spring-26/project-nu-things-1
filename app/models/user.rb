@@ -20,6 +20,12 @@ class User < ApplicationRecord
                                    inverse_of: :starter, dependent: :destroy
   has_many :conversation_messages, foreign_key: :sender_id, inverse_of: :sender, dependent: :destroy
   has_many :audit_logs, inverse_of: :user, dependent: :nullify
+  has_many :blocks_given, class_name: "UserBlock", foreign_key: :blocker_id,
+                          inverse_of: :blocker, dependent: :destroy
+  has_many :blocks_received, class_name: "UserBlock", foreign_key: :blocked_id,
+                             inverse_of: :blocked, dependent: :destroy
+  has_many :blocked_users, through: :blocks_given, source: :blocked
+  has_many :blockers, through: :blocks_received, source: :blocker
 
   attr_reader :password, :password_confirmation
   attr_writer :password_confirmation
@@ -127,6 +133,26 @@ class User < ApplicationRecord
   def average_exchange_rating
     avg = received_exchange_ratings.average(:rating)
     avg&.to_f
+  end
+
+  def blocking?(other)
+    return false if other.blank?
+
+    blocks_given.exists?(blocked_id: other.id)
+  end
+
+  def blocked_by?(other)
+    return false if other.blank?
+
+    blocks_received.exists?(blocker_id: other.id)
+  end
+
+  def block!(other)
+    blocks_given.find_or_create_by!(blocked: other)
+  end
+
+  def unblock!(other)
+    blocks_given.where(blocked: other).delete_all
   end
 
   private

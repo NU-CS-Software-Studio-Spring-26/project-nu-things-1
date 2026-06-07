@@ -37,6 +37,16 @@ class ConversationStarterTest < ActiveSupport::TestCase
     assert_equal baseline_messages + 2, second.conversation_messages.count
   end
 
+  test "raises when messaging a user who blocked the sender" do
+    listing = lost_items(:admin_owned)
+    sender = users(:nu_student)
+    users(:admin).block!(sender)
+
+    assert_raises(ConversationStarter::BlockedUser) do
+      ConversationStarter.start!(listable: listing, sender: sender, body: "Hi")
+    end
+  end
+
   test "raises when messaging own listing" do
     listing = lost_items(:one)
     sender = users(:nu_student)

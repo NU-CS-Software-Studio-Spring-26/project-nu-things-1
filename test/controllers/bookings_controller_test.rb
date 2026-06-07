@@ -9,6 +9,20 @@ class BookingsControllerTest < ActionDispatch::IntegrationTest
     @exchange_booking = bookings(:past_confirmed)
   end
 
+  test "blocked renter cannot create new booking" do
+    users(:admin).block!(users(:nu_student))
+    sign_in_as(users(:nu_student))
+
+    assert_no_difference("Booking.count") do
+      post rental_item_bookings_path(@rental_item), params: {
+        booking: { start_date: "2026-08-01", end_date: "2026-08-03", notes: "Hi" }
+      }
+    end
+
+    assert_redirected_to rental_items_url
+    assert_equal "You can't request bookings from this owner.", flash[:alert]
+  end
+
   test "create requires sign in" do
     assert_no_difference("Booking.count") do
       post rental_item_bookings_path(@rental_item), params: {

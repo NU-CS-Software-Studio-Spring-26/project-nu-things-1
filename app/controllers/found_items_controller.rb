@@ -7,7 +7,7 @@ class FoundItemsController < ApplicationController
              by: :report_rate_limit_key, with: :notify_rate_limit
 
   def index
-    @found_items = FoundItem.with_attached_photo.order(date_found: :desc, created_at: :desc)
+    @found_items = FoundItem.with_attached_photo.visible_to(current_user).order(date_found: :desc, created_at: :desc)
     @categories = filter_category_options(FoundItem, exclude: ListingCategories::LOST_FOUND_FILTER_EXCLUDED)
     @found_items = filter_where_in(@found_items, :category, params[:category], @categories)
     @found_items = filter_by_search(@found_items, params[:q])
@@ -89,6 +89,7 @@ class FoundItemsController < ApplicationController
 
   def set_found_item
     @found_item = FoundItem.with_attached_photo.find(params.expect(:id))
+    ensure_listing_visible!(@found_item)
   end
 
   def found_item_params

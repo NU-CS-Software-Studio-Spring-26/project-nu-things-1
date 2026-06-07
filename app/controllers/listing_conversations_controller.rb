@@ -23,6 +23,8 @@ class ListingConversationsController < ApplicationController
 
     conversation = ConversationStarter.start!(listable: listable, sender: current_user, body: body)
     redirect_to conversation_path(conversation), notice: "Your message has been sent."
+  rescue ConversationStarter::BlockedUser
+    redirect_to listable, alert: "You cannot message this user."
   rescue ConversationStarter::SelfMessage
     redirect_to listable, alert: "You cannot message your own listing."
   rescue ConversationStarter::OwnerMissing
@@ -35,7 +37,7 @@ class ListingConversationsController < ApplicationController
   private
 
   def find_listable
-    if params[:lost_item_id]
+    listable = if params[:lost_item_id]
       LostItem.find(params[:lost_item_id])
     elsif params[:found_item_id]
       FoundItem.find(params[:found_item_id])
@@ -46,5 +48,8 @@ class ListingConversationsController < ApplicationController
     else
       raise ActiveRecord::RecordNotFound
     end
+
+    ensure_listing_visible!(listable)
+    listable
   end
 end

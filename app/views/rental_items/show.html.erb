@@ -82,29 +82,37 @@
         </div>
       </div>
     <% elsif signed_in? %>
-      <div class="card nu-card mb-3">
-        <div class="card-body">
-          <h2 class="h6 text-muted text-uppercase mb-3">Request booking</h2>
-          <%= form_with url: rental_item_bookings_path(@rental_item), scope: :booking, method: :post, local: true, class: "needs-validation" do |f| %>
-            <div class="mb-3">
-              <%= f.label :start_date, "Start date", class: "form-label" %>
-              <%= f.date_field :start_date, class: "form-control", required: true, min: @rental_item.available_from, max: @rental_item.available_to %>
-            </div>
+      <% if can_request_booking?(@rental_item) %>
+        <div class="card nu-card mb-3">
+          <div class="card-body">
+            <h2 class="h6 text-muted text-uppercase mb-3">Request booking</h2>
+            <%= form_with url: rental_item_bookings_path(@rental_item), scope: :booking, method: :post, local: true, class: "needs-validation" do |f| %>
+              <div class="mb-3">
+                <%= f.label :start_date, "Start date", class: "form-label" %>
+                <%= f.date_field :start_date, class: "form-control", required: true, min: @rental_item.available_from, max: @rental_item.available_to %>
+              </div>
 
-            <div class="mb-3">
-              <%= f.label :end_date, "End date", class: "form-label" %>
-              <%= f.date_field :end_date, class: "form-control", required: true, min: @rental_item.available_from, max: @rental_item.available_to %>
-            </div>
+              <div class="mb-3">
+                <%= f.label :end_date, "End date", class: "form-label" %>
+                <%= f.date_field :end_date, class: "form-control", required: true, min: @rental_item.available_from, max: @rental_item.available_to %>
+              </div>
 
-            <div class="mb-3">
-              <%= f.label :notes, "Additional notes (optional)", class: "form-label" %>
-              <%= f.text_area :notes, class: "form-control", rows: 3, placeholder: "Ask about pickup, deposit, etc." %>
-            </div>
+              <div class="mb-3">
+                <%= f.label :notes, "Additional notes (optional)", class: "form-label" %>
+                <%= f.text_area :notes, class: "form-control", rows: 3, placeholder: "Ask about pickup, deposit, etc." %>
+              </div>
 
-            <%= f.submit "Request booking", class: "btn btn-primary w-100" %>
-          <% end %>
+              <%= f.submit "Request booking", class: "btn btn-primary w-100" %>
+            <% end %>
+          </div>
         </div>
-      </div>
+      <% elsif @renter_bookings.present? %>
+        <div class="card nu-card mb-3">
+          <div class="card-body">
+            <p class="text-muted small mb-0">You have a past or active booking with this owner. New booking requests are not available.</p>
+          </div>
+        </div>
+      <% end %>
 
       <% if @renter_bookings.present? %>
         <div class="card nu-card mb-3">
@@ -136,7 +144,7 @@
           <% if @rental_item.owner_phone.present? %>
             <p class="mb-3"><%= @rental_item.owner_phone %></p>
           <% end %>
-          <% if @rental_item.poster_account && current_user != @rental_item.poster_account %>
+          <% if can_message_listing?(@rental_item) %>
             <button class="btn btn-outline-primary w-100" data-bs-toggle="modal" data-bs-target="#contactModal">Send a message</button>
           <% elsif current_user == @rental_item.poster_account %>
             <p class="text-muted small mb-0">This is your listing. Check <%= link_to "Messages", conversations_path, class: "link-primary" %> for replies.</p>
@@ -164,7 +172,7 @@
   </div>
 </div>
 
-<% if signed_in? && @rental_item.poster_account && current_user != @rental_item.poster_account %>
+<% if can_message_listing?(@rental_item) %>
   <%= render "shared/listing_message_modal",
              listing_title: @rental_item.title,
              form_url: rental_item_conversation_path(@rental_item) %>

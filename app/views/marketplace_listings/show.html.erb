@@ -79,7 +79,7 @@
           <% if @marketplace_listing.contact_phone.present? %>
             <p class="mb-3"><%= @marketplace_listing.contact_phone %></p>
           <% end %>
-          <% if @marketplace_listing.poster_account && current_user != @marketplace_listing.poster_account %>
+          <% if can_message_listing?(@marketplace_listing) %>
             <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#contactModal">Send a message</button>
           <% elsif current_user == @marketplace_listing.poster_account %>
             <p class="text-muted small mb-0">This is your listing. Check <%= link_to "Messages", conversations_path, class: "link-primary" %> for replies.</p>
@@ -107,7 +107,7 @@
   </div>
 </div>
 
-<% if signed_in? && @marketplace_listing.poster_account && current_user != @marketplace_listing.poster_account %>
+<% if can_message_listing?(@marketplace_listing) %>
   <%= render "shared/listing_message_modal",
              listing_title: @marketplace_listing.title,
              form_url: marketplace_listing_conversation_path(@marketplace_listing) %>

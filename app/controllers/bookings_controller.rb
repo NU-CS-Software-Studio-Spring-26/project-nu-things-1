@@ -9,6 +9,11 @@ class BookingsController < ApplicationController
              by: -> { "booking_exchange_ratings/user/#{current_user.id}" }, with: :notify_rate_limit
 
   def create
+    unless @rental_item.visible_to?(current_user)
+      redirect_to rental_items_path, alert: "You can't request bookings from this owner."
+      return
+    end
+
     @booking = @rental_item.bookings.build(booking_params)
     @booking.user = current_user
     @booking.status = "pending"

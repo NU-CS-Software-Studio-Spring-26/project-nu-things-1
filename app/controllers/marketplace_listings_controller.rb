@@ -6,6 +6,7 @@ class MarketplaceListingsController < ApplicationController
   def index
     @marketplace_listings = MarketplaceListing.with_attached_photo
       .includes(:marketplace_listing_reviews)
+      .visible_to(current_user)
       .where(status: "active")
       .order(created_at: :desc)
     @marketplace_listings = filter_where_in(
@@ -64,6 +65,7 @@ class MarketplaceListingsController < ApplicationController
     @marketplace_listing = MarketplaceListing.with_attached_photo
       .includes(:marketplace_listing_reviews)
       .find(params.expect(:id))
+    ensure_listing_visible!(@marketplace_listing)
     if signed_in?
       @user_review = @marketplace_listing.marketplace_listing_reviews.find_by(user: current_user)
       @can_leave_review = @marketplace_listing.can_leave_review?(current_user)

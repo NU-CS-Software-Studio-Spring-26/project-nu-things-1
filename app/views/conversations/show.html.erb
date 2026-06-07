@@ -16,7 +16,16 @@
     </p>
     <% other = @conversation.other_participant(current_user) %>
     <% if other %>
-      <p class="small mb-0">Conversation with <strong><%= conversation_participant_name(other) %></strong></p>
+      <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <p class="small mb-0">Conversation with <strong><%= conversation_participant_name(other) %></strong></p>
+        <% if current_user.blocking?(other) %>
+          <%= button_to "Unblock user", user_block_path(other), method: :delete, class: "btn btn-sm btn-outline-secondary" %>
+        <% else %>
+          <%= button_to "Block user", user_block_path(other), method: :post,
+                        class: "btn btn-sm btn-outline-danger",
+                        form: { data: { turbo_confirm: "Block this user? They will not be able to message you or see your listings." } } %>
+        <% end %>
+      </div>
     <% end %>
   </div>
 </div>
@@ -40,9 +49,14 @@
   </div>
 </div>
 
+<% other = @conversation.other_participant(current_user) %>
+<% blocked_from_replying = other.present? && other.blocking?(current_user) %>
 <div class="card nu-card">
   <div class="card-body">
     <h2 class="h6 text-purple mb-3">Reply</h2>
+    <% if blocked_from_replying %>
+      <p class="text-muted small mb-0">You can no longer reply in this conversation.</p>
+    <% else %>
     <%= form_with model: @new_message,
                   url: conversation_messages_path(@conversation),
                   local: true,
@@ -60,6 +74,7 @@
         <% end %>
       </div>
       <%= f.submit "Send reply", class: "btn btn-primary nu-pill-btn" %>
+    <% end %>
     <% end %>
   </div>
 </div>

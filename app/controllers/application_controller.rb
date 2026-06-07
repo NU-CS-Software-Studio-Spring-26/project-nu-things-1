@@ -23,7 +23,8 @@ class ApplicationController < ActionController::Base
     /marketplace_listings/new
   ].freeze
 
-  helper_method :current_user, :signed_in?, :admin?, :can_edit_post?, :unread_conversations_count
+  helper_method :current_user, :signed_in?, :admin?, :can_edit_post?, :unread_conversations_count,
+                :can_message_listing?, :can_request_booking?, :blocked_by_poster?
 
   def unread_conversations_count
     return 0 unless signed_in?
@@ -177,6 +178,33 @@ class ApplicationController < ActionController::Base
       "LOWER(title) LIKE LOWER(?) OR LOWER(description) LIKE LOWER(?)",
       pattern, pattern
     )
+  end
+
+  def blocked_by_poster?(listable)
+    return false unless signed_in?
+
+    listable.visible_to?(current_user) == false
+  end
+
+  def can_message_listing?(listable)
+    return false unless signed_in?
+
+    poster = listable.poster_account
+    poster.present? && poster != current_user && listable.visible_to?(current_user)
+  end
+
+  def can_request_booking?(rental_item)
+    return false unless signed_in?
+    return false if rental_item.posted_by?(current_user)
+
+    rental_item.visible_to?(current_user) && rental_item.status == "available"
+  end
+
+  def ensure_listing_visible!(listing)
+    return unless signed_in?
+    return if listing.viewable_to?(current_user)
+
+    raise ActiveRecord::RecordNotFound
   end
 
   def paginate_listings(relation)
