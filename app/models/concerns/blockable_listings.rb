@@ -11,16 +11,15 @@ module BlockableListings
       return all if blocker_ids.empty?
 
       blocker_emails = User.where(id: blocker_ids).pluck(:email).filter_map { |email| User.normalize_email(email) }
-      email_column = poster_email_column_name
-      table = table_name
 
-      return all if email_column.blank?
-
-      where(
-        "NOT (#{table}.user_id IN (?) OR LOWER(#{table}.#{email_column}) IN (?))",
-        blocker_ids,
-        blocker_emails
-      )
+      case poster_email_column_name
+      when "contact_email"
+        where("NOT (user_id IN (?) OR LOWER(contact_email) IN (?))", blocker_ids, blocker_emails)
+      when "owner_email"
+        where("NOT (user_id IN (?) OR LOWER(owner_email) IN (?))", blocker_ids, blocker_emails)
+      else
+        all
+      end
     end
 
     def poster_email_column_name
