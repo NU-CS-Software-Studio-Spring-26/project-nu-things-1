@@ -698,8 +698,18 @@ ul.list-group.nu-card.rounded {
 }
 
 .nu-metadata {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
   color: var(--nu-text-muted);
   font-size: 0.93rem;
+}
+
+.nu-metadata__item {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .nu-metadata strong {
