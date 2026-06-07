@@ -1,0 +1,5 @@
+<%# locals: user %>
+<p class="mb-1 d-flex align-items-center gap-2 flex-wrap" aria-label="User reputation">
+  <span class="text-purple" aria-hidden="true"><%= user_reputation_stars(user) %></span>
+  <span class="fw-semibold"><%= user_reputation_summary(user) %></span>
+</p>

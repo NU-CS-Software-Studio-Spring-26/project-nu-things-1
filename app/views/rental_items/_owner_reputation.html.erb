@@ -1,19 +1,4 @@
 <%# locals: item (RentalItem) %>
-<% owner = item.user %>
-<div class="card nu-card mb-3">
-  <div class="card-body">
-    <h2 class="h6 text-muted text-uppercase mb-3">Owner reputation</h2>
-
-    <% if owner.present? %>
-      <p class="mb-1 d-flex align-items-center gap-2 flex-wrap">
-        <span class="text-purple" aria-hidden="true"><%= user_exchange_rating_stars(owner) %></span>
-        <span class="fw-semibold"><%= user_exchange_rating_summary(owner) %></span>
-      </p>
-      <p class="small text-muted mb-0">
-        <%= link_to display_user_name(owner), user_path(owner), class: "link-primary" %>
-      </p>
-    <% else %>
-      <p class="small text-muted mb-0">Owner reputation appears once this listing is linked to a user account.</p>
-    <% end %>
-  </div>
-</div>
+<%= render "application/user_reputation",
+           user: item.user,
+           empty_message: "User reputation appears once this listing is linked to a Northwestern account." %>

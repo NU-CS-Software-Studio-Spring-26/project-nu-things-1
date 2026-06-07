@@ -167,19 +167,27 @@ module ApplicationHelper
     ("★" * filled) + ("☆" * (max - filled))
   end
 
-  def user_exchange_rating_summary(user)
-    count = user.exchange_ratings_count
+  def user_reputation_summary(user)
+    count = user.reputation_ratings_count
     return "No exchange ratings yet" if count.zero?
 
-    "#{number_with_precision(user.average_exchange_rating, precision: 1)} / 5 (#{pluralize(count, 'rating')})"
+    "#{number_with_precision(user.reputation_score, precision: 1)} / 5 (#{pluralize(count, 'rating')})"
+  end
+
+  def user_reputation_stars(user, max: 5)
+    count = user.reputation_ratings_count
+    return "☆" * max if count.zero?
+
+    filled = user.reputation_score.to_f.round.clamp(0, max)
+    ("★" * filled) + ("☆" * (max - filled))
+  end
+
+  def user_exchange_rating_summary(user)
+    user_reputation_summary(user)
   end
 
   def user_exchange_rating_stars(user, max: 5)
-    count = user.exchange_ratings_count
-    return "☆" * max if count.zero?
-
-    filled = user.average_exchange_rating.to_f.round.clamp(0, max)
-    ("★" * filled) + ("☆" * (max - filled))
+    user_reputation_stars(user, max: max)
   end
 
   def marketplace_category_slug(category)

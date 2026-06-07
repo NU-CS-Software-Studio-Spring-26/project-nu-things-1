@@ -5,7 +5,7 @@ class MarketplaceListingsController < ApplicationController
 
   def index
     @marketplace_listings = MarketplaceListing.with_attached_photo
-      .includes(:marketplace_listing_reviews)
+      .includes(:marketplace_listing_reviews, :user)
       .visible_to(current_user)
       .where(status: "active")
       .order(created_at: :desc)
