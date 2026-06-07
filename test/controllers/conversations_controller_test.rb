@@ -29,6 +29,24 @@ class ConversationsControllerTest < ActionDispatch::IntegrationTest
     assert participant.reload.last_read_at.present?
   end
 
+  test "blocked user can view conversation history" do
+    users(:admin).block!(users(:nu_student))
+    conversation = conversations(:student_to_admin_lost)
+
+    get conversation_path(conversation)
+    assert_response :success
+    assert_includes response.body, conversation_messages(:student_first).body
+    assert_select "input[type=submit][value='Send reply']", count: 0
+  end
+
+  test "blocked user still sees conversation in index" do
+    users(:admin).block!(users(:nu_student))
+
+    get conversations_path
+    assert_response :success
+    assert_match conversations(:student_to_admin_lost).subject, response.body
+  end
+
   test "cannot view conversation user is not part of" do
     orphan = Conversation.create!(
       listable: lost_items(:two),

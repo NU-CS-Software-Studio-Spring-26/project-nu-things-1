@@ -20,7 +20,7 @@ class ConversationStarter
     owner = @listable.poster_account
     raise OwnerMissing, "poster account" if owner.nil?
     raise SelfMessage, "self" if owner.id == @sender.id
-    raise BlockedUser, "blocked" if owner.blocking?(@sender)
+    raise BlockedUser, "blocked" if messaging_blocked_between?(owner, @sender)
 
     conversation = nil
 
@@ -44,6 +44,10 @@ class ConversationStarter
   end
 
   private
+
+  def messaging_blocked_between?(owner, sender)
+    owner.blocking?(sender) || sender.blocking?(owner)
+  end
 
   def ensure_participants!(conversation, owner, sender)
     [ owner, sender ].each do |user|

@@ -15,7 +15,7 @@
     <% else %>
       <%= button_to "Block user", user_block_path(@user), method: :post,
                     class: "btn btn-sm btn-outline-danger",
-                    form: { data: { turbo_confirm: "Block this user? They will not be able to message you or see your listings." } } %>
+                    form: { data: { turbo_confirm: "Block this user? They won't be able to send new messages or see your listings." } } %>
     <% end %>
   </div>
 <% end %>
@@ -216,7 +216,7 @@
     </p>
     <div class="collapse" id="profileBlockedUsers">
       <div class="nu-profile-blocked-panel pt-2 pb-1">
-        <p class="small text-muted text-center mb-3">People you've blocked can't message you or see your listings. They can still view past rental bookings with you.</p>
+        <p class="small text-muted text-center mb-3">People you've blocked can't send new messages or see your listings. Past chat history stays visible, but neither of you can reply.</p>
         <% if @blocked_users.any? %>
           <ul class="list-group nu-card rounded nu-profile-blocked-list">
             <% @blocked_users.each do |blocked_user| %>

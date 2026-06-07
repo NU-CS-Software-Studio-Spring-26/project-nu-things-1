@@ -24,7 +24,8 @@ class ApplicationController < ActionController::Base
   ].freeze
 
   helper_method :current_user, :signed_in?, :admin?, :can_edit_post?, :unread_conversations_count,
-                :can_message_listing?, :can_request_booking?, :blocked_by_poster?
+                :can_message_listing?, :can_request_booking?, :blocked_by_poster?,
+                :conversation_messaging_blocked?
 
   def unread_conversations_count
     return 0 unless signed_in?
@@ -198,6 +199,15 @@ class ApplicationController < ActionController::Base
     return false if rental_item.posted_by?(current_user)
 
     rental_item.visible_to?(current_user) && rental_item.status == "available"
+  end
+
+  def conversation_messaging_blocked?(conversation)
+    return false unless signed_in?
+
+    other = conversation.other_participant(current_user)
+    return false if other.blank?
+
+    current_user.blocking?(other) || other.blocking?(current_user)
   end
 
   def ensure_listing_visible!(listing)

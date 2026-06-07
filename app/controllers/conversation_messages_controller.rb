@@ -10,8 +10,8 @@ class ConversationMessagesController < ApplicationController
 
   def create
     other = @conversation.other_participant(current_user)
-    if other&.blocking?(current_user)
-      redirect_to conversations_path, alert: "You cannot message this user."
+    if conversation_messaging_blocked?(@conversation)
+      redirect_to conversation_path(@conversation), alert: messaging_blocked_alert(other)
       return
     end
 
@@ -39,5 +39,13 @@ class ConversationMessagesController < ApplicationController
 
   def message_params
     params.require(:conversation_message).permit(:body)
+  end
+
+  def messaging_blocked_alert(other)
+    if other.present? && current_user.blocking?(other)
+      "You blocked this user. Unblock them to send messages again."
+    else
+      "You can no longer send messages in this conversation."
+    end
   end
 end
