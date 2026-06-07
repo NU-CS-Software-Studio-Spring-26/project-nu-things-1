@@ -83,7 +83,7 @@
             <h2 class="h6 text-muted text-uppercase">Contact</h2>
             <p class="mb-1"><strong><%= @lost_item.contact_name %></strong></p>
             <p class="mb-3"><%= mail_to @lost_item.contact_email, @lost_item.contact_email, class: "link-primary" %></p>
-            <% if @lost_item.poster_account && current_user != @lost_item.poster_account %>
+            <% if can_message_listing?(@lost_item) %>
               <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#contactModal">Send a message</button>
             <% elsif current_user == @lost_item.poster_account %>
               <p class="text-muted small mb-0">This is your listing. Check <%= link_to "Messages", conversations_path, class: "link-primary" %> for replies.</p>
@@ -107,7 +107,7 @@
 
 <%= render "shared/listing_report_modal", form_url: report_lost_item_path(@lost_item), listing_title: @lost_item.title %>
 
-<% if signed_in? && @lost_item.poster_account && current_user != @lost_item.poster_account %>
+<% if can_message_listing?(@lost_item) %>
   <%= render "shared/listing_message_modal",
              listing_title: @lost_item.title,
              form_url: lost_item_conversation_path(@lost_item) %>

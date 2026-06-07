@@ -8,6 +8,18 @@
   <span class="text-muted"><%= user_exchange_rating_summary(@user) %></span>
 </p>
 
+<% if signed_in? && current_user != @user %>
+  <div class="mb-4">
+    <% if current_user.blocking?(@user) %>
+      <%= button_to "Unblock user", user_block_path(@user), method: :delete, class: "btn btn-sm btn-outline-secondary" %>
+    <% else %>
+      <%= button_to "Block user", user_block_path(@user), method: :post,
+                    class: "btn btn-sm btn-outline-danger",
+                    form: { data: { turbo_confirm: "Block this user? They will not be able to message you or see your listings." } } %>
+    <% end %>
+  </div>
+<% end %>
+
 <div class="d-flex flex-column gap-5">
 
   <%# Lost items (authored) %>

@@ -34,13 +34,14 @@ module Assistant
       }
     }.freeze
 
-    def self.call(parsed:, limit: 20)
-      new(parsed: parsed, limit: limit).call
+    def self.call(parsed:, limit: 20, viewer: nil)
+      new(parsed: parsed, limit: limit, viewer: viewer).call
     end
 
-    def initialize(parsed:, limit:)
+    def initialize(parsed:, limit:, viewer: nil)
       @parsed = parsed
       @limit = limit
+      @viewer = viewer
     end
 
     def call
@@ -92,6 +93,7 @@ module Assistant
       return [] unless config
 
       relation = config[:model].order(created_at: :desc)
+      relation = relation.visible_to(@viewer)
       relation = config[:scope].call(relation)
       relation = filter_category(relation, config[:model], parsed, apply_category)
       relation = filter_marketplace_type(relation, board_key, parsed)

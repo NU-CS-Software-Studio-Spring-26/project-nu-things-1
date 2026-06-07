@@ -3,6 +3,9 @@
 class UsersController < ApplicationController
   def show
     @user = User.find(params.expect(:id))
+    if signed_in? && current_user != @user && @user.blocking?(current_user)
+      raise ActiveRecord::RecordNotFound
+    end
 
     scope = ->(rel) { rel.with_attached_photo }
 

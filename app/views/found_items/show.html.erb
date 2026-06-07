@@ -106,7 +106,7 @@
             <h2 class="h6 text-muted text-uppercase">Contact</h2>
             <p class="mb-1"><strong><%= @found_item.contact_name %></strong></p>
             <p class="mb-3"><%= mail_to @found_item.contact_email, @found_item.contact_email, class: "link-primary" %></p>
-            <% if @found_item.poster_account && current_user != @found_item.poster_account %>
+            <% if can_message_listing?(@found_item) %>
               <button class="btn btn-primary w-100" type="button" data-bs-toggle="modal" data-bs-target="#contactModal">Send a message</button>
             <% elsif current_user == @found_item.poster_account %>
               <p class="text-muted small mb-0">This is your listing. Check <%= link_to "Messages", conversations_path, class: "link-primary" %> for replies.</p>
@@ -130,7 +130,7 @@
 
 <%= render "shared/listing_report_modal", form_url: report_found_item_path(@found_item), listing_title: @found_item.title %>
 
-<% if signed_in? && @found_item.poster_account && current_user != @found_item.poster_account %>
+<% if can_message_listing?(@found_item) %>
   <%= render "shared/listing_message_modal",
              listing_title: @found_item.title,
              form_url: found_item_conversation_path(@found_item) %>

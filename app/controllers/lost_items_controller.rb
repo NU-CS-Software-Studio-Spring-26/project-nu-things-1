@@ -7,7 +7,7 @@ class LostItemsController < ApplicationController
              by: :report_rate_limit_key, with: :notify_rate_limit
 
   def index
-    @lost_items = LostItem.with_attached_photo.order(date_lost: :desc, created_at: :desc)
+    @lost_items = LostItem.with_attached_photo.visible_to(current_user).order(date_lost: :desc, created_at: :desc)
     @categories = filter_category_options(LostItem, exclude: ListingCategories::LOST_FOUND_FILTER_EXCLUDED)
     @lost_items = filter_where_in(@lost_items, :category, params[:category], @categories)
     @lost_items = filter_by_search(@lost_items, params[:q])
@@ -89,6 +89,7 @@ class LostItemsController < ApplicationController
 
   def set_lost_item
     @lost_item = LostItem.with_attached_photo.find(params.expect(:id))
+    ensure_listing_visible!(@lost_item)
   end
 
   def lost_item_params

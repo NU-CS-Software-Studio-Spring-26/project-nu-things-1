@@ -9,6 +9,12 @@ class ConversationMessagesController < ApplicationController
              only: :create
 
   def create
+    other = @conversation.other_participant(current_user)
+    if other&.blocking?(current_user)
+      redirect_to conversations_path, alert: "You cannot message this user."
+      return
+    end
+
     @message = @conversation.conversation_messages.build(
       sender: current_user,
       body: message_params[:body]

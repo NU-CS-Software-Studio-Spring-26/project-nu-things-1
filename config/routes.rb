@@ -12,7 +12,9 @@ Rails.application.routes.draw do
     post :dev_sign_in, on: :collection if Rails.env.development?
   end
 
-  resources :users, only: %i[show]
+  resources :users, only: %i[show] do
+    resource :block, only: %i[create destroy], controller: "user_blocks"
+  end
 
   resources :audit_logs, only: %i[index]
 

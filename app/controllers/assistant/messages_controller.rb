@@ -28,7 +28,7 @@ module Assistant
       @user_message = append_assistant_user_message!(body)
 
       history = assistant_history_for_prompt[0...-1]
-      result = Assistant::Chat.process!(message: body, history: history)
+      result = Assistant::Chat.process!(message: body, history: history, viewer: current_user)
       @bot_message = append_assistant_bot_message!(reply: result.reply, listings: result.listings)
 
       respond_to do |format|

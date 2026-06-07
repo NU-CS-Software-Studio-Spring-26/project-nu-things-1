@@ -4,6 +4,7 @@ class FoundItem < ApplicationRecord
   requires_listing_photo!
   include ListingTextLimits
   include ListableMessaging
+  include BlockableListings
   include ModeratedContent
 
   STATUSES = %w[unclaimed claimed].freeze

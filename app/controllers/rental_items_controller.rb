@@ -6,6 +6,7 @@ class RentalItemsController < ApplicationController
   def index
     @rental_items = RentalItem.with_attached_photo
       .includes(:rental_reviews, :user)
+      .visible_to(current_user)
       .where(status: "available")
       .order(created_at: :desc)
     @categories = filter_category_options(RentalItem)
@@ -61,6 +62,7 @@ class RentalItemsController < ApplicationController
 
   def set_rental_item
     @rental_item = RentalItem.with_attached_photo.includes(:rental_reviews, :bookings).find(params.expect(:id))
+    ensure_listing_visible!(@rental_item)
     if signed_in?
       @user_review = @rental_item.rental_reviews.find_by(user: current_user)
       @can_leave_review = @rental_item.can_leave_review?(current_user)
