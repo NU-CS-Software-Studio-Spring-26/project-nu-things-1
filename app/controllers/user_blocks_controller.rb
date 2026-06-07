@@ -17,7 +17,7 @@ class UserBlocksController < ApplicationController
 
   def destroy
     current_user.unblock!(@blocked_user)
-    redirect_back fallback_location: conversations_path,
+    redirect_back fallback_location: user_path(current_user),
                   notice: "#{helpers.display_user_name(@blocked_user)} has been unblocked."
   end
 

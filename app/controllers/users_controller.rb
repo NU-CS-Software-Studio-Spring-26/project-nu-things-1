@@ -21,5 +21,9 @@ class UsersController < ApplicationController
 
     @claimed_found_items = scope.call(FoundItem.where(claimed_by_user_id: @user.id))
       .order(date_found: :desc, updated_at: :desc)
+
+    return unless signed_in? && current_user == @user
+
+    @blocked_users = current_user.blocked_users.order(:first_name, :email)
   end
 end

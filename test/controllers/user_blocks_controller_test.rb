@@ -22,7 +22,7 @@ class UserBlocksControllerTest < ActionDispatch::IntegrationTest
       delete user_block_path(users(:nu_student))
     end
 
-    assert_redirected_to conversations_url
+    assert_redirected_to user_url(users(:admin))
     assert_not users(:admin).blocking?(users(:nu_student))
   end
 end
