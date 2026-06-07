@@ -26,9 +26,7 @@
                   <span class="text-muted">· Marketplace</span>
                 <% end %>
               </p>
-              <% if rating.body.present? %>
-                <p class="small text-muted mb-0"><%= rating.body %></p>
-              <% end %>
+              <p class="small text-muted mb-0"><%= exchange_rating_reason_summary(rating) %></p>
             </div>
             <time class="small text-muted flex-shrink-0" datetime="<%= rating.created_at.iso8601 %>">
               <%= rating.created_at.strftime("%b %-d, %Y") %>

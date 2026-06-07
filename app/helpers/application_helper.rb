@@ -203,6 +203,14 @@ module ApplicationHelper
     number_with_precision(value, precision: 1)
   end
 
+  def exchange_rating_reason_options
+    ExchangeRatingReasons::REASONS.map { |value, label| [ label, value ] }
+  end
+
+  def exchange_rating_reason_summary(rating)
+    rating.reason_summary
+  end
+
   def rental_exchange_phase_label(phase)
     case phase.to_s
     when "pickup" then "Initial handoff"

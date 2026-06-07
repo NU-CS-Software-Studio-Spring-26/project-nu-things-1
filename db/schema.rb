@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_07_140100) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_07_150000) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -63,6 +63,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_07_140100) do
     t.integer "ratee_id", null: false
     t.integer "rater_id", null: false
     t.integer "rating", null: false
+    t.string "reason", null: false
     t.datetime "updated_at", null: false
     t.index ["booking_id", "rater_id", "ratee_id", "interaction_phase"], name: "index_booking_exchange_ratings_on_booking_rater_ratee_phase", unique: true
     t.index ["booking_id"], name: "index_booking_exchange_ratings_on_booking_id"
@@ -172,6 +173,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_07_140100) do
     t.integer "ratee_id", null: false
     t.integer "rater_id", null: false
     t.integer "rating", null: false
+    t.string "reason", null: false
     t.datetime "updated_at", null: false
     t.index ["marketplace_transaction_id", "rater_id", "ratee_id"], name: "index_marketplace_exchange_ratings_on_transaction_and_rater", unique: true
     t.index ["marketplace_transaction_id"], name: "idx_on_marketplace_transaction_id_52d262a2d8"

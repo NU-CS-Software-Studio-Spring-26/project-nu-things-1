@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class BookingExchangeRating < ApplicationRecord
+  include ExchangeRatingReasons
+
   INTERACTION_PHASES = %w[pickup return].freeze
 
   belongs_to :booking
@@ -10,7 +12,6 @@ class BookingExchangeRating < ApplicationRecord
 
   validates :rating, presence: true, inclusion: { in: 1..5 }
   validates :rating, numericality: { only_integer: true }
-  validates :body, length: { maximum: 600 }, allow_blank: true
   validates :interaction_phase, presence: true, inclusion: { in: INTERACTION_PHASES }
 
   validates :rater_id, uniqueness: { scope: [ :booking_id, :ratee_id, :interaction_phase ] }
