@@ -12,7 +12,7 @@ class UserBlocksController < ApplicationController
 
     current_user.block!(@blocked_user)
     redirect_back fallback_location: conversations_path,
-                  notice: "#{helpers.display_user_name(@blocked_user)} has been blocked. They can no longer message you or see your listings."
+                  notice: "#{helpers.display_user_name(@blocked_user)} has been blocked. They can't send new messages or see your listings."
   end
 
   def destroy

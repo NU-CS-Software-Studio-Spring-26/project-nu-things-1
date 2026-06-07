@@ -23,7 +23,7 @@
         <% else %>
           <%= button_to "Block user", user_block_path(other), method: :post,
                         class: "btn btn-sm btn-outline-danger",
-                        form: { data: { turbo_confirm: "Block this user? They will not be able to message you or see your listings." } } %>
+                        form: { data: { turbo_confirm: "Block this user? They won't be able to send new messages or see your listings." } } %>
         <% end %>
       </div>
     <% end %>
@@ -50,12 +50,15 @@
 </div>
 
 <% other = @conversation.other_participant(current_user) %>
-<% blocked_from_replying = other.present? && other.blocking?(current_user) %>
 <div class="card nu-card">
   <div class="card-body">
     <h2 class="h6 text-purple mb-3">Reply</h2>
-    <% if blocked_from_replying %>
-      <p class="text-muted small mb-0">You can no longer reply in this conversation.</p>
+    <% if conversation_messaging_blocked?(@conversation) %>
+      <% if other.present? && current_user.blocking?(other) %>
+        <p class="text-muted small mb-0">You blocked this user. Unblock them to send messages again.</p>
+      <% else %>
+        <p class="text-muted small mb-0">You can no longer send messages in this conversation.</p>
+      <% end %>
     <% else %>
     <%= form_with model: @new_message,
                   url: conversation_messages_path(@conversation),

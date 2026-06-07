@@ -25,4 +25,31 @@ class ConversationMessagesControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :unprocessable_entity
   end
+
+  test "blocked user cannot reply" do
+    users(:admin).block!(users(:nu_student))
+    sign_in_as(users(:nu_student))
+
+    assert_no_difference -> { @conversation.conversation_messages.count } do
+      post conversation_messages_path(@conversation),
+           params: { conversation_message: { body: "Any update?" } }
+    end
+
+    assert_redirected_to conversation_path(@conversation)
+    follow_redirect!
+    assert_match(/no longer send messages/i, response.body)
+  end
+
+  test "blocker cannot reply to blocked user" do
+    users(:admin).block!(users(:nu_student))
+
+    assert_no_difference -> { @conversation.conversation_messages.count } do
+      post conversation_messages_path(@conversation),
+           params: { conversation_message: { body: "Checking in" } }
+    end
+
+    assert_redirected_to conversation_path(@conversation)
+    follow_redirect!
+    assert_match(/blocked this user/i, response.body)
+  end
 end

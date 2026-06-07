@@ -47,6 +47,16 @@ class ConversationStarterTest < ActiveSupport::TestCase
     end
   end
 
+  test "raises when sender blocked the listing owner" do
+    listing = lost_items(:one)
+    sender = users(:admin)
+    sender.block!(users(:nu_student))
+
+    assert_raises(ConversationStarter::BlockedUser) do
+      ConversationStarter.start!(listable: listing, sender: sender, body: "Hi")
+    end
+  end
+
   test "raises when messaging own listing" do
     listing = lost_items(:one)
     sender = users(:nu_student)
