@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
 class MarketplaceExchangeRating < ApplicationRecord
+  include ExchangeRatingReasons
+
   belongs_to :marketplace_transaction
   belongs_to :rater, class_name: "User"
   belongs_to :ratee, class_name: "User", inverse_of: :received_marketplace_exchange_ratings
 
   validates :rating, presence: true, inclusion: { in: 1..5 }
   validates :rating, numericality: { only_integer: true }
-  validates :body, length: { maximum: 600 }, allow_blank: true
   validates :rater_id, uniqueness: { scope: %i[marketplace_transaction_id ratee_id] }
 
   validate :participants_match_transaction

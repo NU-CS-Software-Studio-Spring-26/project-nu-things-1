@@ -1,0 +1,21 @@
+<%# locals: form %>
+<div data-controller="exchange-rating-form">
+  <%= form.select :reason,
+                  exchange_rating_reason_options,
+                  { prompt: "Reason for rating" },
+                  class: "form-select form-select-sm mb-1",
+                  required: true,
+                  data: {
+                    exchange_rating_form_target: "reason",
+                    action: "change->exchange-rating-form#toggleOther"
+                  } %>
+  <div class="d-none" data-exchange-rating-form-target="otherField">
+    <%= form.label :body, "Explain (required for Other)", class: "form-label small mb-1" %>
+    <%= form.text_area :body,
+                       class: "form-control form-control-sm mb-1",
+                       rows: 2,
+                       maxlength: ExchangeRatingReasons::OTHER_BODY_MAX_LENGTH,
+                       placeholder: "Up to 50 characters",
+                       data: { exchange_rating_form_target: "otherInput" } %>
+  </div>
+</div>

@@ -55,19 +55,21 @@
           <% my_rating = transaction.exchange_rating_from_to(current_user, ratee) %>
           <% their_rating = transaction.exchange_rating_from_to(ratee, current_user) %>
           <% if my_rating %>
-            <p class="small text-muted mb-2">You rated: <span class="text-purple" aria-hidden="true"><%= marketplace_review_rating_stars(my_rating.rating) %></span></p>
+            <p class="small text-muted mb-2">You rated: <span class="text-purple" aria-hidden="true"><%= marketplace_review_rating_stars(my_rating.rating) %></span>
+              · <%= exchange_rating_reason_summary(my_rating) %></p>
           <% else %>
             <%= form_with url: rate_exchange_conversation_marketplace_transaction_path(@conversation),
                           method: :post,
                           scope: :exchange_rating,
                           class: "needs-validation" do |form| %>
               <%= form.select :rating, (1..5).map { |n| [ "#{n} star#{'s' if n != 1}", n ] }, { prompt: "Your rating" }, class: "form-select form-select-sm mb-2", required: true %>
-              <%= form.text_area :body, class: "form-control form-control-sm mb-2", rows: 2, placeholder: "Optional comment about this purchase" %>
+              <%= render "application/exchange_rating_fields", form: form %>
               <%= form.submit "Submit rating", class: "btn btn-sm btn-primary" %>
             <% end %>
           <% end %>
           <% if their_rating %>
-            <p class="small text-muted mb-0">They rated you: <span class="text-purple" aria-hidden="true"><%= marketplace_review_rating_stars(their_rating.rating) %></span></p>
+            <p class="small text-muted mb-0">They rated you: <span class="text-purple" aria-hidden="true"><%= marketplace_review_rating_stars(their_rating.rating) %></span>
+              · <%= exchange_rating_reason_summary(their_rating) %></p>
           <% end %>
         <% else %>
           <p class="small text-muted mb-0">Both sides must confirm the purchase is complete before you can rate each other.</p>
