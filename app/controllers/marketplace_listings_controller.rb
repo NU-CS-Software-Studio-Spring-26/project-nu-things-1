@@ -20,10 +20,10 @@ class MarketplaceListingsController < ApplicationController
       params[:listing_type],
       MarketplaceListing::LISTING_TYPES
     )
-    @categories = (ListingCategories::VALUES + MarketplaceListing.distinct.pluck(:category).compact).uniq.sort
+    @categories = listing_filter_categories
     @marketplace_listings = filter_where_in(@marketplace_listings, :category, params[:category], @categories)
     @marketplace_listings = filter_by_search(@marketplace_listings, params[:q])
-    @pagy, @marketplace_listings = paginate_listings(@marketplace_listings)
+    @pagy, @marketplace_listings, @grouped_marketplace_listings = prepare_listings_index(@marketplace_listings)
   end
 
   def show

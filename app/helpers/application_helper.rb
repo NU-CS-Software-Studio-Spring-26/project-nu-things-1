@@ -220,12 +220,15 @@ module ApplicationHelper
   end
 
   def marketplace_category_slug(category)
-    category.to_s.parameterize.presence || "other"
+    ListingCategories.slug(category)
   end
 
-  # Powdery per-category pill (uses canonical `category`, not custom label, so "Other" still styles as Other).
+  def listing_category_badge_class(category)
+    "nu-listing-cat nu-listing-cat--#{ListingCategories.slug(category)}"
+  end
+
   def marketplace_category_badge_class(category)
-    "nu-mp-cat nu-mp-cat--#{marketplace_category_slug(category)}"
+    listing_category_badge_class(category)
   end
 
   def marketplace_listing_type_badge_class(listing_type)
@@ -234,6 +237,10 @@ module ApplicationHelper
 
   def listing_index_filters_active?
     params[:q].present? || params[:category].present? || params[:listing_type].present?
+  end
+
+  def listing_index_total_count(pagy, grouped_items)
+    pagy&.count || grouped_items&.values&.sum(&:size) || 0
   end
 
   def listing_search_results_label(count)

@@ -1,5 +1,6 @@
 class LostItem < ApplicationRecord
   include ListingAuthorizable
+  include ListingCategoryDisplay
   include ListingPhotoAttachment
   include ListingTextLimits
   include ListableMessaging
@@ -24,12 +25,6 @@ class LostItem < ApplicationRecord
   validate :validate_lost_location_and_reward_words
 
   before_validation :assign_default_status, on: :create
-
-  def category_label
-    return category unless category == "Other"
-
-    custom_category.presence || category
-  end
 
   private
 

@@ -15,56 +15,21 @@
   <div class="card nu-card mb-4">
     <div class="card-body">
       <h6 class="card-title text-purple mb-3">Filter by category</h6>
-      <div class="d-flex flex-wrap gap-2">
-        <%= link_to "All categories", rental_items_path(q: params[:q]), class: "btn btn-sm #{params[:category].blank? ? 'btn-primary' : 'btn-outline-primary'}", data: { turbo_frame: "listings" } %>
-        <% @categories.each do |category| %>
-          <% if category == "Other" %>
-            <%= link_to category, rental_items_path(category: category, q: params[:q]), class: "btn btn-sm btn-outline-primary nu-filter-other#{' nu-filter-other--selected' if params[:category] == 'Other'}", data: { turbo_frame: "listings" } %>
-          <% else %>
-            <%= link_to category, rental_items_path(category: category, q: params[:q]), class: "btn btn-sm #{params[:category] == category ? 'btn-primary' : 'btn-outline-primary'}", data: { turbo_frame: "listings" } %>
-          <% end %>
-        <% end %>
-      </div>
+      <%= render "application/listing_category_filters",
+                 categories: @categories,
+                 all_categories_path: rental_items_path(q: params[:q]),
+                 category_path: ->(category) { rental_items_path(category: category, q: params[:q]) } %>
     </div>
   </div>
 
-  <%= render "application/listing_search_results_summary", total_count: @pagy.count %>
+  <%= render "application/listing_search_results_summary", total_count: listing_index_total_count(@pagy, @grouped_rental_items) %>
 
-  <% if @rental_items.any? %>
+  <% if listing_index_grouped_by_category? && @grouped_rental_items.present? %>
+    <%= render "application/listing_index_grouped_sections", grouped_items: @grouped_rental_items, item_partial: "rental_items/listing_card" %>
+  <% elsif @rental_items.any? %>
     <div class="row g-4">
-      <% @rental_items.each do |item| %>
-        <div class="col-md-6 col-lg-4">
-          <%= link_to item, class: "card nu-card nu-clickable-card h-100", data: { turbo_frame: "_top" } do %>
-            <% if item.listing_image_available? %>
-              <%= listing_image_tag item, alt: item.title, class: "card-img-top nu-listing-index-card-img" %>
-            <% else %>
-              <%= render "application/listing_image_placeholder", aspect_index_card: true, extra_classes: "card-img-top" %>
-            <% end %>
-            <div class="card-body d-flex flex-column">
-              <h5 class="card-title nu-item-title"><%= item.title %></h5>
-              <p class="card-text text-muted small mb-2"><%= truncate(item.description, length: 80) %></p>
-
-              <div class="mb-2">
-                <span class="badge text-bg-primary"><%= item.category %></span>
-                <span class="badge text-bg-light border"><%= item.condition %></span>
-              </div>
-
-              <div class="mb-3">
-                <p class="h5 text-primary mb-2"><%= format_rental_rate(item) %></p>
-                <% if item.user.present? %>
-                  <%= render "application/user_reputation_score", user: item.user, show_breakdown: show_user_reputation_breakdown?(item.user) %>
-                <% else %>
-                  <p class="text-muted small mb-1">No user reputation yet</p>
-                <% end %>
-                <p class="text-muted small mb-0 mt-2"><%= item.location %></p>
-              </div>
-
-              <div class="d-grid gap-2 mt-auto">
-                <span class="btn btn-sm btn-primary nu-card-cta">View details</span>
-              </div>
-            </div>
-          <% end %>
-        </div>
+      <% @rental_items.each do |listing| %>
+        <%= render "rental_items/listing_card", item: listing %>
       <% end %>
     </div>
     <%= render "application/listing_pagination", pagy: @pagy %>

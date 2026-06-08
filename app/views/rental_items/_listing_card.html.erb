@@ -1,0 +1,32 @@
+<div class="col-md-6 col-lg-4">
+  <%= link_to item, class: "card nu-card nu-clickable-card h-100", data: { turbo_frame: "_top" } do %>
+    <% if item.listing_image_available? %>
+      <%= listing_image_tag item, alt: item.title, class: "card-img-top nu-listing-index-card-img" %>
+    <% else %>
+      <%= render "application/listing_image_placeholder", aspect_index_card: true, extra_classes: "card-img-top" %>
+    <% end %>
+    <div class="card-body d-flex flex-column">
+      <h5 class="card-title nu-item-title"><%= item.title %></h5>
+      <p class="card-text text-muted small mb-2"><%= truncate(item.description, length: 80) %></p>
+
+      <div class="mb-2">
+        <%= render "application/listing_category_badge", item: item %>
+        <span class="badge text-bg-light border"><%= item.condition %></span>
+      </div>
+
+      <div class="mb-3">
+        <p class="h5 text-primary mb-2"><%= format_rental_rate(item) %></p>
+        <% if item.user.present? %>
+          <%= render "application/user_reputation_score", user: item.user, show_breakdown: show_user_reputation_breakdown?(item.user) %>
+        <% else %>
+          <p class="text-muted small mb-1">No user reputation yet</p>
+        <% end %>
+        <p class="text-muted small mb-0 mt-2"><%= item.location %></p>
+      </div>
+
+      <div class="d-grid gap-2 mt-auto">
+        <span class="btn btn-sm btn-primary nu-card-cta">View details</span>
+      </div>
+    </div>
+  <% end %>
+</div>

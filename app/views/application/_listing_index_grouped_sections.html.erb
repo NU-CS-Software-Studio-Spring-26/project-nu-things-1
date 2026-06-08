@@ -1,0 +1,14 @@
+<%# locals: (grouped_items:, item_partial:) %>
+<% grouped_items.each do |category, items| %>
+  <section class="nu-listing-category-group mb-4" aria-labelledby="listing-category-<%= category.to_s.parameterize %>">
+    <h3 id="listing-category-<%= category.to_s.parameterize %>" class="h5 text-purple mb-3">
+      <%= category %>
+      <span class="text-muted fs-6 fw-normal">(<%= items.size %>)</span>
+    </h3>
+    <div class="row g-4">
+      <% items.each do |listing| %>
+        <%= render partial: item_partial, locals: { item: listing } %>
+      <% end %>
+    </div>
+  </section>
+<% end %>

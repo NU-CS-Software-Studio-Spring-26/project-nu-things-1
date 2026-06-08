@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_user, :signed_in?, :admin?, :can_edit_post?, :unread_conversations_count,
                 :can_message_listing?, :can_request_booking?, :blocked_by_poster?,
-                :conversation_messaging_blocked?
+                :conversation_messaging_blocked?, :listing_index_grouped_by_category?
 
   def unread_conversations_count
     return 0 unless signed_in?
@@ -166,9 +166,8 @@ class ApplicationController < ActionController::Base
     relation.where(column => value)
   end
 
-  def filter_category_options(model, exclude: [])
-    options = (ListingCategories::VALUES + model.distinct.pluck(:category).compact).uniq.sort
-    exclude.any? ? options - exclude : options
+  def listing_filter_categories
+    ListingCategories.filter_options
   end
 
   def filter_by_search(relation, query)
@@ -225,6 +224,25 @@ class ApplicationController < ActionController::Base
       limit: LISTINGS_PER_PAGE,
       anchor_string: 'data-turbo-frame="listings"'
     )
+  end
+
+  def listing_index_grouped_by_category?
+    params[:category].blank? && params[:q].to_s.strip.blank?
+  end
+
+  def prepare_listings_index(relation)
+    if listing_index_grouped_by_category?
+      items = relation.load
+      [ nil, items, group_listings_by_category(items) ]
+    else
+      pagy, items = paginate_listings(relation)
+      [ pagy, items, nil ]
+    end
+  end
+
+  def group_listings_by_category(items)
+    grouped = items.group_by { |item| item.category_label }
+    grouped.sort_by { |category, _| ListingCategories.group_sort_key(category) }.to_h
   end
 
   # Name + email for lost/found listing report mailers (signed-in uses account; guests use form params).

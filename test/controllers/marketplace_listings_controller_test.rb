@@ -39,23 +39,43 @@ class MarketplaceListingsControllerTest < ActionDispatch::IntegrationTest
     assert_select ".nu-item-title", minimum: 2
   end
 
-  test "index paginates marketplace listings" do
-    create_marketplace_listings_for_pagination(10)
+  test "index groups items by category when all categories selected" do
+    MarketplaceListing.create!(
+      title: "Grouped electronics listing",
+      description: "For category grouping test.",
+      category: "Electronics",
+      location: "Evanston",
+      listing_type: "for_sale",
+      price: 25,
+      contact_name: "Test Seller",
+      contact_email: "seller@u.northwestern.edu",
+      status: "active",
+      image_url: "https://example.com/listing-photo.jpg"
+    )
 
     get marketplace_listings_url
+    assert_response :success
+    assert_select "section.nu-listing-category-group"
+    assert_select "nav[aria-label='Listing pages']", count: 0
+  end
+
+  test "index paginates marketplace listings when category filter is active" do
+    create_marketplace_listings_for_pagination(13)
+
+    get marketplace_listings_url, params: { category: "Book", listing_type: "for_sale" }
     assert_response :success
     assert_select "nav[aria-label='Listing pages']"
     assert_select ".nu-item-title", count: ApplicationController::LISTINGS_PER_PAGE
 
-    get marketplace_listings_url, params: { page: 2 }
+    get marketplace_listings_url, params: { category: "Book", listing_type: "for_sale", page: 2 }
     assert_response :success
     assert_select ".nu-item-title", count: 1
   end
 
   test "index pagination preserves listing_type filter" do
-    create_marketplace_listings_for_pagination(11)
+    create_marketplace_listings_for_pagination(13)
 
-    get marketplace_listings_url, params: { listing_type: "for_sale", page: 2 }
+    get marketplace_listings_url, params: { listing_type: "for_sale", category: "Book", page: 2 }
     assert_response :success
     assert_select "a.page-link[href*='listing_type=for_sale']"
   end

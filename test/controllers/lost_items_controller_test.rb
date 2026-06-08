@@ -42,15 +42,35 @@ class LostItemsControllerTest < ActionDispatch::IntegrationTest
     assert_select ".nu-item-title", minimum: 2
   end
 
-  test "index paginates lost items" do
-    create_lost_items_for_pagination(10)
+  test "index groups items by category when all categories selected" do
+    LostItem.create!(
+      title: "Grouped electronics item",
+      description: "For category grouping test.",
+      category: "Electronics",
+      location_lost: "Campus",
+      date_lost: Date.new(2026, 4, 1),
+      contact_name: "Test User",
+      contact_email: "lost_one@u.northwestern.edu",
+      status: "open"
+    )
 
     get lost_items_url
+    assert_response :success
+    assert_select "section.nu-listing-category-group"
+    assert_select "section.nu-listing-category-group h3", text: /Book \(/
+    assert_select "section.nu-listing-category-group h3", text: /Electronics \(/
+    assert_select "nav[aria-label='Listing pages']", count: 0
+  end
+
+  test "index paginates lost items when category filter is active" do
+    create_lost_items_for_pagination(10)
+
+    get lost_items_url, params: { category: "Book" }
     assert_response :success
     assert_select "nav[aria-label='Listing pages']"
     assert_select ".nu-item-title", count: ApplicationController::LISTINGS_PER_PAGE
 
-    get lost_items_url, params: { page: 2 }
+    get lost_items_url, params: { category: "Book", page: 2 }
     assert_response :success
     assert_select ".nu-item-title", count: 2
   end

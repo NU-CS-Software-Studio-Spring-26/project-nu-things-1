@@ -1,5 +1,6 @@
 class MarketplaceListing < ApplicationRecord
   include ListingAuthorizable
+  include ListingCategoryDisplay
   include ListingPhotoAttachment
   requires_listing_photo!
   include ListingTextLimits
@@ -54,11 +55,6 @@ class MarketplaceListing < ApplicationRecord
   validate :validate_marketplace_location_words
 
   before_validation :assign_default_status, on: :create
-
-  def category_label
-    return category unless category == "Other"
-    custom_category.presence || category
-  end
 
   def posted_by?(user)
     return false if user.blank?
