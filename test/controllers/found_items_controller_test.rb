@@ -29,15 +29,36 @@ class FoundItemsControllerTest < ActionDispatch::IntegrationTest
     assert_select ".nu-item-title", minimum: 2
   end
 
-  test "index paginates found items" do
-    create_found_items_for_pagination(10)
+  test "index groups items by category when all categories selected" do
+    FoundItem.create!(
+      title: "Grouped electronics item",
+      description: "For category grouping test.",
+      category: "Electronics",
+      location_found: "Campus",
+      date_found: Date.new(2026, 4, 1),
+      contact_name: "Test User",
+      contact_email: "found_one@u.northwestern.edu",
+      status: "unclaimed",
+      image_url: "https://example.com/listing-photo.jpg"
+    )
 
     get found_items_url
+    assert_response :success
+    assert_select "section.nu-listing-category-group"
+    assert_select "section.nu-listing-category-group h3", text: /Book \(/
+    assert_select "section.nu-listing-category-group h3", text: /Electronics \(/
+    assert_select "nav[aria-label='Listing pages']", count: 0
+  end
+
+  test "index paginates found items when category filter is active" do
+    create_found_items_for_pagination(10)
+
+    get found_items_url, params: { category: "Book" }
     assert_response :success
     assert_select "nav[aria-label='Listing pages']"
     assert_select ".nu-item-title", count: ApplicationController::LISTINGS_PER_PAGE
 
-    get found_items_url, params: { page: 2 }
+    get found_items_url, params: { category: "Book", page: 2 }
     assert_response :success
     assert_select ".nu-item-title", count: 1
   end

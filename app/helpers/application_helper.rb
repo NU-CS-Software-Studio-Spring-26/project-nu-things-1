@@ -236,6 +236,10 @@ module ApplicationHelper
     params[:q].present? || params[:category].present? || params[:listing_type].present?
   end
 
+  def listing_index_total_count(pagy, grouped_items)
+    pagy&.count || grouped_items&.values&.sum(&:size) || 0
+  end
+
   def listing_search_results_label(count)
     term = params[:q].to_s.strip
     return if term.blank?

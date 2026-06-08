@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_user, :signed_in?, :admin?, :can_edit_post?, :unread_conversations_count,
                 :can_message_listing?, :can_request_booking?, :blocked_by_poster?,
-                :conversation_messaging_blocked?
+                :conversation_messaging_blocked?, :listing_index_grouped_by_category?
 
   def unread_conversations_count
     return 0 unless signed_in?
@@ -224,6 +224,33 @@ class ApplicationController < ActionController::Base
       limit: LISTINGS_PER_PAGE,
       anchor_string: 'data-turbo-frame="listings"'
     )
+  end
+
+  def listing_index_grouped_by_category?
+    params[:category].blank? && params[:q].to_s.strip.blank?
+  end
+
+  def prepare_listings_index(relation)
+    if listing_index_grouped_by_category?
+      items = relation.load
+      [ nil, items, group_listings_by_category(items) ]
+    else
+      pagy, items = paginate_listings(relation)
+      [ pagy, items, nil ]
+    end
+  end
+
+  def group_listings_by_category(items)
+    grouped = items.group_by { |item| listing_group_category_label(item) }
+    grouped.sort_by { |category, _| category.to_s.downcase }.to_h
+  end
+
+  def listing_group_category_label(item)
+    if item.respond_to?(:category_label)
+      item.category_label
+    else
+      item.category.to_s
+    end
   end
 
   # Name + email for lost/found listing report mailers (signed-in uses account; guests use form params).

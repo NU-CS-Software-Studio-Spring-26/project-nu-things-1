@@ -11,7 +11,7 @@ class LostItemsController < ApplicationController
     @categories = filter_category_options(LostItem, exclude: ListingCategories::LOST_FOUND_FILTER_EXCLUDED)
     @lost_items = filter_where_in(@lost_items, :category, params[:category], @categories)
     @lost_items = filter_by_search(@lost_items, params[:q])
-    @pagy, @lost_items = paginate_listings(@lost_items)
+    @pagy, @lost_items, @grouped_lost_items = prepare_listings_index(@lost_items)
   end
 
   def show

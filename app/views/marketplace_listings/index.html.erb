@@ -35,50 +35,14 @@
   </div>
 </div>
 
-<%= render "application/listing_search_results_summary", total_count: @pagy.count %>
+<%= render "application/listing_search_results_summary", total_count: listing_index_total_count(@pagy, @grouped_marketplace_listings) %>
 
-<% if @marketplace_listings.any? %>
+<% if listing_index_grouped_by_category? && @grouped_marketplace_listings.present? %>
+  <%= render "application/listing_index_grouped_sections", grouped_items: @grouped_marketplace_listings, item_partial: "marketplace_listings/listing_card" %>
+<% elsif @marketplace_listings.any? %>
   <div class="row g-4">
-    <% @marketplace_listings.each do |item| %>
-      <div class="col-md-6 col-lg-4">
-        <%= link_to item, class: "card nu-card nu-clickable-card h-100", data: { turbo_frame: "_top" } do %>
-          <% if item.listing_image_available? %>
-            <%= listing_image_tag item, alt: item.title, class: "card-img-top nu-listing-index-card-img" %>
-          <% else %>
-            <%= render "application/listing_image_placeholder", aspect_index_card: true, extra_classes: "card-img-top" %>
-          <% end %>
-
-          <div class="card-body d-flex flex-column">
-            <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
-              <h5 class="card-title mb-0 nu-item-title"><%= item.title %></h5>
-              <span class="badge <%= marketplace_listing_type_badge_class(item.listing_type) %>"><%= item.listing_type == "wanted" ? "Wanted" : "For sale" %></span>
-            </div>
-
-            <p class="card-text text-muted small mb-2"><%= truncate(item.description, length: 80) %></p>
-
-            <div class="mb-2">
-              <span class="badge <%= marketplace_category_badge_class(item.category) %>"><%= item.category_label %></span>
-              <% if item.condition.present? %>
-                <span class="badge text-bg-light border"><%= item.condition %></span>
-              <% end %>
-            </div>
-
-            <div class="mb-3">
-              <% if item.listing_type == "for_sale" %>
-                <p class="h5 nu-mp-price mb-1">$<%= number_with_precision(item.price, precision: 2) %></p>
-              <% else %>
-                <p class="h6 text-purple mb-1">Looking to buy</p>
-              <% end %>
-              <%= render "listing_stats", item: item %>
-              <p class="text-muted small mb-0 mt-2"><%= item.location %></p>
-            </div>
-
-            <div class="d-grid gap-2 mt-auto">
-              <span class="btn btn-sm btn-primary nu-card-cta">View details</span>
-            </div>
-          </div>
-        <% end %>
-      </div>
+    <% @marketplace_listings.each do |listing| %>
+      <%= render "marketplace_listings/listing_card", item: listing %>
     <% end %>
   </div>
   <%= render "application/listing_pagination", pagy: @pagy %>
