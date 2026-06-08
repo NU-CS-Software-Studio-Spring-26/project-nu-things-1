@@ -9,7 +9,9 @@ module ProfileAvatars
     "cat" => "Cat",
     "dog" => "Dog",
     "fish" => "Fish",
-    "mouse" => "Mouse"
+    "mouse" => "Mouse",
+    "flower" => "Flower",
+    "bow" => "Bow"
   }.freeze
 
   ANIMAL_AVATARS = (AVATARS.keys - [ "initial" ]).freeze

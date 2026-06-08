@@ -44,7 +44,8 @@ class ProfileAvatarsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "h2", text: /Profile picture/i
     assert_select "input[type=radio][name='user[profile_avatar]'][value=initial]"
-    assert_select "input[type=radio][name='user[profile_avatar]'][value=cat]"
+    assert_select "input[type=radio][name='user[profile_avatar]'][value=flower]"
+    assert_select "input[type=radio][name='user[profile_avatar]'][value=bow]"
     assert_select "img[src*='profile_avatars/cat']"
   end
 
