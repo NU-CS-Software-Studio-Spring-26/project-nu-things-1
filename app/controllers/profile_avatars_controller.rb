@@ -14,6 +14,6 @@ class ProfileAvatarsController < ApplicationController
   private
 
   def profile_avatar_params
-    params.expect(user: [ :profile_avatar ])
+    params.expect(user: [ :profile_avatar, :profile_avatar_border_style, :profile_avatar_border_color ])
   end
 end

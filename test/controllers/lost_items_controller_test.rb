@@ -194,7 +194,7 @@ class LostItemsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "a", { text: "Edit", count: 0 }
     assert_select "button", { text: "Delete", count: 0 }
-    assert_select ".nu-listing-contact-identity .nu-profile-avatar"
+    assert_select ".nu-listing-contact-identity .nu-profile-avatar-wrap"
     assert_includes response.body, lost_items(:admin_owned).contact_name
   end
 
