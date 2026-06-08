@@ -140,7 +140,7 @@
       <div class="card nu-card mb-3">
         <div class="card-body">
           <h2 class="h6 text-muted text-uppercase">Contact Owner</h2>
-          <p class="mb-1"><strong><%= @rental_item.owner_name %></strong></p>
+          <%= render "application/listing_contact_identity", name: @rental_item.owner_name, user: @rental_item.poster_account %>
           <p class="mb-2"><%= mail_to @rental_item.owner_email, @rental_item.owner_email, class: "link-primary" %></p>
           <% if @rental_item.owner_phone.present? %>
             <p class="mb-3"><%= @rental_item.owner_phone %></p>

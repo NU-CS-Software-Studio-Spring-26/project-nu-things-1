@@ -1,0 +1,11 @@
+<%# locals: name, user: nil %>
+<div class="d-flex align-items-center gap-2 mb-1 nu-listing-contact-identity">
+  <% if user.present? %>
+    <%= render "application/user_profile_avatar", user: user, size: :sm %>
+  <% else %>
+    <div class="nu-profile-avatar nu-profile-avatar--default nu-profile-avatar--sm" aria-hidden="true">
+      <span class="nu-profile-avatar__initial"><%= listing_contact_initial(name) %></span>
+    </div>
+  <% end %>
+  <p class="mb-0"><strong><%= name %></strong></p>
+</div>
