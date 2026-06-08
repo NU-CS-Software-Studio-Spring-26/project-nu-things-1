@@ -15,7 +15,7 @@ class RentalItemsController < ApplicationController
       .where(status: "available")
       .order(created_at: :desc)
     @categories = listing_filter_categories
-    @rental_items = filter_where_in(@rental_items, :category, params[:category], @categories)
+    @rental_items = filter_by_listing_category(@rental_items, params[:category], @categories)
     @rental_items = filter_by_search(@rental_items, params[:q])
     @pagy, @rental_items, @grouped_rental_items = prepare_listings_index(@rental_items)
   end

@@ -166,6 +166,32 @@ class ApplicationController < ActionController::Base
     relation.where(column => value)
   end
 
+  # Match the same buckets used by group_listings_by_category (category_label).
+  def filter_by_listing_category(relation, raw, allowed)
+    return relation if raw.blank?
+    return relation unless allowed.is_a?(Array)
+
+    value = raw.to_s
+    return relation unless allowed.include?(value)
+
+    canonical = ListingCategories.canonical(value) || value
+    table = relation.klass.table_name
+
+    if canonical == "Other"
+      return relation.where(category: "Other")
+    end
+
+    if relation.klass.column_names.include?("custom_category")
+      relation.where(
+        "#{table}.category = ? OR (#{table}.category = 'Other' AND LOWER(#{table}.custom_category) = ?)",
+        canonical,
+        canonical.downcase
+      )
+    else
+      relation.where(category: canonical)
+    end
+  end
+
   def listing_filter_categories
     ListingCategories.filter_options
   end

@@ -42,6 +42,45 @@ class LostItemsControllerTest < ActionDispatch::IntegrationTest
     assert_select ".nu-item-title", minimum: 2
   end
 
+  test "index electronics filter matches grouped electronics bucket" do
+    item = LostItem.create!(
+      title: "Legacy electronics in Other",
+      description: "Older row before category promotion.",
+      category: "Electronics",
+      location_lost: "Campus",
+      date_lost: Date.new(2026, 4, 1),
+      contact_name: "Test User",
+      contact_email: "lost_one@u.northwestern.edu",
+      status: "open"
+    )
+    item.update_columns(category: "Other", custom_category: "Electronics")
+
+    get lost_items_url, params: { category: "Electronics" }
+    assert_response :success
+    assert_select ".nu-item-title", text: "Legacy electronics in Other"
+  end
+
+  test "index restores electronics group after category filter round trip" do
+    LostItem.create!(
+      title: "Grouped electronics item",
+      description: "For category grouping test.",
+      category: "Electronics",
+      location_lost: "Campus",
+      date_lost: Date.new(2026, 4, 1),
+      contact_name: "Test User",
+      contact_email: "lost_one@u.northwestern.edu",
+      status: "open"
+    )
+
+    get lost_items_url, params: { category: "Electronics" }
+    assert_response :success
+    assert_select ".nu-item-title", text: "Grouped electronics item"
+
+    get lost_items_url
+    assert_response :success
+    assert_select "h3#listing-category-electronics", text: /Electronics \(/
+  end
+
   test "index groups items by category when all categories selected" do
     LostItem.create!(
       title: "Grouped electronics item",
