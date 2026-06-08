@@ -1,76 +1,59 @@
-const CACHE_NAME = 'purple-post-v1';
-const ASSETS_TO_CACHE = [
-  '/',
-  '/manifest.json',
-  '/appicon.svg',
-  '/applogo.png'
-];
+const CACHE_NAME = "purple-post-v2";
+const STATIC_ASSETS = [ "/manifest.json", "/appicon.svg", "/applogo.png" ];
 
-// Install event - cache assets
-self.addEventListener('install', (event) => {
-  console.log('Service Worker installing...');
+self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => {
-        console.log('Caching assets');
-        return cache.addAll(ASSETS_TO_CACHE);
-      })
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_ASSETS))
   );
   self.skipWaiting();
 });
 
-// Activate event - clean up old caches
-self.addEventListener('activate', (event) => {
-  console.log('Service Worker activating...');
+self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
+    caches.keys().then((cacheNames) =>
+      Promise.all(
         cacheNames
-          .filter((cacheName) => cacheName !== CACHE_NAME)
-          .map((cacheName) => {
-            console.log('Deleting old cache:', cacheName);
-            return caches.delete(cacheName);
-          })
-      );
-    })
+          .filter((name) => name !== CACHE_NAME)
+          .map((name) => caches.delete(name))
+      )
+    )
   );
   self.clients.claim();
 });
 
-// Fetch event - network first strategy with fallback to cache
-self.addEventListener('fetch', (event) => {
-  // Skip non-GET requests
-  if (event.request.method !== 'GET') {
-    return;
-  }
+function isHtmlNavigation(request) {
+  if (request.mode === "navigate") return true;
+
+  const accept = request.headers.get("accept") || "";
+  return accept.includes("text/html");
+}
+
+function isCacheableAsset(url) {
+  return url.pathname.startsWith("/assets/") || STATIC_ASSETS.includes(url.pathname);
+}
+
+self.addEventListener("fetch", (event) => {
+  if (event.request.method !== "GET") return;
+
+  const url = new URL(event.request.url);
+  if (url.origin !== self.location.origin) return;
+
+  // Never intercept HTML — avoids stale pages/importmaps breaking Turbo and buttons after deploys.
+  if (isHtmlNavigation(event.request)) return;
+
+  if (!isCacheableAsset(url)) return;
 
   event.respondWith(
-    fetch(event.request)
-      .then((response) => {
-        // Clone the response
-        const clone = response.clone();
-        
-        // Cache successful GET requests
-        if (response.status === 200) {
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, clone);
-          });
+    caches.match(event.request).then((cached) => {
+      if (cached) return cached;
+
+      return fetch(event.request).then((response) => {
+        if (response.ok) {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
         }
-        
         return response;
-      })
-      .catch(() => {
-        // Return cached version on network failure
-        return caches.match(event.request)
-          .then((cached) => {
-            return cached || new Response('Offline - content not available', {
-              status: 503,
-              statusText: 'Service Unavailable',
-              headers: new Headers({
-                'Content-Type': 'text/plain'
-              })
-            });
-          });
-      })
+      });
+    })
   );
 });
