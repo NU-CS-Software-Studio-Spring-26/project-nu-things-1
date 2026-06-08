@@ -70,6 +70,24 @@ module ApplicationHelper
     ProfileAvatars::AVATARS.map { |value, label| [ label, value ] }
   end
 
+  def profile_avatar_border_style_options
+    ProfileAvatarBorders::BORDER_STYLES.map { |value, label| [ label, value ] }
+  end
+
+  def profile_avatar_border_color_options
+    ProfileAvatarBorders::BORDER_COLORS.map { |value, label| [ label, value ] }
+  end
+
+  def user_profile_avatar_border_wrapper_classes(user)
+    style = user&.profile_avatar_border_style.presence || "default"
+    return "nu-profile-avatar-wrap--default" if style == "default"
+
+    color = user.profile_avatar_border_color.presence || "purple"
+    color = "purple" if color == "default"
+
+    "nu-profile-avatar-wrap--#{style} nu-profile-avatar-wrap--color-#{color}"
+  end
+
   def listing_contact_initial(name)
     name.to_s.strip.first&.upcase.presence || "?"
   end

@@ -2,6 +2,7 @@
 
 class User < ApplicationRecord
   include ProfileAvatars
+  include ProfileAvatarBorders
 
   NORTHWESTERN_EMAIL = /\A[^@\s]+@(?:u\.)?northwestern\.edu\z/i.freeze
 

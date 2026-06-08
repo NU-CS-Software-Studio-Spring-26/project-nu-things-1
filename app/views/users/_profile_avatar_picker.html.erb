@@ -1,14 +1,14 @@
 <section class="mb-4">
   <h2 class="h6 text-muted text-uppercase mb-2">Profile picture</h2>
-  <p class="small text-muted mb-3">Pick your first initial or an avatar. Others will see it on your profile and in messages.</p>
+  <p class="small text-muted mb-3">Pick your first initial or an avatar, then choose a border style and color.</p>
 
   <%= form_with url: profile_avatar_path,
                 method: :patch,
                 scope: :user,
                 class: "nu-profile-avatar-picker",
                 data: { controller: "profile-avatar-picker" } do |form| %>
-    <fieldset class="mb-0">
-      <legend class="visually-hidden">Choose profile picture</legend>
+    <fieldset class="mb-3">
+      <legend class="form-label small mb-2">Avatar</legend>
       <div class="d-flex flex-wrap gap-3">
         <% profile_avatar_options.each do |label, value| %>
           <% selected = value == "initial" ? @user.profile_avatar_initial? : @user.profile_avatar == value %>
@@ -31,6 +31,47 @@
           </label>
         <% end %>
       </div>
+    </fieldset>
+
+    <fieldset class="mb-3">
+      <legend class="form-label small mb-2">Border style</legend>
+      <div class="d-flex flex-wrap gap-3">
+        <% profile_avatar_border_style_options.each do |label, value| %>
+          <% selected = (@user.profile_avatar_border_style.presence || "default") == value %>
+          <div class="form-check">
+            <%= form.radio_button :profile_avatar_border_style,
+                                  value,
+                                  checked: selected,
+                                  class: "form-check-input",
+                                  id: "profile_avatar_border_style_#{value}",
+                                  data: {
+                                    profile_avatar_picker_target: "style",
+                                    action: "change->profile-avatar-picker#styleChanged"
+                                  } %>
+            <%= label_tag "profile_avatar_border_style_#{value}", label, class: "form-check-label small" %>
+          </div>
+        <% end %>
+      </div>
+    </fieldset>
+
+    <fieldset class="mb-0" data-profile-avatar-picker-target="colorFieldset">
+      <legend class="form-label small mb-2">Border color</legend>
+      <div class="d-flex flex-wrap gap-3">
+        <% profile_avatar_border_color_options.each do |label, value| %>
+          <% next if value == "default" %>
+          <% selected = !@user.profile_avatar_border_default? && (@user.profile_avatar_border_color.presence || "purple") == value %>
+          <div class="form-check">
+            <%= form.radio_button :profile_avatar_border_color,
+                                  value,
+                                  checked: selected,
+                                  class: "form-check-input",
+                                  id: "profile_avatar_border_color_#{value}",
+                                  data: { action: "change->profile-avatar-picker#submit" } %>
+            <%= label_tag "profile_avatar_border_color_#{value}", label, class: "form-check-label small" %>
+          </div>
+        <% end %>
+      </div>
+      <p class="small text-muted mb-0 mt-2">Color applies to regular and flower borders. Default style uses the standard border.</p>
     </fieldset>
   <% end %>
 </section>

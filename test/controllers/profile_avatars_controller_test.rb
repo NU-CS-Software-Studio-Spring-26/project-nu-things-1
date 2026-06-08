@@ -37,6 +37,24 @@ class ProfileAvatarsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "squirrel", student.reload.profile_avatar
   end
 
+  test "signed-in user can set flower border style and color" do
+    student = users(:nu_student)
+    sign_in_as(student)
+
+    patch profile_avatar_path, params: {
+      user: {
+        profile_avatar: "cat",
+        profile_avatar_border_style: "flower",
+        profile_avatar_border_color: "pink"
+      }
+    }
+
+    student.reload
+    assert_equal "flower", student.profile_avatar_border_style
+    assert_equal "pink", student.profile_avatar_border_color
+    assert_redirected_to user_path(student)
+  end
+
   test "own profile shows avatar picker" do
     sign_in_as(users(:nu_student))
     get user_url(users(:nu_student))
@@ -46,6 +64,8 @@ class ProfileAvatarsControllerTest < ActionDispatch::IntegrationTest
     assert_select "input[type=radio][name='user[profile_avatar]'][value=initial]"
     assert_select "input[type=radio][name='user[profile_avatar]'][value=flower]"
     assert_select "input[type=radio][name='user[profile_avatar]'][value=bow]"
+    assert_select "input[type=radio][name='user[profile_avatar_border_style]'][value=default]"
+    assert_select "input[type=radio][name='user[profile_avatar_border_color]'][value=pink]"
     assert_select "img[src*='profile_avatars/cat']"
   end
 
