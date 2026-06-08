@@ -9,7 +9,7 @@
   <%= link_to_new_listing "Post listing", new_marketplace_listing_path, class: "btn btn-primary nu-pill-btn" %>
 </div>
 
-<%= turbo_frame_tag "listings", data: { controller: "listing-search" } do %>
+<%= turbo_frame_tag "listings", data: { controller: "listing-search", turbo_cache: false } do %>
   <%= render "application/listing_search_bar", url: marketplace_listings_path, preserve_params: { category: params[:category], listing_type: params[:listing_type] }, input_id: "marketplace-listings-search-q" %>
 
 <div class="card nu-card mb-4">

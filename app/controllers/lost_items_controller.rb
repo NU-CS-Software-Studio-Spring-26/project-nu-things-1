@@ -11,7 +11,7 @@ class LostItemsController < ApplicationController
   def index
     @lost_items = LostItem.with_attached_photo.visible_to(current_user).order(date_lost: :desc, created_at: :desc)
     @categories = listing_filter_categories
-    @lost_items = filter_where_in(@lost_items, :category, params[:category], @categories)
+    @lost_items = filter_by_listing_category(@lost_items, params[:category], @categories)
     @lost_items = filter_by_search(@lost_items, params[:q])
     @pagy, @lost_items, @grouped_lost_items = prepare_listings_index(@lost_items)
   end
