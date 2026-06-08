@@ -15,7 +15,7 @@
       <p class="card-text text-muted small mb-2"><%= truncate(item.description, length: 80) %></p>
 
       <div class="mb-2">
-        <span class="badge <%= marketplace_category_badge_class(item.category) %>"><%= item.category_label %></span>
+        <%= render "application/listing_category_badge", item: item %>
         <% if item.condition.present? %>
           <span class="badge text-bg-light border"><%= item.condition %></span>
         <% end %>

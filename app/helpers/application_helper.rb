@@ -220,12 +220,15 @@ module ApplicationHelper
   end
 
   def marketplace_category_slug(category)
-    category.to_s.parameterize.presence || "other"
+    ListingCategories.slug(category)
   end
 
-  # Powdery per-category pill (uses canonical `category`, not custom label, so "Other" still styles as Other).
+  def listing_category_badge_class(category)
+    "nu-listing-cat nu-listing-cat--#{ListingCategories.slug(category)}"
+  end
+
   def marketplace_category_badge_class(category)
-    "nu-mp-cat nu-mp-cat--#{marketplace_category_slug(category)}"
+    listing_category_badge_class(category)
   end
 
   def marketplace_listing_type_badge_class(listing_type)

@@ -10,7 +10,7 @@
       <p class="card-text text-muted small mb-2"><%= truncate(item.description, length: 80) %></p>
 
       <div class="mb-2">
-        <span class="badge text-bg-primary"><%= item.category %></span>
+        <%= render "application/listing_category_badge", item: item %>
         <span class="badge text-bg-light border"><%= item.condition %></span>
       </div>
 

@@ -1,5 +1,6 @@
 class RentalItem < ApplicationRecord
   include ListingAuthorizable
+  include ListingCategoryDisplay
   include ListingPhotoAttachment
   requires_listing_photo!
   include ListingTextLimits

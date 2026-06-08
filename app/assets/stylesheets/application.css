@@ -855,52 +855,67 @@ html[data-bs-theme="dark"] .nu-reputation-ratings-scroll {
   font-weight: 700;
 }
 
-.nu-mp-cat {
+.nu-mp-cat,
+.nu-listing-cat {
   font-weight: 600;
   border-width: 1px;
   border-style: solid;
 }
 
-.nu-mp-cat--camping-gear {
+.nu-mp-cat--camping-gear,
+.nu-listing-cat--camping-gear {
   color: #274a3c;
   background: linear-gradient(150deg, #e8f5ef 0%, #d4ecdf 45%, #c8e5d6 100%);
   border-color: rgba(45, 110, 85, 0.3);
 }
 
-.nu-mp-cat--electronics {
+.nu-mp-cat--electronics,
+.nu-listing-cat--electronics {
   color: #6a5218;
   background: linear-gradient(150deg, #fff9e6 0%, #fff0c2 42%, #ffe8a8 100%);
   border-color: rgba(200, 155, 40, 0.35);
 }
 
-.nu-mp-cat--tools {
+.nu-mp-cat--tools,
+.nu-listing-cat--tools {
   color: #3a4558;
   background: linear-gradient(150deg, #e9eef5 0%, #d8e2ee 48%, #ccd9ea 100%);
   border-color: rgba(75, 105, 140, 0.28);
 }
 
-.nu-mp-cat--books {
+.nu-mp-cat--books,
+.nu-listing-cat--books {
   color: #5c3842;
   background: linear-gradient(150deg, #faf0f2 0%, #f0dfe4 45%, #e8d3da 100%);
   border-color: rgba(150, 85, 105, 0.22);
 }
 
-.nu-mp-cat--furniture {
+.nu-mp-cat--furniture,
+.nu-listing-cat--furniture {
   color: #5c4228;
   background: linear-gradient(150deg, #faf3ea 0%, #f0e0d0 48%, #e6d2c2 100%);
   border-color: rgba(160, 110, 70, 0.28);
 }
 
-.nu-mp-cat--sports-equipment {
+.nu-mp-cat--sports-equipment,
+.nu-listing-cat--sports-equipment {
   color: #6b3038;
   background: linear-gradient(150deg, #fff0f1 0%, #fad8dd 42%, #f2c8cf 100%);
   border-color: rgba(190, 70, 90, 0.3);
 }
 
-.nu-mp-cat--other {
+.nu-mp-cat--other,
+.nu-listing-cat--other {
   color: #4d4260;
   background: linear-gradient(150deg, #f5f0ff 0%, #eae2f7 50%, #e0d6f2 100%);
   border-color: rgba(95, 70, 140, 0.22);
+}
+
+.nu-mp-cat--accessories,
+.nu-listing-cat--accessories {
+  color: #3d4a5c;
+  background: linear-gradient(150deg, #eef3f8 0%, #dde7f0 48%, #d0dce8 100%);
+  border-color: rgba(70, 95, 130, 0.24);
 }
 
 .nu-marketplace .link-primary {
@@ -1262,11 +1277,13 @@ html[data-bs-theme="dark"] .nu-body .alert .btn-close {
   color: #252f38;
 }
 
-.nu-mp-cat--electronics {
+.nu-mp-cat--electronics,
+.nu-listing-cat--electronics {
   color: #4a3a10;
 }
 
-.nu-mp-cat--furniture {
+.nu-mp-cat--furniture,
+.nu-listing-cat--furniture {
   color: #4a341f;
 }
 
@@ -1717,46 +1734,60 @@ html[data-bs-theme="dark"] .nu-mp-type-wanted {
   border-color: rgba(100, 140, 180, 0.3);
 }
 
-html[data-bs-theme="dark"] .nu-mp-cat--camping-gear {
+html[data-bs-theme="dark"] .nu-mp-cat--camping-gear,
+html[data-bs-theme="dark"] .nu-listing-cat--camping-gear {
   color: #b8e8d0;
   background: linear-gradient(150deg, #1e3428 0%, #182820 100%);
   border-color: rgba(70, 140, 100, 0.35);
 }
 
-html[data-bs-theme="dark"] .nu-mp-cat--electronics {
+html[data-bs-theme="dark"] .nu-mp-cat--electronics,
+html[data-bs-theme="dark"] .nu-listing-cat--electronics {
   color: #f5e8c0;
   background: linear-gradient(150deg, #3d3420 0%, #302818 100%);
   border-color: rgba(180, 150, 60, 0.35);
 }
 
-html[data-bs-theme="dark"] .nu-mp-cat--tools {
+html[data-bs-theme="dark"] .nu-mp-cat--tools,
+html[data-bs-theme="dark"] .nu-listing-cat--tools {
   color: #d0dcf0;
   background: linear-gradient(150deg, #283040 0%, #202830 100%);
   border-color: rgba(90, 120, 160, 0.3);
 }
 
-html[data-bs-theme="dark"] .nu-mp-cat--books {
+html[data-bs-theme="dark"] .nu-mp-cat--books,
+html[data-bs-theme="dark"] .nu-listing-cat--books {
   color: #f0d4dc;
   background: linear-gradient(150deg, #382830 0%, #2c2228 100%);
   border-color: rgba(150, 90, 110, 0.3);
 }
 
-html[data-bs-theme="dark"] .nu-mp-cat--furniture {
+html[data-bs-theme="dark"] .nu-mp-cat--furniture,
+html[data-bs-theme="dark"] .nu-listing-cat--furniture {
   color: #f0dcc8;
   background: linear-gradient(150deg, #3a3020 0%, #2e2818 100%);
   border-color: rgba(160, 120, 70, 0.35);
 }
 
-html[data-bs-theme="dark"] .nu-mp-cat--sports-equipment {
+html[data-bs-theme="dark"] .nu-mp-cat--sports-equipment,
+html[data-bs-theme="dark"] .nu-listing-cat--sports-equipment {
   color: #f8d0d8;
   background: linear-gradient(150deg, #3a2428 0%, #2e1c20 100%);
   border-color: rgba(180, 80, 100, 0.35);
 }
 
-html[data-bs-theme="dark"] .nu-mp-cat--other {
+html[data-bs-theme="dark"] .nu-mp-cat--other,
+html[data-bs-theme="dark"] .nu-listing-cat--other {
   color: #e0d8f0;
   background: linear-gradient(150deg, #2c2838 0%, #242030 100%);
   border-color: rgba(120, 100, 160, 0.3);
+}
+
+html[data-bs-theme="dark"] .nu-mp-cat--accessories,
+html[data-bs-theme="dark"] .nu-listing-cat--accessories {
+  color: #d0dcf0;
+  background: linear-gradient(150deg, #283040 0%, #202830 100%);
+  border-color: rgba(90, 120, 160, 0.3);
 }
 
 /* Floating AI Finder chat widget */

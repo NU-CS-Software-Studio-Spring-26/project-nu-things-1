@@ -7,7 +7,7 @@
     <span class="badge <%= marketplace_listing_type_badge_class(@marketplace_listing.listing_type) %>">
       <%= @marketplace_listing.listing_type == "wanted" ? "Wanted" : "For sale" %>
     </span>
-    <span class="badge <%= marketplace_category_badge_class(@marketplace_listing.category) %> ms-1"><%= @marketplace_listing.category_label %></span>
+    <%= render "application/listing_category_badge", item: @marketplace_listing %>
     <% if @marketplace_listing.condition.present? %>
       <span class="badge text-bg-light border ms-1"><%= @marketplace_listing.condition %></span>
     <% end %>

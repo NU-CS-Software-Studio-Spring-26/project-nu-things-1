@@ -1,5 +1,6 @@
 class FoundItem < ApplicationRecord
   include ListingAuthorizable
+  include ListingCategoryDisplay
   include ListingPhotoAttachment
   requires_listing_photo!
   include ListingTextLimits
@@ -26,12 +27,6 @@ class FoundItem < ApplicationRecord
   validate :validate_found_location_word_limits
 
   before_validation :assign_default_status, on: :create
-
-  def category_label
-    return category unless category == "Other"
-
-    custom_category.presence || category
-  end
 
   private
 

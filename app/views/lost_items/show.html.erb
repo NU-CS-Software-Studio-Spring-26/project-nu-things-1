@@ -10,7 +10,7 @@
   <div>
     <h2 class="h2 mb-2 text-purple"><%= @lost_item.title %></h2>
     <span class="badge rounded-pill <%= lost_status_badge_class(@lost_item.status) %>"><%= @lost_item.status.titleize %></span>
-    <span class="badge text-bg-light border ms-1"><%= @lost_item.category_label %></span>
+    <%= render "application/listing_category_badge", item: @lost_item %>
   </div>
   <div class="d-flex flex-wrap gap-2">
     <%= link_to_new_listing "Post lost item", new_lost_item_path, class: "btn btn-sm nu-pill-btn nu-report-lost" %>

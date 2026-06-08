@@ -166,7 +166,8 @@ class ApplicationController < ActionController::Base
   end
 
   def filter_category_options(model, exclude: [])
-    options = (ListingCategories::VALUES + model.distinct.pluck(:category).compact).uniq.sort
+    plucked = model.distinct.pluck(:category).compact.filter_map { |value| ListingCategories.canonical(value) }
+    options = (ListingCategories::VALUES + plucked).uniq.sort
     exclude.any? ? options - exclude : options
   end
 
@@ -241,16 +242,8 @@ class ApplicationController < ActionController::Base
   end
 
   def group_listings_by_category(items)
-    grouped = items.group_by { |item| listing_group_category_label(item) }
+    grouped = items.group_by { |item| item.category_label }
     grouped.sort_by { |category, _| category.to_s.downcase }.to_h
-  end
-
-  def listing_group_category_label(item)
-    if item.respond_to?(:category_label)
-      item.category_label
-    else
-      item.category.to_s
-    end
   end
 
   # Name + email for lost/found listing report mailers (signed-in uses account; guests use form params).

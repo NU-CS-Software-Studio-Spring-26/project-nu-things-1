@@ -13,8 +13,10 @@
       <p class="card-text text-muted small mb-3 flex-grow-1">
         <%= truncate(item.description, length: 100) %>
       </p>
+      <div class="mb-2">
+        <%= render "application/listing_category_badge", item: item %>
+      </div>
       <div class="nu-metadata small mb-3">
-        <span class="nu-metadata__item"><strong>Category:</strong> <%= item.category_label %></span>
         <span class="nu-metadata__item"><strong>Found at:</strong> <%= item.location_found %></span>
         <span class="nu-metadata__item"><strong>Date:</strong> <%= item.date_found&.strftime("%b %d, %Y") %></span>
       </div>
