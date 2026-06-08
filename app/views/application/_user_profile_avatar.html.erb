@@ -2,12 +2,12 @@
 <% size_key = (local_assigns[:size] || :md).to_sym %>
 <% size_class = { sm: "nu-profile-avatar--sm", md: "nu-profile-avatar--md", lg: "nu-profile-avatar--lg" }[size_key] || "nu-profile-avatar--md" %>
 <% avatar_asset = user_profile_avatar_asset(user) %>
-<% if avatar_asset %>
+<% if user_profile_avatar_shows_initial?(user) %>
+  <div class="nu-profile-avatar nu-profile-avatar--default <%= size_class %>" role="img" aria-label="<%= user_profile_avatar_alt(user) %>">
+    <span class="nu-profile-avatar__initial" aria-hidden="true"><%= user_profile_avatar_initial(user) %></span>
+  </div>
+<% elsif avatar_asset %>
   <%= image_tag avatar_asset,
                 class: "nu-profile-avatar #{size_class}",
                 alt: user_profile_avatar_alt(user) %>
-<% else %>
-  <div class="nu-profile-avatar nu-profile-avatar--default <%= size_class %>" aria-hidden="true">
-    <span class="nu-profile-avatar__initial"><%= user_profile_avatar_initial(user) %></span>
-  </div>
 <% end %>
