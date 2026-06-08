@@ -1713,6 +1713,27 @@ html[data-bs-theme="dark"] .fc .fc-col-header-cell-cushion {
   background-color: var(--nu-purple);
 }
 
+.nu-message-row {
+  max-width: min(28rem, 92%);
+}
+
+.nu-message-row--mine {
+  align-self: flex-end;
+}
+
+.nu-message-row--theirs {
+  align-self: flex-start;
+}
+
+.nu-message-row__avatar {
+  margin-top: 0.15rem;
+}
+
+.nu-message-bubble {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
 .nu-message-bubble--theirs {
   background-color: var(--bs-secondary-bg, #f3f0f8);
   border: 1px solid var(--bs-border-color, #e8e4ef);
