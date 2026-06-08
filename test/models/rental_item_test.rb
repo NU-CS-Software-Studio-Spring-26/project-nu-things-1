@@ -79,4 +79,11 @@ class RentalItemTest < ActiveSupport::TestCase
     item.update!(status: "rented")
     assert_not item.can_leave_review?(reviewer)
   end
+
+  test "rejects moderated word in owner_name" do
+    item = rental_items(:one)
+    item.owner_name = "xxtestbadxx Owner"
+    assert_not item.valid?
+    assert_includes item.errors[:owner_name], Moderate.configuration.error_message
+  end
 end

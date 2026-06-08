@@ -69,7 +69,7 @@ class RentalItem < ApplicationRecord
   RENTAL_PERIODS = %w[ per_day per_week per_month ].freeze
   STATUSES = %w[ available rented inactive ].freeze
 
-  moderate_attributes :title, :description, :location
+  moderate_attributes :title, :description, :location, :owner_name
 
   validates :title, :description, :category, :location, :owner_name, :owner_email, presence: true
   validates :rental_price, presence: true, numericality: { greater_than: 0 }

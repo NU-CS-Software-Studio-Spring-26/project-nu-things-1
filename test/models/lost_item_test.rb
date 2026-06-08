@@ -106,4 +106,12 @@ class LostItemTest < ActiveSupport::TestCase
     msg = Moderate.configuration.error_message
     assert_includes item.errors[:title], msg
   end
+
+  test "rejects moderated word in custom_category" do
+    item = lost_items(:one)
+    item.category = "Other"
+    item.custom_category = "xxtestbadxx supplies"
+    assert_not item.valid?
+    assert_includes item.errors[:custom_category], Moderate.configuration.error_message
+  end
 end

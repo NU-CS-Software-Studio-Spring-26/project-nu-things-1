@@ -83,4 +83,12 @@ class FoundItemTest < ActiveSupport::TestCase
     assert_not item.valid?
     assert item.errors.of_kind?(:contact_email, :invalid)
   end
+
+  test "rejects moderated word in custom_category" do
+    item = found_items(:one)
+    item.category = "Other"
+    item.custom_category = "xxtestbadxx category"
+    assert_not item.valid?
+    assert_includes item.errors[:custom_category], Moderate.configuration.error_message
+  end
 end

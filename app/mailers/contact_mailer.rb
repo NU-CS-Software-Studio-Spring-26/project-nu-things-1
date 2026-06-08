@@ -63,6 +63,32 @@ class ContactMailer < ApplicationMailer
     )
   end
 
+  def rental_item_report(rental_item, reporter_name, reporter_email, details)
+    @rental_item = rental_item
+    @reporter_name = reporter_name
+    @reporter_email = reporter_email
+    @details = details
+
+    mail(
+      to: listing_moderation_to,
+      reply_to: reporter_email,
+      subject: "[#{PurplePost::BRAND_NAME}] Reported rental item ##{rental_item.id}: #{rental_item.title}"
+    )
+  end
+
+  def marketplace_listing_report(marketplace_listing, reporter_name, reporter_email, details)
+    @marketplace_listing = marketplace_listing
+    @reporter_name = reporter_name
+    @reporter_email = reporter_email
+    @details = details
+
+    mail(
+      to: listing_moderation_to,
+      reply_to: reporter_email,
+      subject: "[#{PurplePost::BRAND_NAME}] Reported marketplace listing ##{marketplace_listing.id}: #{marketplace_listing.title}"
+    )
+  end
+
   private
 
   def listing_moderation_to
