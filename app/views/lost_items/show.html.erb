@@ -81,7 +81,7 @@
         <div class="card nu-card mb-0">
           <div class="card-body">
             <h2 class="h6 text-muted text-uppercase">Contact</h2>
-            <p class="mb-1"><strong><%= @lost_item.contact_name %></strong></p>
+            <%= render "application/listing_contact_identity", name: @lost_item.contact_name, user: @lost_item.poster_account %>
             <p class="mb-3"><%= mail_to @lost_item.contact_email, @lost_item.contact_email, class: "link-primary" %></p>
             <% if can_message_listing?(@lost_item) %>
               <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#contactModal">Send a message</button>

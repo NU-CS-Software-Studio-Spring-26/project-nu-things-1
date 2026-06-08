@@ -70,6 +70,10 @@ module ApplicationHelper
     ProfileAvatars::AVATARS.map { |value, label| [ label, value ] }
   end
 
+  def listing_contact_initial(name)
+    name.to_s.strip.first&.upcase.presence || "?"
+  end
+
   # Default "your name" for listing and contact forms when signed in (saved first name, else email-based display).
   def prefilled_listing_contact_display
     u = current_user

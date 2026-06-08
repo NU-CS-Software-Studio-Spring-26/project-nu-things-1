@@ -77,7 +77,7 @@
       <div class="card nu-card mb-3">
         <div class="card-body">
           <h2 class="h6 text-muted text-uppercase">Contact Poster</h2>
-          <p class="mb-1"><strong><%= @marketplace_listing.contact_name %></strong></p>
+          <%= render "application/listing_contact_identity", name: @marketplace_listing.contact_name, user: @marketplace_listing.poster_account %>
           <p class="mb-2"><%= mail_to @marketplace_listing.contact_email, @marketplace_listing.contact_email, class: "link-primary" %></p>
           <% if @marketplace_listing.contact_phone.present? %>
             <p class="mb-3"><%= @marketplace_listing.contact_phone %></p>
