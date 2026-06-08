@@ -27,6 +27,7 @@ class ConversationsControllerTest < ActionDispatch::IntegrationTest
     get conversation_path(conversation)
     assert_response :success
     assert participant.reload.last_read_at.present?
+    assert_select ".nu-message-row .nu-profile-avatar", minimum: 1
   end
 
   test "blocked user can view conversation history" do

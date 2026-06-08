@@ -37,8 +37,11 @@
   <div class="card-body d-flex flex-column gap-3" role="log" aria-live="polite" aria-relevant="additions">
     <% @messages.each do |message| %>
       <% mine = message.sender_id == current_user.id %>
-      <div class="d-flex <%= mine ? 'justify-content-end' : 'justify-content-start' %>">
-        <div class="nu-message-bubble <%= mine ? 'nu-message-bubble--mine' : 'nu-message-bubble--theirs' %> rounded-3 px-3 py-2" style="max-width: 85%;">
+      <div class="nu-message-row d-flex gap-2 align-items-start <%= mine ? 'nu-message-row--mine flex-row-reverse' : 'nu-message-row--theirs' %>">
+        <div class="nu-message-row__avatar flex-shrink-0">
+          <%= render "application/user_profile_avatar", user: message.sender, size: :sm %>
+        </div>
+        <div class="nu-message-bubble <%= mine ? 'nu-message-bubble--mine' : 'nu-message-bubble--theirs' %> rounded-3 px-3 py-2">
           <p class="small fw-semibold mb-1 <%= mine ? 'text-white-50' : 'text-muted' %>">
             <%= conversation_participant_name(message.sender) %>
           </p>
