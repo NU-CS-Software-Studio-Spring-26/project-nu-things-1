@@ -1,8 +1,18 @@
 <% display = display_user_name(@user).presence || "Member" %>
 <% content_for :title, page_title("#{display} — Profile") %>
 
-<h2 class="h2 mb-1 text-purple"><%= display %></h2>
-<p class="text-muted small mb-1">Profile — posts on <%= brand_name %>.</p>
+<div class="d-flex flex-column flex-sm-row gap-3 align-items-sm-start mb-3">
+  <%= render "application/user_profile_avatar", user: @user, size: :lg %>
+  <div>
+    <h2 class="h2 mb-1 text-purple"><%= display %></h2>
+    <p class="text-muted small mb-0">Profile — posts on <%= brand_name %>.</p>
+  </div>
+</div>
+
+<% if signed_in? && current_user == @user %>
+  <%= render "users/profile_avatar_picker" %>
+<% end %>
+
 <div class="mb-4">
   <p class="small text-muted text-uppercase mb-1">User reputation</p>
   <%= render "application/user_reputation_score", user: @user, show_breakdown: show_user_reputation_breakdown?(@user) %>

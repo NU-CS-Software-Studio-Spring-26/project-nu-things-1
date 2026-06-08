@@ -388,6 +388,67 @@ a.nu-clickable-card .card-body > .d-grid:has(.nu-card-cta) {
   object-fit: cover;
 }
 
+.nu-profile-avatar {
+  display: block;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 2px solid rgba(75, 46, 131, 0.18);
+  background: var(--nu-lavender);
+}
+
+.nu-profile-avatar--sm {
+  width: 2.25rem;
+  height: 2.25rem;
+}
+
+.nu-profile-avatar--md {
+  width: 4.5rem;
+  height: 4.5rem;
+}
+
+.nu-profile-avatar--lg {
+  width: 6.5rem;
+  height: 6.5rem;
+}
+
+.nu-profile-avatar--default {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, var(--nu-lavender), #e8dff8);
+  color: var(--nu-purple-dark);
+  font-weight: 700;
+}
+
+.nu-profile-avatar__initial {
+  font-size: 1.35em;
+  line-height: 1;
+}
+
+.nu-profile-avatar--lg .nu-profile-avatar__initial {
+  font-size: 2rem;
+}
+
+.nu-profile-avatar-picker .nu-profile-avatar-option {
+  cursor: pointer;
+  padding: 0.35rem;
+  border-radius: 0.75rem;
+  border: 2px solid transparent;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.nu-profile-avatar-picker .nu-profile-avatar-option:hover,
+.nu-profile-avatar-picker .nu-profile-avatar-option:focus-within {
+  border-color: rgba(75, 46, 131, 0.35);
+  background-color: rgba(75, 46, 131, 0.06);
+}
+
+.nu-profile-avatar-picker .nu-profile-avatar-option--selected {
+  border-color: var(--nu-purple);
+  background-color: rgba(75, 46, 131, 0.1);
+}
+
 .nu-listing-image-placeholder.nu-profile-placeholder {
   width: 6rem;
   height: 6rem;

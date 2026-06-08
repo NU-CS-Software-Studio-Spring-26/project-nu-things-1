@@ -42,6 +42,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.body, "5.0 / 5"
     assert_includes response.body, "1 rating"
     assert_includes response.body, "exchange ratings from completed handoffs"
+    assert_select "img.nu-profile-avatar[src*='profile_avatars/squirrel']"
   end
 
   test "profile lists exchange ratings with listing links" do

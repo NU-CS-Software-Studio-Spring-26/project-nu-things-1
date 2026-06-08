@@ -21,10 +21,12 @@
             <% end %>
             <h2 class="h6 mb-0 text-purple text-truncate"><%= conversation.subject %></h2>
           </div>
-          <p class="small text-muted mb-1">
+          <p class="small text-muted mb-1 d-flex align-items-center gap-2 flex-wrap">
             <%= conversation_listable_type_label(listable) %>
             <% if other %>
-              · with <%= conversation_participant_name(other) %>
+              ·
+              <%= render "application/user_profile_avatar", user: other, size: :sm %>
+              with <%= conversation_participant_name(other) %>
             <% end %>
           </p>
           <p class="mb-0 small text-truncate"><%= conversation_preview_text(conversation, current_user) %></p>

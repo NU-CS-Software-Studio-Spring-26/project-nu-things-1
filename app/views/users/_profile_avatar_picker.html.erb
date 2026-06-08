@@ -1,0 +1,30 @@
+<section class="mb-4">
+  <h2 class="h6 text-muted text-uppercase mb-2">Profile picture</h2>
+  <p class="small text-muted mb-3">Pick a cartoon animal avatar. Others will see it on your profile and in messages.</p>
+
+  <%= form_with url: profile_avatar_path,
+                method: :patch,
+                scope: :user,
+                class: "nu-profile-avatar-picker",
+                data: { controller: "profile-avatar-picker" } do |form| %>
+    <fieldset class="mb-0">
+      <legend class="visually-hidden">Choose profile picture</legend>
+      <div class="d-flex flex-wrap gap-3">
+        <% profile_avatar_options.each do |label, value| %>
+          <% selected = @user.profile_avatar == value %>
+          <label class="nu-profile-avatar-option<%= " nu-profile-avatar-option--selected" if selected %>">
+            <%= form.radio_button :profile_avatar,
+                                  value,
+                                  checked: selected,
+                                  class: "visually-hidden",
+                                  data: { action: "change->profile-avatar-picker#submit" } %>
+            <%= image_tag "profile_avatars/#{value}.svg",
+                          class: "nu-profile-avatar nu-profile-avatar--md",
+                          alt: "" %>
+            <span class="small d-block text-center mt-1"><%= label %></span>
+          </label>
+        <% end %>
+      </div>
+    </fieldset>
+  <% end %>
+</section>
