@@ -252,7 +252,9 @@ module ApplicationHelper
       "found_item.claim" => "Claimed found item",
       "found_item.report" => "Reported found item",
       "rental_item.destroy" => "Deleted rental item",
-      "marketplace_listing.destroy" => "Deleted marketplace listing"
+      "rental_item.report" => "Reported rental item",
+      "marketplace_listing.destroy" => "Deleted marketplace listing",
+      "marketplace_listing.report" => "Reported marketplace listing"
     }.fetch(action.to_s, action.to_s.humanize)
   end
 end

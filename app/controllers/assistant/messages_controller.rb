@@ -20,7 +20,7 @@ module Assistant
         return
       end
 
-      if defined?(Moderate::Text) && Moderate::Text.bad_words?(body)
+      if profanity_in?(body)
         render_assistant_error(profanity_blocked_alert)
         return
       end

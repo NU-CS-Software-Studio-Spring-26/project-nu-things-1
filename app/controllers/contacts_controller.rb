@@ -76,11 +76,6 @@ class ContactsController < ApplicationController
   private
 
   def redirect_if_profane_contact_message!(target, message)
-    return false if message.blank?
-
-    return false unless Moderate::Text.bad_words?(message.to_s)
-
-    redirect_to target, alert: profanity_blocked_alert
-    true
+    redirect_if_profanity!(target, message)
   end
 end

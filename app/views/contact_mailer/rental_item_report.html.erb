@@ -1,0 +1,9 @@
+<h2>Listing report — rental item</h2>
+
+<p><strong>Reporter:</strong> <%= @reporter_name %> &lt;<%= @reporter_email %>&gt;</p>
+
+<p><strong>Rental item:</strong> <%= @rental_item.title %> (ID <%= @rental_item.id %>)</p>
+<p><%= link_to "View listing", rental_item_url(@rental_item) %></p>
+
+<h3>What’s wrong / why they’re reporting it</h3>
+<p><%= simple_format(@details) %></p>

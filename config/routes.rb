@@ -51,6 +51,9 @@ Rails.application.routes.draw do
     end
   end
   resources :rental_items do
+    member do
+      post :report
+    end
     resources :rental_reviews, only: [ :create ]
     resources :bookings, only: [ :create ] do
       member do
@@ -68,6 +71,9 @@ Rails.application.routes.draw do
     end
   end
   resources :marketplace_listings do
+    member do
+      post :report
+    end
     resources :marketplace_listing_reviews, only: [ :create ]
   end
 

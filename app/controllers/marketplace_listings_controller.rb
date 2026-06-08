@@ -1,7 +1,12 @@
 class MarketplaceListingsController < ApplicationController
-  before_action :set_marketplace_listing, only: %i[show edit update destroy]
+  include ListingReportable
+
+  before_action :set_marketplace_listing, only: %i[show edit update destroy report]
   before_action -> { require_owner_or_admin(@marketplace_listing) }, only: %i[edit update]
   before_action :require_admin, only: %i[destroy]
+
+  rate_limit to: 25, within: 24.hours, only: :report, scope: :marketplace_listing_reports_marketplace_listings,
+             by: :report_rate_limit_key, with: :notify_rate_limit
 
   def index
     @marketplace_listings = MarketplaceListing.with_attached_photo
@@ -57,6 +62,11 @@ class MarketplaceListingsController < ApplicationController
       metadata: { marketplace_listing_id: @marketplace_listing.id })
     @marketplace_listing.destroy
     redirect_to marketplace_listings_path, notice: "Listing was successfully removed.", status: :see_other
+  end
+
+  def report
+    process_listing_report(@marketplace_listing, mailer_method: :marketplace_listing_report,
+      audit_action: "marketplace_listing.report")
   end
 
   private

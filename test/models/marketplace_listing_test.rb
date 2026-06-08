@@ -161,4 +161,11 @@ class MarketplaceListingTest < ActiveSupport::TestCase
     listing.update!(status: "inactive")
     assert_not listing.can_leave_review?(admin)
   end
+
+  test "rejects moderated word in contact_name" do
+    listing = marketplace_listings(:for_sale_one)
+    listing.contact_name = "xxtestbadxx Seller"
+    assert_not listing.valid?
+    assert_includes listing.errors[:contact_name], Moderate.configuration.error_message
+  end
 end

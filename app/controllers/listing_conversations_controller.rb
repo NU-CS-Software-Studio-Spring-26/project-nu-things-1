@@ -16,11 +16,7 @@ class ListingConversationsController < ApplicationController
       return
     end
 
-    if Moderate::Text.bad_words?(body)
-      redirect_to listable, alert: profanity_blocked_alert
-      return
-    end
-
+    return if redirect_if_profanity!(listable, body)
     conversation = ConversationStarter.start!(listable: listable, sender: current_user, body: body)
     redirect_to conversation_path(conversation), notice: "Your message has been sent."
   rescue ConversationStarter::BlockedUser

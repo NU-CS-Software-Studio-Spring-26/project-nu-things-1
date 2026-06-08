@@ -1,7 +1,12 @@
 class RentalItemsController < ApplicationController
-  before_action :set_rental_item, only: %i[show edit update destroy]
+  include ListingReportable
+
+  before_action :set_rental_item, only: %i[show edit update destroy report]
   before_action -> { require_owner_or_admin(@rental_item) }, only: %i[edit update]
   before_action :require_admin, only: %i[destroy]
+
+  rate_limit to: 25, within: 24.hours, only: :report, scope: :rental_item_reports_rental_items,
+             by: :report_rate_limit_key, with: :notify_rate_limit
 
   def index
     @rental_items = RentalItem.with_attached_photo
@@ -56,6 +61,10 @@ class RentalItemsController < ApplicationController
     record_audit("rental_item.destroy", auditable: @rental_item, metadata: { rental_item_id: @rental_item.id })
     @rental_item.destroy
     redirect_to rental_items_path, notice: "Rental item was successfully removed.", status: :see_other
+  end
+
+  def report
+    process_listing_report(@rental_item, mailer_method: :rental_item_report, audit_action: "rental_item.report")
   end
 
   private

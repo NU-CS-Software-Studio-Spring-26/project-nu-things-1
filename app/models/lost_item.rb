@@ -11,7 +11,7 @@ class LostItem < ApplicationRecord
 
   belongs_to :user, optional: true
 
-  moderate_attributes :title, :description, :location_lost, :reward, :color, :brand
+  moderate_attributes :title, :description, :location_lost, :reward, :color, :brand, :custom_category
 
   validates :title, :description, :category, :location_lost, :date_lost,
             :contact_name, :contact_email, :status, presence: true

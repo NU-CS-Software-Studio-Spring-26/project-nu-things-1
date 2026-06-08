@@ -1,0 +1,9 @@
+Listing report — rental item
+
+Reporter: <%= @reporter_name %> <<%= @reporter_email %>>
+
+Rental item: <%= @rental_item.title %> (ID <%= @rental_item.id %>)
+<%= rental_item_url(@rental_item) %>
+
+What’s wrong / why they’re reporting it:
+<%= @details %>

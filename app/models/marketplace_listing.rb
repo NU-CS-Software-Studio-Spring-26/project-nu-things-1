@@ -37,7 +37,7 @@ class MarketplaceListing < ApplicationRecord
   STATUSES = %w[active completed inactive].freeze
   CONDITIONS = [ "Like new", "Lightly used", "Good", "Fair", "Missing parts", "Poor" ].freeze
 
-  moderate_attributes :title, :description, :location, :condition, :custom_category
+  moderate_attributes :title, :description, :location, :condition, :custom_category, :contact_name
 
   validates :title, :description, :category, :location, :contact_name, :contact_email, :listing_type, presence: true
   validates :contact_email, format: { with: User::NORTHWESTERN_EMAIL, message: "must be a Northwestern email (@u.northwestern.edu or @northwestern.edu)" }

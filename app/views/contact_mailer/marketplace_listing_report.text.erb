@@ -1,0 +1,9 @@
+Listing report — marketplace listing
+
+Reporter: <%= @reporter_name %> <<%= @reporter_email %>>
+
+Marketplace listing: <%= @marketplace_listing.title %> (ID <%= @marketplace_listing.id %>)
+<%= marketplace_listing_url(@marketplace_listing) %>
+
+What’s wrong / why they’re reporting it:
+<%= @details %>

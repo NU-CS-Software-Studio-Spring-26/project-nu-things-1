@@ -1,4 +1,6 @@
 class LostItemsController < ApplicationController
+  include ListingReportable
+
   before_action :set_lost_item, only: %i[show edit update destroy resolve report]
   before_action -> { require_owner_or_admin(@lost_item) }, only: %i[edit update resolve]
   before_action :require_admin, only: %i[destroy]
@@ -63,26 +65,7 @@ class LostItemsController < ApplicationController
   end
 
   def report
-    details = params[:report_details].to_s.strip
-    if details.length < 20
-      redirect_to @lost_item, alert: "Please describe what’s wrong and why you’re reporting this post (at least 20 characters)."
-      return
-    end
-
-    if Moderate::Text.bad_words?(details)
-      redirect_to @lost_item, alert: profanity_blocked_alert
-      return
-    end
-
-    name, email = reporter_identity_for_report
-    if name.blank? || email.blank? || !email.match?(URI::MailTo::EMAIL_REGEXP)
-      redirect_to @lost_item, alert: "Please include your name and email so moderators can follow up if needed."
-      return
-    end
-
-    ContactMailer.lost_item_report(@lost_item, name, email, details).deliver_later
-    record_audit("lost_item.report", auditable: @lost_item, metadata: { reporter_email: email })
-    redirect_to @lost_item, notice: "Thanks—your report was sent to the moderators."
+    process_listing_report(@lost_item, mailer_method: :lost_item_report, audit_action: "lost_item.report")
   end
 
   private
