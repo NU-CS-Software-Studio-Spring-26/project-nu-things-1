@@ -5,7 +5,7 @@ require "test_helper"
 class UserProfileAvatarBorderTest < ActiveSupport::TestCase
   test "accepts valid border styles and colors" do
     user = users(:nu_student)
-    user.profile_avatar_border_style = "flower"
+    user.profile_avatar_border_style = "dashed"
     user.profile_avatar_border_color = "pink"
     assert user.valid?
   end

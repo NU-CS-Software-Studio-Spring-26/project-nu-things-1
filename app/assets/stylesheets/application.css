@@ -411,27 +411,10 @@ a.nu-clickable-card .card-body > .d-grid:has(.nu-card-cta) {
   border-color: var(--nu-avatar-border-color, #9b7ad8);
 }
 
-.nu-profile-avatar-wrap--flower {
-  padding: 0.22rem;
-}
-
-.nu-profile-avatar-wrap--flower::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: repeating-conic-gradient(
-    from -8deg,
-    var(--nu-avatar-border-color, #9b7ad8) 0deg 24deg,
-    transparent 24deg 48deg
-  );
-  z-index: 0;
-}
-
-.nu-profile-avatar-wrap--flower .nu-profile-avatar {
-  position: relative;
-  z-index: 1;
-  border: 2px solid var(--nu-surface, #fff);
+.nu-profile-avatar-wrap--dashed .nu-profile-avatar {
+  border-width: 3px;
+  border-style: dashed;
+  border-color: var(--nu-avatar-border-color, #9b7ad8);
 }
 
 .nu-profile-avatar-wrap--color-pink {

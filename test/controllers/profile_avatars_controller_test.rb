@@ -37,20 +37,20 @@ class ProfileAvatarsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "squirrel", student.reload.profile_avatar
   end
 
-  test "signed-in user can set flower border style and color" do
+  test "signed-in user can set dashed border style and color" do
     student = users(:nu_student)
     sign_in_as(student)
 
     patch profile_avatar_path, params: {
       user: {
         profile_avatar: "cat",
-        profile_avatar_border_style: "flower",
+        profile_avatar_border_style: "dashed",
         profile_avatar_border_color: "pink"
       }
     }
 
     student.reload
-    assert_equal "flower", student.profile_avatar_border_style
+    assert_equal "dashed", student.profile_avatar_border_style
     assert_equal "pink", student.profile_avatar_border_color
     assert_redirected_to user_path(student)
   end

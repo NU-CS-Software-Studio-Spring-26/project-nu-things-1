@@ -6,7 +6,7 @@ module ProfileAvatarBorders
   BORDER_STYLES = {
     "default" => "Default",
     "regular" => "Regular",
-    "flower" => "Flower"
+    "dashed" => "Dashed"
   }.freeze
 
   BORDER_COLORS = {
