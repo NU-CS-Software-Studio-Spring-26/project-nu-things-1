@@ -44,12 +44,20 @@ module ApplicationHelper
   end
 
   def user_profile_avatar_asset(user)
-    return unless user&.profile_avatar.present? && ProfileAvatars::AVATARS.key?(user.profile_avatar)
+    avatar = user&.profile_avatar
+    return if avatar.blank? || avatar == "initial"
+    return unless ProfileAvatars::ANIMAL_AVATARS.include?(avatar)
 
-    "profile_avatars/#{user.profile_avatar}.svg"
+    "profile_avatars/#{avatar}.svg"
+  end
+
+  def user_profile_avatar_shows_initial?(user)
+    user.blank? || user.profile_avatar_initial?
   end
 
   def user_profile_avatar_alt(user)
+    return "#{user_profile_avatar_initial(user)} initial profile picture" if user_profile_avatar_shows_initial?(user)
+
     label = user&.profile_avatar_label
     label.present? ? "#{label} profile picture" : "Profile picture"
   end
