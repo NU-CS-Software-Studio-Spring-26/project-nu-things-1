@@ -367,6 +367,14 @@ a.nu-clickable-card .card-body > .d-grid:has(.nu-card-cta) {
 }
 
 /* Index listing cards: image area scales with zoom (no fixed px height) */
+.nu-listing-image {
+  width: 100%;
+}
+
+.nu-listing-image--profile {
+  flex-shrink: 0;
+}
+
 .nu-listing-index-card-img {
   display: block;
   width: 100%;

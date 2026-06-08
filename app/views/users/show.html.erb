@@ -43,11 +43,7 @@
         <% @authored_lost_items.each do |item| %>
           <li class="list-group-item d-flex flex-column flex-sm-row gap-3 align-items-sm-start">
             <div class="flex-shrink-0">
-              <% if item.listing_image_available? %>
-                <%= listing_image_tag item, alt: item.title, class: "rounded nu-profile-thumb" %>
-              <% else %>
-                <%= render "application/listing_image_placeholder", profile_thumb: true, extra_classes: "rounded nu-listing-image-placeholder--tiny" %>
-              <% end %>
+              <%= render_listing_image item, variant: :profile_thumb %>
             </div>
             <div class="flex-grow-1 min-w-0">
               <%= link_to item.title, item, class: "fw-semibold text-purple text-decoration-none" %>
@@ -71,11 +67,7 @@
         <% @authored_found_items.each do |item| %>
           <li class="list-group-item d-flex flex-column flex-sm-row gap-3 align-items-sm-start">
             <div class="flex-shrink-0">
-              <% if item.listing_image_available? %>
-                <%= listing_image_tag item, alt: item.title, class: "rounded nu-profile-thumb" %>
-              <% else %>
-                <%= render "application/listing_image_placeholder", profile_thumb: true, extra_classes: "rounded nu-listing-image-placeholder--tiny" %>
-              <% end %>
+              <%= render_listing_image item, variant: :profile_thumb %>
             </div>
             <div class="flex-grow-1 min-w-0">
               <%= link_to item.title, item, class: "fw-semibold text-purple text-decoration-none" %>
@@ -98,11 +90,7 @@
         <% @authored_marketplace_listings.each do |listing| %>
           <li class="list-group-item d-flex flex-column flex-sm-row gap-3 align-items-sm-start">
             <div class="flex-shrink-0">
-              <% if listing.listing_image_available? %>
-                <%= listing_image_tag listing, alt: listing.title, class: "rounded nu-profile-thumb" %>
-              <% else %>
-                <%= render "application/listing_image_placeholder", profile_thumb: true, extra_classes: "rounded nu-listing-image-placeholder--tiny" %>
-              <% end %>
+              <%= render_listing_image listing, variant: :profile_thumb %>
             </div>
             <div class="flex-grow-1 min-w-0">
               <%= link_to listing.title, listing, class: "fw-semibold text-purple text-decoration-none" %>
@@ -128,11 +116,7 @@
         <% @authored_rental_items.each do |item| %>
           <li class="list-group-item d-flex flex-column flex-sm-row gap-3 align-items-sm-start">
             <div class="flex-shrink-0">
-              <% if item.listing_image_available? %>
-                <%= listing_image_tag item, alt: item.title, class: "rounded nu-profile-thumb" %>
-              <% else %>
-                <%= render "application/listing_image_placeholder", profile_thumb: true, extra_classes: "rounded nu-listing-image-placeholder--tiny" %>
-              <% end %>
+              <%= render_listing_image item, variant: :profile_thumb %>
             </div>
             <div class="flex-grow-1 min-w-0">
               <%= link_to item.title, item, class: "fw-semibold text-primary text-decoration-none" %>
@@ -160,11 +144,7 @@
           <% item = booking.rental_item %>
           <li class="list-group-item d-flex flex-column flex-sm-row gap-3 align-items-sm-start">
             <div class="flex-shrink-0">
-              <% if item.listing_image_available? %>
-                <%= listing_image_tag item, alt: item.title, class: "rounded nu-profile-thumb" %>
-              <% else %>
-                <%= render "application/listing_image_placeholder", profile_thumb: true, extra_classes: "rounded nu-listing-image-placeholder--tiny" %>
-              <% end %>
+              <%= render_listing_image item, variant: :profile_thumb %>
             </div>
             <div class="flex-grow-1 min-w-0">
               <%= link_to item.title, item, class: "fw-semibold text-primary text-decoration-none" %>
@@ -194,11 +174,7 @@
         <% @claimed_found_items.each do |item| %>
           <li class="list-group-item d-flex flex-column flex-sm-row gap-3 align-items-sm-start">
             <div class="flex-shrink-0">
-              <% if item.listing_image_available? %>
-                <%= listing_image_tag item, alt: item.title, class: "rounded nu-profile-thumb" %>
-              <% else %>
-                <%= render "application/listing_image_placeholder", profile_thumb: true, extra_classes: "rounded nu-listing-image-placeholder--tiny" %>
-              <% end %>
+              <%= render_listing_image item, variant: :profile_thumb %>
             </div>
             <div class="flex-grow-1 min-w-0">
               <%= link_to item.title, item, class: "fw-semibold text-purple text-decoration-none" %>

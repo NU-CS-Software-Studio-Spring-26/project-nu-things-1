@@ -29,11 +29,7 @@
     <div class="card nu-card mb-4">
       <div class="card-body">
         <h2 class="h6 text-muted text-uppercase mb-3">Photo</h2>
-        <% if @found_item.listing_image_available? %>
-          <%= listing_image_tag @found_item, alt: @found_item.title, class: "nu-item-img d-block mx-auto" %>
-        <% else %>
-          <%= render "application/listing_image_placeholder", height: "300px", extra_classes: "rounded nu-listing-image-placeholder--in-body" %>
-        <% end %>
+        <%= render_listing_image @found_item, variant: :show %>
       </div>
     </div>
 
