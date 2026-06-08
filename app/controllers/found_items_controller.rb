@@ -8,7 +8,7 @@ class FoundItemsController < ApplicationController
 
   def index
     @found_items = FoundItem.with_attached_photo.visible_to(current_user).order(date_found: :desc, created_at: :desc)
-    @categories = filter_category_options(FoundItem, exclude: ListingCategories::LOST_FOUND_FILTER_EXCLUDED)
+    @categories = listing_filter_categories
     @found_items = filter_where_in(@found_items, :category, params[:category], @categories)
     @found_items = filter_by_search(@found_items, params[:q])
     @pagy, @found_items, @grouped_found_items = prepare_listings_index(@found_items)

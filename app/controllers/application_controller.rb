@@ -165,10 +165,8 @@ class ApplicationController < ActionController::Base
     relation.where(column => value)
   end
 
-  def filter_category_options(model, exclude: [])
-    plucked = model.distinct.pluck(:category).compact.filter_map { |value| ListingCategories.canonical(value) }
-    options = (ListingCategories::VALUES + plucked).uniq.sort
-    exclude.any? ? options - exclude : options
+  def listing_filter_categories
+    ListingCategories.filter_options
   end
 
   def filter_by_search(relation, query)
@@ -243,7 +241,7 @@ class ApplicationController < ActionController::Base
 
   def group_listings_by_category(items)
     grouped = items.group_by { |item| item.category_label }
-    grouped.sort_by { |category, _| category.to_s.downcase }.to_h
+    grouped.sort_by { |category, _| ListingCategories.group_sort_key(category) }.to_h
   end
 
   # Name + email for lost/found listing report mailers (signed-in uses account; guests use form params).
