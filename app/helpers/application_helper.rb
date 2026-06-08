@@ -43,6 +43,25 @@ module ApplicationHelper
     local.tr("._", " ").titleize
   end
 
+  def user_profile_avatar_asset(user)
+    return unless user&.profile_avatar.present? && ProfileAvatars::AVATARS.key?(user.profile_avatar)
+
+    "profile_avatars/#{user.profile_avatar}.svg"
+  end
+
+  def user_profile_avatar_alt(user)
+    label = user&.profile_avatar_label
+    label.present? ? "#{label} profile picture" : "Profile picture"
+  end
+
+  def user_profile_avatar_initial(user)
+    display_user_name(user).to_s.strip.first&.upcase.presence || "?"
+  end
+
+  def profile_avatar_options
+    ProfileAvatars::AVATARS.map { |value, label| [ label, value ] }
+  end
+
   # Default "your name" for listing and contact forms when signed in (saved first name, else email-based display).
   def prefilled_listing_contact_display
     u = current_user

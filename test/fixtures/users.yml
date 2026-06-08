@@ -8,6 +8,7 @@ admin:
 nu_student:
   email: student@u.northwestern.edu
   first_name: Sam
+  profile_avatar: squirrel
   password_digest: pbkdf2:100000:cXJzdHV2d3h5ejEyMzQ1Ng==:k1PP5DxDbE/bhugboN1c5UCLnAp9PbtICtuQdEsOZTM=
   created_at: <%= Time.utc(2026, 1, 1, 12, 0, 0) %>
   updated_at: <%= Time.utc(2026, 1, 1, 12, 0, 0) %>

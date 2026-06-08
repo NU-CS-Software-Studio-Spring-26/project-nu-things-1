@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
+  include ProfileAvatars
+
   NORTHWESTERN_EMAIL = /\A[^@\s]+@(?:u\.)?northwestern\.edu\z/i.freeze
 
   has_many :claimed_found_items, class_name: "FoundItem", foreign_key: :claimed_by_user_id,
