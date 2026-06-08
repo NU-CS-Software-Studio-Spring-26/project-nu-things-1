@@ -141,6 +141,10 @@ module ApplicationHelper
     end
   end
 
+  def render_listing_image(record, variant:)
+    render partial: "application/listing_image", locals: { record: record, variant: variant }
+  end
+
   def lost_status_badge_class(status)
     case status
     when "open" then "nu-badge-lost-open"

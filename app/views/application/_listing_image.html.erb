@@ -1,0 +1,43 @@
+<%# locals: (record:, variant:) — variant: :index_card | :show | :profile_thumb %>
+<%
+  case variant.to_sym
+  when :index_card
+    img_class = "card-img-top nu-listing-index-card-img"
+    wrapper_class = "nu-listing-image"
+    placeholder_locals = { aspect_index_card: true, extra_classes: "card-img-top" }
+  when :show
+    img_class = "nu-item-img d-block mx-auto"
+    wrapper_class = "nu-listing-image"
+    placeholder_locals = { height: "300px", extra_classes: "rounded nu-listing-image-placeholder--in-body" }
+  when :profile_thumb
+    img_class = "rounded nu-profile-thumb"
+    wrapper_class = "nu-listing-image nu-listing-image--profile"
+    placeholder_locals = { profile_thumb: true, extra_classes: "rounded nu-listing-image-placeholder--tiny" }
+  else
+    raise ArgumentError, "Unknown listing image variant: #{variant}"
+  end
+
+  alt_text = record.try(:title).presence || "Listing photo"
+  image_action = "error->listing-image#showPlaceholder"
+%>
+
+<% if record.listing_image_available? %>
+  <div class="<%= wrapper_class %>" data-controller="listing-image">
+    <% if record.photo.attached? %>
+      <%= image_tag record.photo,
+                    alt: alt_text,
+                    class: img_class,
+                    data: { listing_image_target: "image", action: image_action } %>
+    <% else %>
+      <%= image_tag record.image_url,
+                    alt: alt_text,
+                    class: img_class,
+                    data: { listing_image_target: "image", action: image_action } %>
+    <% end %>
+    <div class="d-none" data-listing-image-target="placeholder">
+      <%= render "application/listing_image_placeholder", **placeholder_locals %>
+    </div>
+  </div>
+<% else %>
+  <%= render "application/listing_image_placeholder", **placeholder_locals %>
+<% end %>
